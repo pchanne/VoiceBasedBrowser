@@ -3,11 +3,14 @@ package com.browser.main;
 import com.browser.view.ToolbarView;
 
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -21,8 +24,9 @@ public class VoiceBrowser extends Application {
 
 	private TextField addressBarField = new TextField(); // URL location
 	private Scene scene;
+	private BrowserWindow browserWindow;
 	private BorderPane mainLayout = new BorderPane();        // layout of the browser application.
-
+	
 	/**
 	 * @param args
 	 */
@@ -35,31 +39,49 @@ public class VoiceBrowser extends Application {
 	@Override
 	public void start(Stage stage) throws Exception {
 		// TODO Auto-generated method stub
+		
+	
 		stage.setTitle("Voice Based Browser");
+		browserWindow = new BrowserWindow();
 		addressBarField.setStyle("-fx-font-size: 14;");
 		addressBarField.setPromptText("Where do you want to go today?");
 		addressBarField.setTooltip(new Tooltip("Enter a location"));
 		
-		/*addressBarField.setOnKeyReleased(new EventHandler<KeyEvent>() {
+		
+		addressBarField.setOnKeyReleased(new EventHandler<KeyEvent>() {
 		      @Override public void handle(KeyEvent keyEvent) {
 		        if (keyEvent.getCode().equals(KeyCode.ENTER)) {
-		          getBrowser().navTo(addressBarField.getText());
+		        	getVoiceBrowser().navTo(addressBarField.getText());
+		          System.out.println("in actionlistener");
 		        }
 		      }
-		    });*/
+		    });
 		
 		HBox.setHgrow(addressBarField, Priority.ALWAYS);
 		mainLayout.setTop(ToolbarView.CreateNavToolbar(this));
 		
+		// add an overlay layer over the main layout for effects and status messages.
+	    final AnchorPane overlayLayer = new AnchorPane();
+	    final StackPane overlaidLayout = new StackPane();
+	    overlaidLayout.getChildren().addAll(mainLayout, overlayLayer);
+	    overlayLayer.setPickOnBounds(false);
 		
-		final StackPane overlaidLayout = new StackPane();
-		scene = new Scene(new BrowserWindow(),750,500, Color.web("#666970"));
-		//scene = new Scene(overlaidLayout,1020,600);
+	    
+		scene = new Scene(overlaidLayout,1020,600);
+		mainLayout.setCenter(getVoiceBrowser());
 		
         stage.setScene(scene);
-        //scene.getStylesheets().add("webviewsample/BrowserToolbar.css");        
+                
         stage.show();
 
+	}
+	
+	public TextField getAddressBarField(){
+		return addressBarField;
+	}
+	
+	public BrowserWindow getVoiceBrowser(){
+		return browserWindow.getBrowser();
 	}
 
 }
