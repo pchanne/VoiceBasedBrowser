@@ -5,6 +5,7 @@ import com.browser.view.ToolbarView;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Worker.State;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
@@ -49,13 +50,22 @@ public class VoiceBrowser extends Application {
 		
 		
 		addressBarField.setOnKeyReleased(new EventHandler<KeyEvent>() {
-		      @Override public void handle(KeyEvent keyEvent) {
+		      public void handle(KeyEvent keyEvent) {
 		        if (keyEvent.getCode().equals(KeyCode.ENTER)) {
 		        	getVoiceBrowser().navTo(addressBarField.getText());
 		          System.out.println("in actionlistener");
 		        }
 		      }
 		    });
+		
+		
+		browserWindow.getView().getEngine().getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {
+            public void changed(ObservableValue ov, State oldState, State newState) {
+                if (newState == State.RUNNING) {
+                    addressBarField.setText(browserWindow.getView().getEngine().getLocation());                    
+                }
+            }
+            });
 		
 		HBox.setHgrow(addressBarField, Priority.ALWAYS);
 		mainLayout.setTop(ToolbarView.CreateNavToolbar(this));

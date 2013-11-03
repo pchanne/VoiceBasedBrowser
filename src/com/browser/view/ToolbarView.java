@@ -100,7 +100,7 @@ public class ToolbarView {
 	    navPane.getChildren().addAll(backButton, forwardButton, voiceBrowserObj.getAddressBarField(), navButton);
 	    navPane.setFillHeight(false);
 	    Platform.runLater(new Runnable() {
-	      @Override public void run() {
+	      public void run() {
 	        navPane.setMinHeight(navPane.getHeight());
 	      }
 	    });
