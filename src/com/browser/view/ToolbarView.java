@@ -51,7 +51,7 @@ public class ToolbarView {
 	    */
 	    
 	    // create a forward button.
-	    forwardButton = new Button();
+	    forwardButton = new Button("Forward");
 	    forwardButton.setTranslateX(-2);
 	    //final ImageView forwardGraphic = new ImageView(new Image(Util.getResource("1813406178.png")));
 	    final ColorAdjust forwardColorAdjust = new ColorAdjust();
@@ -73,7 +73,7 @@ public class ToolbarView {
 	    forwardButton.setOnMouseReleased(chrome.getBrowser().getHistory().createShowHistoryMouseEvent(backButton));*/
 	    
 	 // create a navigate button.
-	    navButton = new Button();
+	    navButton = new Button("Go");
 	    navButton.setTooltip(new Tooltip("Go to or rejuvenate the location"));
 	    //final ImageView navGraphic = new ImageView(new Image(Util.getResource("Forward Arrow.png")));
 	    final ColorAdjust navColorAdjust = new ColorAdjust();
