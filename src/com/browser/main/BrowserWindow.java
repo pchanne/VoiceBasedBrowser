@@ -1,5 +1,7 @@
 package com.browser.main;
 
+import com.browser.view.History;
+
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -21,9 +23,10 @@ import javafx.scene.web.WebView;
 public class BrowserWindow extends Region{
 	
 	private static WebView browser;
-    private static WebEngine webEngine;
-    private final TextField      locField = new TextField();    // the location the browser engine is currently pointing at (or where the user can type in where to go next).
-    
+    public static WebEngine webEngine;
+    private History history = new History(this);
+    private final TextField locField = new TextField();    // the location the browser engine is currently pointing at (or where the user can type in where to go next).
+    public static String DEFAULT_HOME = "http://www.google.com"; 
     public TextField getLocField() {
 		return locField;
 	}
@@ -33,15 +36,27 @@ public class BrowserWindow extends Region{
         webEngine = browser.getEngine();
         initBrowser();
     }
-    
+
+	//initialized browser with default home
     private void initBrowser(){
     	
         //apply the styles
         getStyleClass().add("browser");
         // load the web page
-        webEngine.load("http://www.google.com");
+        webEngine.load(DEFAULT_HOME);
+        
         //add the web view to the scene
         getChildren().add(browser);
+        
+     // monitor the web view for when it's location changes, so we can update the history lists and other items correctly.
+        //final WebEngine engine = getView().getEngine();
+        webEngine.locationProperty().addListener(new ChangeListener<String>() {
+          @Override public void changed(ObservableValue<? extends String> observableValue, String oldLoc, String newLoc) {
+            getHistory().executeNav(newLoc); // update the history lists.
+            getLocField().setText(newLoc);   // update the location field.
+           // favicon.set(favIconHandler.fetchFavIcon(newLoc));
+          }
+        });
         
         
         //not sure why this is required
@@ -53,9 +68,11 @@ public class BrowserWindow extends Region{
           public void handle(KeyEvent keyEvent) {
             if (keyEvent.getCode().equals(KeyCode.ENTER)) {
               navTo(locField.getText());
+              //System.out.println("from browserWindow key released");
             }
           }
         });
+      //not sure why this is required
         locField.focusedProperty().addListener(new ChangeListener<Boolean>() {
             @Override public void changed(ObservableValue<? extends Boolean> observableValue, Boolean from, Boolean to) {
               if (to) {
@@ -102,7 +119,7 @@ public class BrowserWindow extends Region{
 //        if (loc == null || loc.isEmpty()) { // go home if the location field is empty.
 //          loc = chrome.homeLocationProperty.get();
 //        }
-    	System.out.println(loc);
+    	//System.out.println(loc);
         if (loc == null) loc = "";
         if (loc.startsWith("google")) { // search google
           loc = "http://www.google.com/search?q=" + loc.substring("google".length()).trim().replaceAll(" ", "+");
@@ -124,12 +141,12 @@ public class BrowserWindow extends Region{
 
         // ask the webview to navigate to the given location.
         if (!loc.equals(getView().getEngine().getLocation())) {
-        	System.out.println(getView().getEngine().getLocation());
+        	//System.out.println(getView().getEngine().getLocation());
           if (!loc.isEmpty()) {
-        	  System.out.println("location isn't empty!!: " + getView().getEngine());
-        	  System.out.println("new: " + loc);
+        	  //System.out.println("location isn't empty!!: " + getView().getEngine());
+        	  //System.out.println("new: " + loc);
         	  browser.getEngine().load(loc);
-        	  
+        	  System.out.println("webEngine history: " + browser.getEngine().getHistory().getEntries());
           } else {
             getView().getEngine().loadContent("");
           }
@@ -148,8 +165,14 @@ public class BrowserWindow extends Region{
         });
       }
     
+    public History getHistory() {
+        return history;
+      }
+    
     public WebView getView() {
         return browser;
       }
+    
+    
 
 }

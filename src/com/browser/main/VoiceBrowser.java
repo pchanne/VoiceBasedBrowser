@@ -5,6 +5,7 @@ import com.browser.view.ToolbarView;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Worker.State;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
@@ -42,7 +43,9 @@ public class VoiceBrowser extends Application {
 		
 	
 		stage.setTitle("Voice Based Browser");
+		
 		browserWindow = new BrowserWindow();
+		setAddressbarField(browserWindow.DEFAULT_HOME);
 		addressBarField.setStyle("-fx-font-size: 14;");
 		addressBarField.setPromptText("Where do you want to go today?");
 		addressBarField.setTooltip(new Tooltip("Enter a location"));
@@ -52,13 +55,24 @@ public class VoiceBrowser extends Application {
 		      @Override public void handle(KeyEvent keyEvent) {
 		        if (keyEvent.getCode().equals(KeyCode.ENTER)) {
 		        	getVoiceBrowser().navTo(addressBarField.getText());
-		          System.out.println("in actionlistener");
+		          //System.out.println("in actionlistener");
 		        }
 		      }
 		    });
 		
+		browserWindow.getView().getEngine().getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {
+            public void changed(ObservableValue ov, State oldState, State newState) {
+                if (newState == State.RUNNING) {
+                    addressBarField.setText(browserWindow.getView().getEngine().getLocation());                    
+                }
+            }
+            });
+		
 		HBox.setHgrow(addressBarField, Priority.ALWAYS);
+		
+		//set up main Layout
 		mainLayout.setTop(ToolbarView.CreateNavToolbar(this));
+		mainLayout.setCenter(getVoiceBrowser());
 		
 		// add an overlay layer over the main layout for effects and status messages.
 	    final AnchorPane overlayLayer = new AnchorPane();
@@ -66,12 +80,11 @@ public class VoiceBrowser extends Application {
 	    overlaidLayout.getChildren().addAll(mainLayout, overlayLayer);
 	    overlayLayer.setPickOnBounds(false);
 		
-	    
+	    //create scene from overlaidLayout
 		scene = new Scene(overlaidLayout,1020,600);
-		mainLayout.setCenter(getVoiceBrowser());
 		
-        stage.setScene(scene);
-                
+		
+        stage.setScene(scene);        
         stage.show();
 
 	}
@@ -83,5 +96,9 @@ public class VoiceBrowser extends Application {
 	public BrowserWindow getVoiceBrowser(){
 		return browserWindow.getBrowser();
 	}
+	
+	private void setAddressbarField(String loc){
+    	addressBarField.setText(loc);
+    }
 
 }

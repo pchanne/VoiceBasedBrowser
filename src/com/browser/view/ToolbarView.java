@@ -26,7 +26,7 @@ public class ToolbarView {
 	private static Button forwardButton;
 	private static Button navButton;
 	
-	public static Pane CreateNavToolbar(VoiceBrowser voiceBrowserObj){
+	public static Pane CreateNavToolbar(final VoiceBrowser voiceBrowserObj){
 		
 		// create a back button.
 		backButton = new Button("Back");
@@ -39,16 +39,16 @@ public class ToolbarView {
 	    backButton.setGraphic(backGraphic);
 	    backGraphic.setPreserveRatio(true);
 	    backGraphic.setFitHeight(32);*/
-	    /*backButton.onActionProperty().set(new EventHandler<ActionEvent>() {
+	    backButton.onActionProperty().set(new EventHandler<ActionEvent>() {
 	      @Override
 	      public void handle(ActionEvent actionEvent) {
-	        if (voiceBrowserObj.getBrowser().getHistory().canNavBack()) {
-	        	voiceBrowserObj.getBrowser().navTo(voiceBrowserObj.getBrowser().getHistory().requestNavBack());
+	        if (voiceBrowserObj.getVoiceBrowser().getHistory().canNavBack()) {
+	        	voiceBrowserObj.getVoiceBrowser().navTo(voiceBrowserObj.getVoiceBrowser().getHistory().requestNavBack());
 	        }
 	      }
 	    });
-	    backButton.setOnMouseReleased(voiceBrowserObj.getBrowser().getHistory().createShowHistoryMouseEvent(backButton));
-	    */
+	    backButton.setOnMouseReleased(voiceBrowserObj.getVoiceBrowser().getHistory().createShowHistoryMouseEvent(backButton));
+	    
 	    
 	    // create a forward button.
 	    forwardButton = new Button();
