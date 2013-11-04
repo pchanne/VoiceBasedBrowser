@@ -80,13 +80,12 @@ public class ToolbarView {
 	    /*navGraphic.setEffect(navColorAdjust);
 	    navGraphic.setPreserveRatio(true);
 	    navGraphic.setFitHeight(14);
-	    navButton.setGraphic(navGraphic);
+	    navButton.setGraphic(navGraphic);*/
 	    navButton.onActionProperty().set(new EventHandler<ActionEvent>() {
-	      @Override
 	      public void handle(ActionEvent actionEvent) {
-	        chrome.getBrowser().navTo(chrome.getBrowser().getLocField().getText());
+	    	  voiceBrowserObj.getVoiceBrowser().navTo(voiceBrowserObj.getAddressBarField().getText());
 	      }
-	    });*/
+	    });
 	    
 	    
 	 // align all of the navigation widgets in a horizontal toolbar.

@@ -94,7 +94,7 @@ public class VoiceBrowser extends Application {
 	    overlayLayer.setPickOnBounds(false);
 		
 	    //create scene from overlaidLayout
-		scene = new Scene(overlaidLayout,1020,600);
+		scene = new Scene(overlaidLayout,1020,800);
 		
 		
         stage.setScene(scene);        
