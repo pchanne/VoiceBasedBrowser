@@ -1,5 +1,6 @@
 package com.browser.main;
 
+import com.browser.view.MenuBarView;
 import com.browser.view.ToolbarView;
 
 import javafx.application.Application;
@@ -16,6 +17,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.event.EventHandler;
@@ -52,7 +54,7 @@ public class VoiceBrowser extends Application {
 		
 		
 		addressBarField.setOnKeyReleased(new EventHandler<KeyEvent>() {
-		      @Override public void handle(KeyEvent keyEvent) {
+		      public void handle(KeyEvent keyEvent) {
 		        if (keyEvent.getCode().equals(KeyCode.ENTER)) {
 		        	getVoiceBrowser().navTo(addressBarField.getText());
 		          //System.out.println("in actionlistener");
@@ -60,6 +62,7 @@ public class VoiceBrowser extends Application {
 		      }
 		    });
 		
+
 		browserWindow.getView().getEngine().getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {
             public void changed(ObservableValue ov, State oldState, State newState) {
                 if (newState == State.RUNNING) {
@@ -70,9 +73,19 @@ public class VoiceBrowser extends Application {
 		
 		HBox.setHgrow(addressBarField, Priority.ALWAYS);
 		
+
 		//set up main Layout
 		mainLayout.setTop(ToolbarView.CreateNavToolbar(this));
 		mainLayout.setCenter(getVoiceBrowser());
+
+		MenuBarView menuBar= new MenuBarView();
+		
+		VBox vbox_for_menubar_toolbar= new VBox();
+		vbox_for_menubar_toolbar.getChildren().addAll(menuBar.createMenuBar(),ToolbarView.CreateNavToolbar(this));
+		
+		mainLayout.setTop(vbox_for_menubar_toolbar);
+		//mainLayout.setTop(ToolbarView.CreateNavToolbar(this));
+
 		
 		// add an overlay layer over the main layout for effects and status messages.
 	    final AnchorPane overlayLayer = new AnchorPane();

@@ -5,6 +5,7 @@ import com.browser.view.History;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Worker.State;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
@@ -50,8 +51,8 @@ public class BrowserWindow extends Region{
         
      // monitor the web view for when it's location changes, so we can update the history lists and other items correctly.
         //final WebEngine engine = getView().getEngine();
-        webEngine.locationProperty().addListener(new ChangeListener<String>() {
-          @Override public void changed(ObservableValue<? extends String> observableValue, String oldLoc, String newLoc) {
+        webEngine.locationProperty().addListener(new ChangeListener<String>() { 
+          public void changed(ObservableValue<? extends String> observableValue, String oldLoc, String newLoc) {
             getHistory().executeNav(newLoc); // update the history lists.
             getLocField().setText(newLoc);   // update the location field.
            // favicon.set(favIconHandler.fetchFavIcon(newLoc));
@@ -64,7 +65,6 @@ public class BrowserWindow extends Region{
         locField.setPromptText("Where do you want to go today?");
         locField.setTooltip(new Tooltip("Enter a location or find happiness."));
         locField.setOnKeyReleased(new EventHandler<KeyEvent>() {
-          @Override
           public void handle(KeyEvent keyEvent) {
             if (keyEvent.getCode().equals(KeyCode.ENTER)) {
               navTo(locField.getText());
@@ -74,16 +74,17 @@ public class BrowserWindow extends Region{
         });
       //not sure why this is required
         locField.focusedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override public void changed(ObservableValue<? extends Boolean> observableValue, Boolean from, Boolean to) {
+            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean from, Boolean to) {
               if (to) {
                 Platform.runLater(new Runnable() {
-                  @Override public void run() {
+                  public void run() {
                     locField.selectAll();
                   }
                 });
               }
             }
           });
+                       
     }
     
     
@@ -153,12 +154,13 @@ public class BrowserWindow extends Region{
         } else {
           getView().getEngine().reload();
         }
+        
+               
 
         // webview will grab the focus if automatically if it has an html input control to display, but we want it
         // to always grab the focus and kill the focus which was on the input bar, so just set ask the platform to focus
         // the web view later (we do it later, because if we did it now, the default focus handling might kick in and override our request).
         Platform.runLater(new Runnable() {
-          @Override
           public void run() {
             getView().requestFocus();
           }

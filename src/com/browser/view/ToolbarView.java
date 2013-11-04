@@ -40,7 +40,6 @@ public class ToolbarView {
 	    backGraphic.setPreserveRatio(true);
 	    backGraphic.setFitHeight(32);*/
 	    backButton.onActionProperty().set(new EventHandler<ActionEvent>() {
-	      @Override
 	      public void handle(ActionEvent actionEvent) {
 	        if (voiceBrowserObj.getVoiceBrowser().getHistory().canNavBack()) {
 	        	voiceBrowserObj.getVoiceBrowser().navTo(voiceBrowserObj.getVoiceBrowser().getHistory().requestNavBack());
@@ -51,7 +50,7 @@ public class ToolbarView {
 	    
 	    
 	    // create a forward button.
-	    forwardButton = new Button();
+	    forwardButton = new Button("Forward");
 	    forwardButton.setTranslateX(-2);
 	    //final ImageView forwardGraphic = new ImageView(new Image(Util.getResource("1813406178.png")));
 	    final ColorAdjust forwardColorAdjust = new ColorAdjust();
@@ -73,7 +72,7 @@ public class ToolbarView {
 	    forwardButton.setOnMouseReleased(chrome.getBrowser().getHistory().createShowHistoryMouseEvent(backButton));*/
 	    
 	 // create a navigate button.
-	    navButton = new Button();
+	    navButton = new Button("Go");
 	    navButton.setTooltip(new Tooltip("Go to or rejuvenate the location"));
 	    //final ImageView navGraphic = new ImageView(new Image(Util.getResource("Forward Arrow.png")));
 	    final ColorAdjust navColorAdjust = new ColorAdjust();
@@ -100,7 +99,7 @@ public class ToolbarView {
 	    navPane.getChildren().addAll(backButton, forwardButton, voiceBrowserObj.getAddressBarField(), navButton);
 	    navPane.setFillHeight(false);
 	    Platform.runLater(new Runnable() {
-	      @Override public void run() {
+	      public void run() {
 	        navPane.setMinHeight(navPane.getHeight());
 	      }
 	    });

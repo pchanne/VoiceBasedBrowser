@@ -108,7 +108,6 @@ public class History {
    */
   public EventHandler<MouseEvent> createShowHistoryMouseEvent(final Node displayNode) {
     return new EventHandler<MouseEvent>() {
-      @Override
       public void handle(MouseEvent mouseEvent) {
         if (mouseEvent.getButton().equals(MouseButton.SECONDARY)) {
           createMenu().show(displayNode, Side.BOTTOM, 0, 0); // show the history menu below the provided node (back button).
@@ -124,7 +123,8 @@ public class History {
    */
   public EventHandler<ActionEvent> createShowHistoryActionEvent(final Node displayNode) {
     return new EventHandler<ActionEvent>() {
-      @Override public void handle(ActionEvent actionEvent) {
+      
+    	public void handle(ActionEvent actionEvent) {
         createMenu().show(displayNode, Side.BOTTOM, 0, 0); // show the history menu below the provided node (history button).
       }
     };
@@ -157,7 +157,7 @@ public class History {
   private MenuItem createMenuItem(final String loc, final int navPointer) {
     final MenuItem nextMenuItem = new MenuItem(loc);
     nextMenuItem.setOnAction(new EventHandler<ActionEvent>() {
-      @Override public void handle(ActionEvent actionEvent) {
+       public void handle(ActionEvent actionEvent) {
         browser.navTo(requestNav(navPointer));
       }
     });
