@@ -29,6 +29,7 @@ public class BrowserWindow extends Region{
     private History history = new History(this);
     private final TextField locField = new TextField();    // the location the browser engine is currently pointing at (or where the user can type in where to go next).
     public static String DEFAULT_HOME = "http://www.google.com"; 
+    private String speechCommandSpoken;
     public TextField getLocField() {
 		return locField;
 	}
@@ -37,6 +38,7 @@ public class BrowserWindow extends Region{
 		System.out.println("Browser Window");
     	browser = new WebView();
         webEngine = browser.getEngine();
+        speechCommandSpoken = null;
         initBrowser();
     }
 
@@ -177,7 +179,27 @@ public class BrowserWindow extends Region{
     public WebView getView() {
         return browser;
       }
-    
-    
+
+	public void changeLocation() {
+		// TODO Auto-generated method stub
+		speechCommandSpoken =  SpeechCommands.CommandSpoken();
+		System.out.println("Command spoken " +speechCommandSpoken);
+		if(speechCommandSpoken.equalsIgnoreCase("Go"))
+		{
+			System.out.println("Command!!!");
+
+			System.out.println("Browser inside runnable "+this);
+      	//browserWindow = new BrowserWindow();
+			//voiceBrowserObj.getVoiceBrowser().navTo(voiceBrowserObj.getAddressBarField().getText());
+			//voiceBrowserObj.getAddressBarField().setText("http://www.yahoo.com");
+			//browserObj.navTo(voiceBrowserObj.getAddressBarField().getText());
+			//browserObj.navTo("www.yahoo.com");
+			//browserObj.getLocField().setText(speechCommandSpoken);
+			//voiceBrowserObj.getAddressBarField().setText(speechCommandSpoken);
+			this.browser.getEngine().load("www.yahoo.com");
+			System.out.println("Successfully loaded !!!");
+			//voiceBrowserObj.getAddressBarField().setText(speechCommandSpoken);
+		}
+	}
 
 }

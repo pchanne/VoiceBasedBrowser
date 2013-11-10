@@ -1,3 +1,4 @@
+
 package com.browser.view;
 
 import java.awt.event.ActionListener;
@@ -83,27 +84,11 @@ public class MenuBarView {
 			public void actionPerformed(java.awt.event.ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				//System.out.println("Browser outside runnable "+browserObj);
+				
 				Platform.runLater(new Runnable() {
 					public void run() {
-						// TODO Auto-generated method stub
-						speechCommandSpoken =  SpeechCommands.CommandSpoken();
-						System.out.println("Command spoken " +speechCommandSpoken);
-						if(speechCommandSpoken.equalsIgnoreCase("Go"))
-						{
-							System.out.println("Command!!!");
-
-							System.out.println("Browser inside runnable "+browserObj);
-			          	//browserWindow = new BrowserWindow();
-							//voiceBrowserObj.getVoiceBrowser().navTo(voiceBrowserObj.getAddressBarField().getText());
-							//voiceBrowserObj.getAddressBarField().setText("http://www.yahoo.com");
-							//browserObj.navTo(voiceBrowserObj.getAddressBarField().getText());
-							//browserObj.navTo("www.yahoo.com");
-							//browserObj.getLocField().setText(speechCommandSpoken);
-							//voiceBrowserObj.getAddressBarField().setText(speechCommandSpoken);
-							BrowserWindow.browser.getEngine().load("www.yahoo.com");
-							System.out.println("Successfully loaded !!!");
-							//voiceBrowserObj.getAddressBarField().setText(speechCommandSpoken);
-						}
+//						// TODO Auto-generated method stub
+						browserObj.changeLocation();
 					}
 				});
 				
@@ -158,6 +143,7 @@ public class MenuBarView {
 				// TODO Auto-generated method stub
 					System.out.println("Enabled Speech!!!");
 					timer.start();
+					
 					//t1.run();
 				}
 				else
@@ -176,3 +162,4 @@ public class MenuBarView {
     }
     
 }
+
