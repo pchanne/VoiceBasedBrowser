@@ -48,7 +48,7 @@ public class VoiceBrowser extends Application {
 		
 		browserWindow = new BrowserWindow();
 		setAddressbarField(browserWindow.DEFAULT_HOME);
-		addressBarField.setStyle("-fx-font-size: 14;");
+		addressBarField.setStyle("-fx-font-size: 20;");
 		addressBarField.setPromptText("Where do you want to go today?");
 		addressBarField.setTooltip(new Tooltip("Enter a location"));
 		

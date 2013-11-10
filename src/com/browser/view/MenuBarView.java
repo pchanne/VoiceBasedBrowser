@@ -45,7 +45,6 @@ public class MenuBarView {
         setViewMenuItems();
         setSpeechMenuItems();
         setHelpMenuItems();
-        
         menuBar.getMenus().addAll(fileMenu, viewMenu, speechMenu,helpMenu);        
         
         return menuBar;
