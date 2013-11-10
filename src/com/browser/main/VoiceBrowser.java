@@ -1,5 +1,7 @@
 package com.browser.main;
 
+
+import com.browser.speech.SpeechCommands;
 import com.browser.view.MenuBarView;
 import com.browser.view.ToolbarView;
 
@@ -29,6 +31,8 @@ public class VoiceBrowser extends Application {
 	private Scene scene;
 	private BrowserWindow browserWindow;
 	private BorderPane mainLayout = new BorderPane();        // layout of the browser application.
+	private String speechCommandSpoken = null;
+	private int i;
 	
 	/**
 	 * @param args
@@ -53,7 +57,7 @@ public class VoiceBrowser extends Application {
 		addressBarField.setTooltip(new Tooltip("Enter a location"));
 		
 		
-		addressBarField.setOnKeyReleased(new EventHandler<KeyEvent>() {
+		addressBarField.setOnKeyReleased(new EventHandler<KeyEvent>() { 
 		      public void handle(KeyEvent keyEvent) {
 		        if (keyEvent.getCode().equals(KeyCode.ENTER)) {
 		        	getVoiceBrowser().navTo(addressBarField.getText());
@@ -74,11 +78,13 @@ public class VoiceBrowser extends Application {
 		HBox.setHgrow(addressBarField, Priority.ALWAYS);
 		
 
+
 		//set up main Layout
 		mainLayout.setTop(ToolbarView.CreateNavToolbar(this));
 		mainLayout.setCenter(getVoiceBrowser());
 
-		MenuBarView menuBar= new MenuBarView();
+		
+		MenuBarView menuBar= new MenuBarView(this.getVoiceBrowser(),this);
 		
 		VBox vbox_for_menubar_toolbar= new VBox();
 		vbox_for_menubar_toolbar.getChildren().addAll(menuBar.createMenuBar(),ToolbarView.CreateNavToolbar(this));
@@ -86,7 +92,8 @@ public class VoiceBrowser extends Application {
 		mainLayout.setTop(vbox_for_menubar_toolbar);
 		//mainLayout.setTop(ToolbarView.CreateNavToolbar(this));
 
-		
+        
+		//SpeechCommands.CommandSpoken(this);
 		// add an overlay layer over the main layout for effects and status messages.
 	    final AnchorPane overlayLayer = new AnchorPane();
 	    final StackPane overlaidLayout = new StackPane();
@@ -97,8 +104,9 @@ public class VoiceBrowser extends Application {
 		scene = new Scene(overlaidLayout,1020,800);
 		
 		
-        stage.setScene(scene);        
-        stage.show();
+        stage.setScene(scene); 
+       
+    	stage.show();
 
 	}
 	
@@ -113,5 +121,9 @@ public class VoiceBrowser extends Application {
 	private void setAddressbarField(String loc){
     	addressBarField.setText(loc);
     }
+	
+	private void speechTest(){
+		
+	}
 
 }

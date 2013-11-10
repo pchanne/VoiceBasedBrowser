@@ -1,5 +1,6 @@
 package com.browser.main;
 
+import com.browser.speech.SpeechCommands;
 import com.browser.view.History;
 
 import javafx.application.Platform;
@@ -23,7 +24,7 @@ import javafx.scene.web.WebView;
 
 public class BrowserWindow extends Region{
 	
-	private static WebView browser;
+	public static WebView browser;
     public static WebEngine webEngine;
     private History history = new History(this);
     private final TextField locField = new TextField();    // the location the browser engine is currently pointing at (or where the user can type in where to go next).
@@ -33,6 +34,7 @@ public class BrowserWindow extends Region{
 	}
 
 	public BrowserWindow(){
+		System.out.println("Browser Window");
     	browser = new WebView();
         webEngine = browser.getEngine();
         initBrowser();
@@ -145,9 +147,10 @@ public class BrowserWindow extends Region{
         	//System.out.println(getView().getEngine().getLocation());
           if (!loc.isEmpty()) {
         	  //System.out.println("location isn't empty!!: " + getView().getEngine());
-        	  //System.out.println("new: " + loc);
+        	  System.out.println("new: " + loc);
+        	  System.out.println("Browser "+browser);
         	  browser.getEngine().load(loc);
-        	  System.out.println("webEngine history: " + browser.getEngine().getHistory().getEntries());
+        	  //System.out.println("webEngine history: " + browser.getEngine().getHistory().getEntries());
           } else {
             getView().getEngine().loadContent("");
           }
