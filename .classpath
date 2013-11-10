@@ -4,6 +4,7 @@
 	<classpathentry kind="src" path="Resources"/>
 	<classpathentry kind="lib" path="lib/jfxrt.jar"/>
 	<classpathentry kind="lib" path="Resources/icons.jar"/>
+	<classpathentry kind="lib" path="lib/jackson-all-1.9.11.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.7.0_25"/>
 	<classpathentry kind="lib" path="E:/setup/jars/json/jackson/jackson-all-1.9.11.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>

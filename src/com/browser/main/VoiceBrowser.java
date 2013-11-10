@@ -160,18 +160,7 @@ public class VoiceBrowser extends Application {
 	
 	public void setBookmarkItems()
     {
-        /*Bookmark googleBookmark= new Bookmark();
-        googleBookmark.setBookmarkName("google");
-        googleBookmark.setBookmarkURL("www.google.co.in");
-        
-        Bookmark yahooBookmark= new Bookmark();
-        yahooBookmark.setBookmarkName("yahoo");
-        yahooBookmark.setBookmarkURL("www.yahoo.in");
-        
-        
-        bookmarkModel.addBookmark(googleBookmark);
-        bookmarkModel.addBookmark(yahooBookmark);*/
-        
+               
         ContextMenu bookmarkContextMenu= sideBar.getBookmarkButton().getContextMenu(); 
         bookmarkContextMenu.getItems().removeAll(bookmarkContextMenu.getItems()); 
                
