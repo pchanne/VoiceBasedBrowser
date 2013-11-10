@@ -17,8 +17,8 @@ public class main extends Application{
     public void start(Stage stage) throws Exception {
         // TODO Auto-generated method stub
         VBox vbox= new VBox();
-        MenuBarView menuBar= new MenuBarView();
-        vbox.getChildren().add(menuBar.createMenuBar());
+        //MenuBarView menuBar= new MenuBarView();
+        //vbox.getChildren().add(menuBar.createMenuBar());
         
         Scene scene = new Scene(vbox, 400, 400);
         

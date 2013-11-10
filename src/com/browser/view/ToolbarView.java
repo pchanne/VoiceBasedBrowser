@@ -18,6 +18,7 @@ import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 
+
 import com.browser.main.VoiceBrowser;
 
 public class ToolbarView {
