@@ -78,12 +78,12 @@ public class VoiceBrowser extends Application {
 		mainLayout.setTop(ToolbarView.CreateNavToolbar(this));
 		mainLayout.setCenter(getVoiceBrowser());
 
-		MenuBarView menuBar= new MenuBarView();
+		//MenuBarView menuBar= new MenuBarView();
 		
-		VBox vbox_for_menubar_toolbar= new VBox();
-		vbox_for_menubar_toolbar.getChildren().addAll(menuBar.createMenuBar(),ToolbarView.CreateNavToolbar(this));
+		//VBox vbox_for_menubar_toolbar= new VBox();
+		//vbox_for_menubar_toolbar.getChildren().addAll(menuBar.createMenuBar(),ToolbarView.CreateNavToolbar(this));
 		
-		mainLayout.setTop(vbox_for_menubar_toolbar);
+		//mainLayout.setTop(vbox_for_menubar_toolbar);
 		//mainLayout.setTop(ToolbarView.CreateNavToolbar(this));
 
 		
@@ -113,5 +113,9 @@ public class VoiceBrowser extends Application {
 	private void setAddressbarField(String loc){
     	addressBarField.setText(loc);
     }
+	
+	public void closeBrowser(){
+		System.exit(0);
+	}
 
 }

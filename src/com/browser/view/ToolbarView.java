@@ -33,9 +33,18 @@ import javafx.util.Duration;
 import com.browser.helper.GetImagePath;
 import com.browser.main.VoiceBrowser;
 
+import javafx.scene.control.CheckMenuItem;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
+import javafx.stage.WindowEvent;
+
 public class ToolbarView {
 	
 	private static Button backButton;
+	private static MenuButton menuButton;
 	private static Button homeButton;
 	private static Button bookmarkButton;
 	private static Button refreshButton;
@@ -43,53 +52,32 @@ public class ToolbarView {
 	private static Button navButton;
 	private static GetImagePath getImgObj;
 	private static String iconPath;
+	private static ContextMenu menuItems;
+	
+	private static MenuItem saveMenuItem;
+    private static MenuItem loadMenuItem;
+    private MenuItem newTabMenuItem;
+    private static MenuItem exitMenuItem;
+
+    private static MenuItem showStatusBarMenuItem;
+    private static MenuItem showBookmarkMenuItem;
+    private static MenuItem showHistoryMenuItem;
+    
+    private static MenuItem userManualMenuItem;
+    private static MenuItem aboutMenuItem;
+
+    private static CheckMenuItem speechModeEnable;
 	
 	public static Pane CreateNavToolbar(final VoiceBrowser voiceBrowserObj){
 		
 		getImgObj = new GetImagePath();
 		
 		// create a back button.
-/*		String directoryPath = "../VoiceBasedBrowser/icons";
-
-
-		ArrayDeque<String> fileNames = new ArrayDeque<String>();
-	//	int i = 1;
-		try {
-			File dir = new File(directoryPath);
-			File[] filesList = dir.listFiles();
-			for (File file : filesList) {
-				System.out.println(file);
-				if (file.isFile()) {
-
-					fileNames.add(file.getCanonicalFile().getName());
-
-				} else if (file.isDirectory())
-					continue;
-			}
-		} catch (FileNotFoundException e) {
-			System.err.println("Directory children files read: " + e);
-		} catch (IOException e) {
-			System.err.println("Directory children files read: " + e);
-		}*/
 		
 		backButton = new Button(null);
 	    backButton.setTooltip(new Tooltip("Go back"));
 	    backButton.setStyle("-fx-background-color: WHITE; -fx-border-color: WHITE; -fx-border-width: 0;");
-	    /*final List<String> fileNamesImgs = new ArrayList<String>();
-	    URL urlString = ToolbarView.class.getClassLoader().getResource("icons.jar");
-	    ZipInputStream zip;
-		try {
-			zip = new ZipInputStream(urlString.openStream());
-			ZipEntry ze = null;
-
-			while ((ze = zip.getNextEntry()) != null) {
-				String entryName = ze.getName();
-				if (entryName.endsWith(".jpg") || (entryName.endsWith(".png"))) {
-					fileNamesImgs.add("/" + entryName);
-				}
-			}
-		} catch (IOException e1) {
-		}*/
+	    
 	    iconPath = getImgObj.jarScan("icons.jar", "Arrows-Back-icon");
 	    ImageView backGraphic = new ImageView(new Image(iconPath));
 	    //Image image = new Image("..\\VoiceBasedBrowser\\icons\\Arrow-Back-icon.png");
@@ -213,16 +201,67 @@ public class ToolbarView {
 	    bookmarkButton.setTooltip(new Tooltip("Bookmark me"));
 	    
 	    
+	    /*
+	     * 
+	     * Menu button
+	     * 
+	     */
+	    iconPath = getImgObj.jarScan("icons.jar", "Menu-icon");
+	    menuButton = new MenuButton(null);
+	    menuButton.setTranslateX(-2);
+	    menuButton.setStyle("-fx-background-color: WHITE; -fx-border-color: WHITE; -fx-border-width: 0;");
+	    final ImageView menuGraphic = new ImageView(new Image(iconPath));
+	    final ColorAdjust menuColorAdjust = new ColorAdjust();
+	    menuColorAdjust.setBrightness(-0.1);
+	    menuColorAdjust.setContrast(-0.1);
+	    menuGraphic.setEffect(menuColorAdjust);
+	    menuGraphic.setPreserveRatio(true);
+	    menuGraphic.setFitHeight(24);
+	    menuButton.setGraphic(menuGraphic);
+	    menuButton.setTooltip(new Tooltip("Explore more"));
+	    /*
+	     * 
+	     *  creating menu items
+	     *  save
+	     *  load
+	     *  exit
+	     *  help
+	     *  about
+	     *  show status bar
+	     *  bookmarks
+	     *  history
+	     *  enable/disable speech
+	     * 
+	     */
+	    saveMenuItem= new MenuItem("Save");
+        loadMenuItem= new MenuItem("Load");
+        exitMenuItem= new MenuItem("Close");
+        showStatusBarMenuItem= new MenuItem("Show Status Bar");
+        showBookmarkMenuItem= new MenuItem("BookMarks");
+        showHistoryMenuItem = new MenuItem("History");
+        speechModeEnable= new CheckMenuItem("Enable/Disable Speech Mode");
+        userManualMenuItem= new MenuItem("Help");
+        aboutMenuItem= new MenuItem("About");
+	    
+	    exitMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+	        public void handle(ActionEvent e) {
+	        	voiceBrowserObj.closeBrowser();
+	        }
+	    });
+	    menuButton.getItems().addAll(saveMenuItem, loadMenuItem, showStatusBarMenuItem, showBookmarkMenuItem, showHistoryMenuItem, speechModeEnable, userManualMenuItem, aboutMenuItem, exitMenuItem);
+	    
+	    
+	    
 	 // align all of the navigation widgets in a horizontal toolbar.
 	    final HBox navPane = new HBox();
-	    navPane.setPadding(new Insets(5, 2, 8, 2));
+	    navPane.setPadding(new Insets(5, 0, 5, 0));
 	    navPane.setAlignment(Pos.CENTER);
 	    navPane.getStyleClass().add("toolbar");
 	    navPane.setSpacing(6);
 	    //navPane.setSp
 	    //navPane.getChildren().addAll(backButton);
 	    //navPane.getChildren().addAll(backButton, forwardButton, chrome.getChromeLocField(), chrome.getTabManager().getTabPane(), chrome.getTabManager().getNewTabButton(), navButton);
-	    navPane.getChildren().addAll(backButton, forwardButton, refreshButton, voiceBrowserObj.getAddressBarField(), navButton, bookmarkButton, homeButton);
+	    navPane.getChildren().addAll(backButton, forwardButton, refreshButton, voiceBrowserObj.getAddressBarField(), navButton, bookmarkButton, homeButton, menuButton);
 	    navPane.setFillHeight(false);
 	    Platform.runLater(new Runnable() {
 	      public void run() {
@@ -236,4 +275,6 @@ public class ToolbarView {
 	    
 	    return navPane;
 	}
+	
+	
 }
