@@ -30,12 +30,13 @@ public class main extends Application{
     public void start(Stage stage) throws Exception {
         // TODO Auto-generated method stub
         VBox vbox= new VBox();
+
   
-        MenuBarView menuBar= new MenuBarView();
+        //MenuBarView menuBar= new MenuBarView();
         sidebar= new SideBarView();
         
-        vbox.getChildren().add(menuBar.createMenuBar());
-        
+        //vbox.getChildren().add(menuBar.createMenuBar());
+
         
         BorderPane borderLayout= new BorderPane();
                        

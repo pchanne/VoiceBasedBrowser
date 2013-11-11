@@ -46,16 +46,18 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 import com.browser.helper.GetImagePath;
+
 import com.browser.main.VoiceBrowser;
 
 public class ToolbarView {
 	
-	private static Button backButton;
+	public static Button backButton;
 	private static Button homeButton;
 	
 	private static Button refreshButton;
 	private static Button forwardButton;
-	private static Button navButton;
+	public static Button navButton;
+	public static Button testButton;
 	private static GetImagePath getImgObj;
 	private static String iconPath;
 	
@@ -65,6 +67,22 @@ public class ToolbarView {
 	private static Stage bookmarkStage;
 	private static TextField bookmarkTitleTextField;
 	
+	public static Button getBackButton() {
+		return backButton;
+	}
+
+	public static void setBackButton(Button backButton) {
+		ToolbarView.backButton = backButton;
+	}
+
+	public static Button getNavButton() {
+		return navButton;
+	}
+
+	public static void setNavButton(Button navButton) {
+		ToolbarView.navButton = navButton;
+	}
+
 	/**
      * @return the bookmarkStage
      */
@@ -94,12 +112,15 @@ public class ToolbarView {
 	    backGraphic.setFitHeight(24);
 	    backButton.onActionProperty().set(new EventHandler<ActionEvent>() {
 	      public void handle(ActionEvent actionEvent) {
-	        if (voiceBrowserObj.getVoiceBrowser().getHistory().canNavBack()) {
-	        	voiceBrowserObj.getVoiceBrowser().navTo(voiceBrowserObj.getVoiceBrowser().getHistory().requestNavBack());
-	        }
+	    	  System.out.println("Clicked");
+	        /*if (voiceBrowserObj.getVoiceBrowser().getHistory().canNavBack()) {
+	        	//System.out.println("inside navback");
+	        	//voiceBrowserObj.getVoiceBrowser().navTo(voiceBrowserObj.getVoiceBrowser().getHistory().requestNavBack());
+	        	
+	        }*/
 	      }
 	    });
-	    backButton.setOnMouseReleased(voiceBrowserObj.getVoiceBrowser().getHistory().createShowHistoryMouseEvent(backButton));
+	    //backButton.setOnMouseReleased(voiceBrowserObj.getVoiceBrowser().getHistory().createShowHistoryMouseEvent(backButton));
 	    
 	    
 	    // create a forward button.
@@ -146,6 +167,12 @@ public class ToolbarView {
 	      }
 	    });
 	    
+	    testButton = new Button(null);
+	    testButton.onActionProperty().set(new EventHandler<ActionEvent>() {
+		      public void handle(ActionEvent actionEvent) {
+		    	  System.out.println("clicked");
+		      }
+		    });
 
 	    /*addBookmarkButton= new Button("Add Bookmark");
 	    
@@ -260,7 +287,8 @@ public class ToolbarView {
 	    	    	    
 	    return navPane;
 	}
-	
+    
+    	
 	public static Parent getAddBookmarkPopupScene()
 	{
 	    GridPane grid = new GridPane();
