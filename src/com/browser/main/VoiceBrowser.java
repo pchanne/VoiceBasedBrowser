@@ -235,8 +235,8 @@ public class VoiceBrowser extends Application {
 		    	System.out.println("inside run");
 		    	System.out.println("BWObject:"+BrowserWindow.webEngine);
 		    	//BrowserWindow.webEngine.load("www.yahoo.com");
-		    	getAddressBarField().setText("www.yahoo.com");
-		    	getVoiceBrowser().navTo("www.yahoo.com");
+		    	//getAddressBarField().setText("www.yahoo.com");
+		    	getVoiceBrowser().navTo(getAddressBarField().getText());
 		    	//ToolbarView.backButton.setDisable(true);
 		    }
 		});

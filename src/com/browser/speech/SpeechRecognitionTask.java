@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 
 public class SpeechRecognitionTask extends Service<Void>{
 
-	String speechCommand = "Go";
+	String speechCommand; //= "Go";
 	boolean SpeechEnabled = true;
 	public BrowserWindow bw;
 	public VoiceBrowser vb;
@@ -29,12 +29,12 @@ public class SpeechRecognitionTask extends Service<Void>{
                 
                 while(SpeechEnabled){
                 	//System.out.println("Sleeping");
-                	speechCommand = "Go";
-                	
+                	//speechCommand = "Go";
+                	speechCommand =  SpeechCommands.CommandSpoken();
                 	//vb.getAddressBarField().setText(speechCommand);
-                	vb.getAddressBarField().setText("Go");
-                	Thread.sleep(1000);
-                	if(speechCommand == "Go"){
+                	//vb.getAddressBarField().setText(speechCommand);
+                	//Thread.sleep(60);
+                	if(speechCommand.equalsIgnoreCase("Good Morning")){
                 		//bw.navTo("www.yahoo.com");
                 		//System.out.println("inside if");
                 		//System.out.println("Browser View:"+BrowserWindow.browser.getEngine().getLocation());
@@ -49,7 +49,7 @@ public class SpeechRecognitionTask extends Service<Void>{
                 		//System.out.println("eventdes: "+ToolbarView.testButton.getEventDispatcher().dispatchEvent(null, null));
                 		//BrowserWindow.browser.getEngine().load("www.yahoo.com");
                 	}
-                	Thread.sleep(10000);
+                	Thread.sleep(100);
 
                 }
 
