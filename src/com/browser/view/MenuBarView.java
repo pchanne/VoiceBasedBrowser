@@ -5,15 +5,13 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Timer;
 
-
 //import java.util.Timer;
 import java.util.TimerTask;
-
-import quicktime.std.music.TunePlayer;
 
 import com.browser.main.BrowserWindow;
 import com.browser.main.VoiceBrowser;
 import com.browser.speech.SpeechCommands;
+import com.browser.speech.SpeechRecognitionTask;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -47,6 +45,7 @@ public class MenuBarView {
     private Timer timer;
     private Thread t1;
     //private Timer timer;
+    private SpeechRecognitionTask sTask;
     
     public MenuBarView(final BrowserWindow browserObj, final VoiceBrowser voiceBrowserObj)
     {
@@ -55,6 +54,11 @@ public class MenuBarView {
         helpMenu = new Menu("Help");
         speechMenu= new Menu("Speech");
         speechCommandSpoken = null;
+        sTask = new SpeechRecognitionTask(browserObj,voiceBrowserObj);
+        
+    
+    
+        
         
 //        //timer.schedule(new TimerTask() {
 //			t1 = new Thread(){
@@ -79,7 +83,7 @@ public class MenuBarView {
 //			}
 //		};
         
-        timer = new Timer(1000, new ActionListener() {
+        /*timer = new Timer(1000, new ActionListener() {
 			
 			public void actionPerformed(java.awt.event.ActionEvent arg0) {
 				// TODO Auto-generated method stub
@@ -94,7 +98,7 @@ public class MenuBarView {
 				
 				
 			}
-		});
+		});*/
     }
     
     
@@ -141,14 +145,14 @@ public class MenuBarView {
 			public void handle(ActionEvent arg0) {
 				if(speechModeEnable.isSelected()){
 				// TODO Auto-generated method stub
-					System.out.println("Enabled Speech!!!");
-					timer.start();
 					
-					//t1.run();
+					sTask.start();
+					
 				}
-				else
+				else{
 					//t1.stop();
-					timer.stop();
+					//timer.stop();
+				}
 			}
 		});
     }

@@ -201,5 +201,17 @@ public class BrowserWindow extends Region{
 			//voiceBrowserObj.getAddressBarField().setText(speechCommandSpoken);
 		}
 	}
+	
+	public void test(){
+		Platform.runLater(new Runnable() {
+	          public void run() {
+	            //getView().requestFocus();
+	        	  webEngine.load("www.yahoo.com");
+	          }
+	        });
+		
+		//System.out.println(webEngine.getLocation());
+	
+	}
 
 }
