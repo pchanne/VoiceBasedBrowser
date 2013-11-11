@@ -30,7 +30,7 @@ public class GetImagePath {
 					//System.out.println("tempStr: " + tempStr);
 					//System.out.println("iconName: " + iconName);
 					if(tempStr.equals(iconName)){
-						System.out.println("in here!!");
+						//System.out.println("in here!!");
 						fileNamesImgs.add("/" + entryName);
 						fileName = "/" + entryName;
 					}
@@ -39,7 +39,7 @@ public class GetImagePath {
 			}
 		} catch (IOException e1) {
 		}
-		System.out.println(fileNamesImgs);
+		//System.out.println(fileNamesImgs);
 		return fileName;
 	}
 

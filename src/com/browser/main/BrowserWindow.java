@@ -1,5 +1,6 @@
 package com.browser.main;
 
+import com.browser.speech.SpeechCommands;
 import com.browser.view.History;
 
 import javafx.application.Platform;
@@ -23,18 +24,21 @@ import javafx.scene.web.WebView;
 
 public class BrowserWindow extends Region{
 	
-	private static WebView browser;
+	public static WebView browser;
     public static WebEngine webEngine;
     private History history = new History(this);
     private final TextField locField = new TextField();    // the location the browser engine is currently pointing at (or where the user can type in where to go next).
     public static String DEFAULT_HOME = "http://www.google.com"; 
+    private String speechCommandSpoken;
     public TextField getLocField() {
 		return locField;
 	}
 
 	public BrowserWindow(){
+		System.out.println("Browser Window");
     	browser = new WebView();
         webEngine = browser.getEngine();
+        speechCommandSpoken = null;
         initBrowser();
     }
 
@@ -145,9 +149,10 @@ public class BrowserWindow extends Region{
         	//System.out.println(getView().getEngine().getLocation());
           if (!loc.isEmpty()) {
         	  //System.out.println("location isn't empty!!: " + getView().getEngine());
-        	  //System.out.println("new: " + loc);
+        	  System.out.println("new: " + loc);
+        	  System.out.println("Browser "+browser);
         	  browser.getEngine().load(loc);
-        	  System.out.println("webEngine history: " + browser.getEngine().getHistory().getEntries());
+        	  //System.out.println("webEngine history: " + browser.getEngine().getHistory().getEntries());
           } else {
             getView().getEngine().loadContent("");
           }
@@ -174,7 +179,39 @@ public class BrowserWindow extends Region{
     public WebView getView() {
         return browser;
       }
-    
-    
+
+	public void changeLocation() {
+		// TODO Auto-generated method stub
+		speechCommandSpoken =  SpeechCommands.CommandSpoken();
+		System.out.println("Command spoken " +speechCommandSpoken);
+		if(speechCommandSpoken.equalsIgnoreCase("Go"))
+		{
+			System.out.println("Command!!!");
+
+			System.out.println("Browser inside runnable "+this);
+      	//browserWindow = new BrowserWindow();
+			//voiceBrowserObj.getVoiceBrowser().navTo(voiceBrowserObj.getAddressBarField().getText());
+			//voiceBrowserObj.getAddressBarField().setText("http://www.yahoo.com");
+			//browserObj.navTo(voiceBrowserObj.getAddressBarField().getText());
+			//browserObj.navTo("www.yahoo.com");
+			//browserObj.getLocField().setText(speechCommandSpoken);
+			//voiceBrowserObj.getAddressBarField().setText(speechCommandSpoken);
+			this.browser.getEngine().load("www.yahoo.com");
+			System.out.println("Successfully loaded !!!");
+			//voiceBrowserObj.getAddressBarField().setText(speechCommandSpoken);
+		}
+	}
+	
+	public void test(){
+		Platform.runLater(new Runnable() {
+	          public void run() {
+	            //getView().requestFocus();
+	        	  webEngine.load("www.yahoo.com");
+	          }
+	        });
+		
+		//System.out.println(webEngine.getLocation());
+	
+	}
 
 }
