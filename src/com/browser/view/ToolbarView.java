@@ -48,6 +48,7 @@ import javafx.util.Duration;
 import com.browser.helper.GetImagePath;
 
 import com.browser.main.VoiceBrowser;
+import com.browser.speech.SpeechRecognitionTask;
 
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.ContextMenu;
@@ -109,6 +110,7 @@ public class ToolbarView {
 	private static ColorAdjust bookmarkColorAdjust;
 
 	private static boolean isSpeechMode;
+	private static SpeechRecognitionTask sTask;
 
 	public static Button getBackButton() {
 		return backButton;
@@ -138,6 +140,7 @@ public class ToolbarView {
 		getImgObj = new GetImagePath();
 
 		isSpeechMode = false;
+		sTask = new SpeechRecognitionTask(voiceBrowserObj.getVoiceBrowser(), voiceBrowserObj);
 
 		// backButton.setOnMouseReleased(voiceBrowserObj.getVoiceBrowser().getHistory().createShowHistoryMouseEvent(backButton));
 		createBackButton();
@@ -222,7 +225,7 @@ public class ToolbarView {
 
 
 	private static void createSpeechButton() {
-		iconPath = getImgObj.jarScan("icons.jar", "Micro-icon");
+		iconPath = getImgObj.jarScan("icons.jar", "Micro-off-icon");
 		speechButton = new Button(null);
 		speechButton.setTranslateX(-2);
 		speechButton.setStyle("-fx-background-color: WHITE; -fx-border-color: WHITE; -fx-border-width: 0;");
@@ -238,13 +241,13 @@ public class ToolbarView {
 		// speechButton.set
 		speechButton.onActionProperty().set(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent actionEvent) {
-				System.out.println("Clicked");
 				if (isSpeechMode) {
 					isSpeechMode = false;
-					createSpeechButtonHelper("Micro-icon", "Enable speech mode");
+					createSpeechButtonHelper("Micro-off-icon", "Enable speech mode");
 				} else {
 					isSpeechMode = true;
-					createSpeechButtonHelper("Micro-off-icon", "Disable speech mode");
+					createSpeechButtonHelper("Micro-icon", "Disable speech mode");
+					sTask.start();
 				}
 			}
 		});

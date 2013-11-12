@@ -108,7 +108,7 @@ public class VoiceBrowser extends Application {
 		mainLayout.setTop(ToolbarView.CreateNavToolbar(this));
 		mainLayout.setCenter(getVoiceBrowser());
 
-		MenuBarView menuBar = new MenuBarView(this.getVoiceBrowser(), this);
+		/*MenuBarView menuBar = new MenuBarView(this.getVoiceBrowser(), this);
 
 		
 
@@ -116,7 +116,7 @@ public class VoiceBrowser extends Application {
 		vbox_for_menubar_toolbar.getChildren().addAll(menuBar.createMenuBar(),
 				ToolbarView.CreateNavToolbar(this));
 
-		mainLayout.setTop(vbox_for_menubar_toolbar);
+		mainLayout.setTop(vbox_for_menubar_toolbar);*/
 		
 		setBookmarkItems();
 

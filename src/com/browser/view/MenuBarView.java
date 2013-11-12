@@ -57,48 +57,6 @@ public class MenuBarView {
         sTask = new SpeechRecognitionTask(browserObj,voiceBrowserObj);
         
     
-    
-        
-        
-//        //timer.schedule(new TimerTask() {
-//			t1 = new Thread(){
-//			@Override
-//			public void run() {
-//				Platform.runLater(new Runnable() {
-//					
-//					public void run() {
-//						// TODO Auto-generated method stub
-//						// TODO Auto-generated method stub
-//						speechCommandSpoken =  SpeechCommands.CommandSpoken();
-//						System.out.println("Command spoken " +speechCommandSpoken);
-//						if(speechCommandSpoken.equalsIgnoreCase("Go"))
-//						{
-//							System.out.println("Command!!!");
-//			          	//browserWindow = new BrowserWindow();
-//							voiceBrowserObj.getVoiceBrowser().navTo(voiceBrowserObj.getAddressBarField().getText());
-//							//voiceBrowserObj.getAddressBarField().setText(speechCommandSpoken);
-//						}
-//					}
-//				});	
-//			}
-//		};
-        
-        /*timer = new Timer(1000, new ActionListener() {
-			
-			public void actionPerformed(java.awt.event.ActionEvent arg0) {
-				// TODO Auto-generated method stub
-				//System.out.println("Browser outside runnable "+browserObj);
-				
-				Platform.runLater(new Runnable() {
-					public void run() {
-//						// TODO Auto-generated method stub
-						browserObj.changeLocation();
-					}
-				});
-				
-				
-			}
-		});*/
     }
     
     
@@ -146,7 +104,7 @@ public class MenuBarView {
 				if(speechModeEnable.isSelected()){
 				// TODO Auto-generated method stub
 					
-					sTask.start();
+					//sTask.start();
 					
 				}
 				else{
