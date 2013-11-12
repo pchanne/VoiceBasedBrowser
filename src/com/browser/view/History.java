@@ -1,6 +1,8 @@
 package com.browser.view;
 
 
+import java.io.IOException;
+
 import com.browser.main.BrowserWindow;
 
 import javafx.collections.FXCollections;
@@ -158,7 +160,12 @@ public class History {
     final MenuItem nextMenuItem = new MenuItem(loc);
     nextMenuItem.setOnAction(new EventHandler<ActionEvent>() {
        public void handle(ActionEvent actionEvent) {
-        browser.navTo(requestNav(navPointer));
+        try {
+			browser.navTo(requestNav(navPointer));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
       }
     });
     return nextMenuItem;

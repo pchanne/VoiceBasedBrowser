@@ -12,7 +12,8 @@ import javafx.stage.Stage;
 
 public class SpeechRecognitionTask extends Service<Void>{
 
-	String speechCommand; //= "Go";
+	String speechCommand = null; //= "Go";
+	String website;
 	boolean SpeechEnabled = true;
 	public BrowserWindow bw;
 	public VoiceBrowser vb;
@@ -34,7 +35,9 @@ public class SpeechRecognitionTask extends Service<Void>{
                 	//vb.getAddressBarField().setText(speechCommand);
                 	//vb.getAddressBarField().setText(speechCommand);
                 	//Thread.sleep(60);
-                	if(speechCommand.equalsIgnoreCase("Good Morning")){
+                	System.out.println("Website said :"+speechCommand);
+                	
+                	if(speechCommand != null){
                 		//bw.navTo("www.yahoo.com");
                 		//System.out.println("inside if");
                 		//System.out.println("Browser View:"+BrowserWindow.browser.getEngine().getLocation());

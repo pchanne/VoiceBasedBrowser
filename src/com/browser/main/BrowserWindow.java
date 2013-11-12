@@ -1,5 +1,8 @@
 package com.browser.main;
 
+import java.io.IOException;
+
+import com.browser.reader.FileReader;
 import com.browser.speech.SpeechCommands;
 import com.browser.view.History;
 
@@ -30,6 +33,7 @@ public class BrowserWindow extends Region{
     private final TextField locField = new TextField();    // the location the browser engine is currently pointing at (or where the user can type in where to go next).
     public static String DEFAULT_HOME = "http://www.google.com"; 
     private String speechCommandSpoken;
+    public FileReader titleReader;
     public TextField getLocField() {
 		return locField;
 	}
@@ -39,6 +43,7 @@ public class BrowserWindow extends Region{
     	browser = new WebView();
         webEngine = browser.getEngine();
         speechCommandSpoken = null;
+        titleReader = new FileReader();
         initBrowser();
     }
 
@@ -71,7 +76,12 @@ public class BrowserWindow extends Region{
         locField.setOnKeyReleased(new EventHandler<KeyEvent>() {
           public void handle(KeyEvent keyEvent) {
             if (keyEvent.getCode().equals(KeyCode.ENTER)) {
-              navTo(locField.getText());
+              try {
+				navTo(locField.getText());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
               //System.out.println("from browserWindow key released");
             }
           }
@@ -118,7 +128,7 @@ public class BrowserWindow extends Region{
         return 500;
     }
     
-    public void navTo(String loc) {
+    public void navTo(String loc) throws IOException {
         // modify the request location, to make it easier on the user for typing.
     // todo we probably don't want this default nav for empty .... work out what to do instead ....
 //        if (loc == null || loc.isEmpty()) { // go home if the location field is empty.
@@ -130,9 +140,9 @@ public class BrowserWindow extends Region{
           loc = "http://www.google.com/search?q=" + loc.substring("google".length()).trim().replaceAll(" ", "+");
         } else if (loc.startsWith("bing")) { // search bing
           loc = "http://www.bing.com/search?q=" + loc.substring("bing".length()).trim().replaceAll(" ", "+");
-        } else if (loc.startsWith("yahoo")) { // search yahoo
+        } /*else if (loc.startsWith("yahoo")) { // search yahoo
           loc = "http://search.yahoo.com/search?p=" + loc.substring("yahoo".length()).trim().replaceAll(" ", "+");
-        } else if (loc.startsWith("wiki")) {
+        }*/ else if (loc.startsWith("wiki")) {
           loc = "http://en.wikipedia.org/w/index.php?search=" + loc.substring("wiki".length()).trim().replaceAll(" ", "+");
         } else if (loc.startsWith("find")) { // search default (google) due to keyword
           loc = "http://www.google.com/search?q=" + loc.substring("find".length()).trim().replaceAll(" ", "+");
@@ -152,6 +162,8 @@ public class BrowserWindow extends Region{
         	  System.out.println("new: " + loc);
         	  System.out.println("Browser "+browser);
         	  browser.getEngine().load(loc);
+        	  //Read the loaded page....
+        	  titleReader.ReadTitle(loc);
         	  //System.out.println("webEngine history: " + browser.getEngine().getHistory().getEntries());
           } else {
             getView().getEngine().loadContent("");

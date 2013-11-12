@@ -163,7 +163,12 @@ public class ToolbarView {
 	    navButton.setGraphic(navGraphic);
 	    navButton.onActionProperty().set(new EventHandler<ActionEvent>() {
 	      public void handle(ActionEvent actionEvent) {
-	    	  voiceBrowserObj.getVoiceBrowser().navTo(voiceBrowserObj.getAddressBarField().getText());
+	    	  try {
+				voiceBrowserObj.getVoiceBrowser().navTo(voiceBrowserObj.getAddressBarField().getText());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	      }
 	    });
 	    

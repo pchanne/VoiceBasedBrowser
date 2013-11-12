@@ -46,7 +46,7 @@ public class SpeechCommands {
             //System.exit(1);
         }
 
-        System.out.println("Say: (Good morning | Hello | Go | Back | Refresh | Forward | Close) ");
+        System.out.println("Say: (Good morning | Hello | Go | Back | Refresh | Forward | Close | Yahoo .Dot Com) ");
 
         // loop the recognition until the programm exits.
         //while (true) {

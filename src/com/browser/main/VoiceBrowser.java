@@ -1,5 +1,6 @@
 package com.browser.main;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import com.browser.model.Bookmark;
@@ -42,6 +43,7 @@ public class VoiceBrowser extends Application {
 	public String command = null;
 	private BorderPane mainLayout = new BorderPane();
 	BookmarkModel bookmarkModel;
+	public String website = null;
 
 	// layout of the browser application.
 
@@ -71,7 +73,12 @@ public class VoiceBrowser extends Application {
 		addressBarField.setOnKeyReleased(new EventHandler<KeyEvent>() {
 			public void handle(KeyEvent keyEvent) {
 				if (keyEvent.getCode().equals(KeyCode.ENTER)) {
-					getVoiceBrowser().navTo(addressBarField.getText());
+					try {
+						getVoiceBrowser().navTo(addressBarField.getText());
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					// System.out.println("in actionlistener");
 				}
 			}
@@ -197,7 +204,12 @@ public class VoiceBrowser extends Application {
 
 					// page should load url
 
-					getVoiceBrowser().navTo(bookmark.getBookmarkURL());
+					try {
+						getVoiceBrowser().navTo(bookmark.getBookmarkURL());
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 
 				}
 
@@ -223,7 +235,7 @@ public class VoiceBrowser extends Application {
 		addressBarField.setText(loc);
 	}
 
-	public void speechTest(String Command) {
+	public void speechTest(final String Command) {
 		
 		System.out.println("command received is:" + Command);
 		
@@ -234,9 +246,25 @@ public class VoiceBrowser extends Application {
 		    	System.out.println("UI Thread:"+Thread.currentThread().getName());
 		    	System.out.println("inside run");
 		    	System.out.println("BWObject:"+BrowserWindow.webEngine);
+		    	website = Command.replace(".dot", ".");
+            	website = website.replace(" ", "");
+            	System.out.println("Website said : "+website);
+		    	if(website.equalsIgnoreCase("yahoo.com"))
+		    	{
+		    		System.out.println("Website identified and set as the addressbar field ");
+		    		getAddressBarField().setText(website);
+		    	}
+		    	if(Command.equalsIgnoreCase("go")){
+		    		try {
+						getVoiceBrowser().navTo(getAddressBarField().getText());
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+		    	}
 		    	//BrowserWindow.webEngine.load("www.yahoo.com");
 		    	//getAddressBarField().setText("www.yahoo.com");
-		    	getVoiceBrowser().navTo(getAddressBarField().getText());
+		    	
 		    	//ToolbarView.backButton.setDisable(true);
 		    }
 		});
