@@ -92,6 +92,13 @@ public class VoiceBrowser extends Application {
 							addressBarField.setText(browserWindow.getView()
 									.getEngine().getLocation());
 						}
+						
+						if(newState== State.SUCCEEDED)
+						{
+						    System.out.println("Page "+browserWindow.getView()
+                                    .getEngine().getLocation()+" loaded");
+						}
+						
 					}
 				});
 
@@ -103,15 +110,14 @@ public class VoiceBrowser extends Application {
 
 		MenuBarView menuBar = new MenuBarView(this.getVoiceBrowser(), this);
 
-		sideBar = new SideBarView();
+		
 
 		VBox vbox_for_menubar_toolbar = new VBox();
 		vbox_for_menubar_toolbar.getChildren().addAll(menuBar.createMenuBar(),
 				ToolbarView.CreateNavToolbar(this));
 
 		mainLayout.setTop(vbox_for_menubar_toolbar);
-		mainLayout.setLeft(sideBar.createSideBar());
-
+		
 		setBookmarkItems();
 
 		// mainLayout.setTop(ToolbarView.CreateNavToolbar(this));
@@ -187,10 +193,9 @@ public class VoiceBrowser extends Application {
 		 * bookmarkModel.addBookmark(yahooBookmark);
 		 */
 
-		ContextMenu bookmarkContextMenu = sideBar.getBookmarkButton()
-				.getContextMenu();
-		bookmarkContextMenu.getItems()
-				.removeAll(bookmarkContextMenu.getItems());
+		
+		ToolbarView.getShowBookmarkMenuItem().getItems().removeAll(
+		        ToolbarView.getShowBookmarkMenuItem().getItems());
 
 		ArrayList<Bookmark> bookmarkList = bookmarkModel.getBookmarkList();
 
@@ -215,11 +220,13 @@ public class VoiceBrowser extends Application {
 
 			});
 
-			bookmarkContextMenu.getItems().add(bookmarkMenuItem);
+			
+			
+			ToolbarView.getShowBookmarkMenuItem().getItems().add(bookmarkMenuItem);
 
 		}
 
-		sideBar.getBookmarkButton().setContextMenu(bookmarkContextMenu);
+		
 
 	}
 
@@ -231,11 +238,10 @@ public class VoiceBrowser extends Application {
 		return browserWindow.getBrowser();
 	}
 
-	private void setAddressbarField(String loc) {
-		addressBarField.setText(loc);
-	}
+
 
 	public void speechTest(final String Command) {
+
 		
 		System.out.println("command received is:" + Command);
 		
@@ -275,11 +281,15 @@ public class VoiceBrowser extends Application {
 		
 	}
 
+	
+	
+
 	/**
 	 * @return the scene
 	 */
 	public Scene getScene() {
 		return scene;
+
 	}
 
 	/**
@@ -288,6 +298,14 @@ public class VoiceBrowser extends Application {
 	 */
 	public void setScene(Scene scene) {
 		this.scene = scene;
+	}
+	
+	private void setAddressbarField(String loc){
+    	addressBarField.setText(loc);
+    }
+	
+	public void closeBrowser(){
+		System.exit(0);
 	}
 
 }
