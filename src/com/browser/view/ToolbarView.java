@@ -55,6 +55,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.RadioMenuItem;
 import javafx.stage.WindowEvent;
 
 public class ToolbarView {
@@ -76,14 +77,13 @@ public class ToolbarView {
 	private static MenuItem exitMenuItem;
 
 	private static MenuItem showStatusBarMenuItem;
-	private static MenuItem showBookmarkMenuItem;
+	private static Menu showBookmarkMenuItem;
 	private static MenuItem showHistoryMenuItem;
 
 	private static MenuItem userManualMenuItem;
 	private static MenuItem aboutMenuItem;
 
 	private static CheckMenuItem speechModeEnable;
-
 	private static Button addBookmarkButton;
 	private static Button addBookmarkToModelButton;
 	private static TextField bookmarkURLTextField;
@@ -219,36 +219,6 @@ public class ToolbarView {
 
 	}
 
-	/**
-	 * @return the addBookmarkButton
-	 */
-	public static Button getAddBookmarkButton() {
-		return addBookmarkButton;
-	}
-
-	/**
-	 * @return the addBookmarkToModelButton
-	 */
-	public static Button getAddBookmarkToModelButton() {
-		return addBookmarkToModelButton;
-	}
-
-	public static void setBookmarkUrlText(String bookmarkURl) {
-
-		bookmarkURLTextField.setText(bookmarkURl);
-	}
-
-	public static void setBookmarkTitleText(String bookmarkTitle) {
-		bookmarkTitleTextField.setText(bookmarkTitle);
-	}
-
-	public static String getBookmarkTitle() {
-		return bookmarkTitleTextField.getText();
-	}
-
-	public static String getBookmarkURL() {
-		return bookmarkURLTextField.getText();
-	}
 
 	private static void createSpeechButton() {
 		iconPath = getImgObj.jarScan("icons.jar", "Micro-icon");
@@ -448,7 +418,7 @@ public class ToolbarView {
 		loadMenuItem = new MenuItem("Load");
 		exitMenuItem = new MenuItem("Close");
 		showStatusBarMenuItem = new MenuItem("Show Status Bar");
-		showBookmarkMenuItem = new MenuItem("BookMarks");
+		showBookmarkMenuItem = new Menu("BookMarks");
 		showHistoryMenuItem = new MenuItem("History");
 		speechModeEnable = new CheckMenuItem("Enable/Disable Speech Mode");
 		userManualMenuItem = new MenuItem("Help");
@@ -509,5 +479,47 @@ public class ToolbarView {
 
 		});
 	}
+
+    /**
+     * @return the addBookmarkButton
+     */
+    public static Button getAddBookmarkButton() {
+        return addBookmarkButton;
+    }
+
+    /**
+     * @return the addBookmarkToModelButton
+     */
+    public static Button getAddBookmarkToModelButton() {
+        return addBookmarkToModelButton;
+    }
+    
+    public static void setBookmarkUrlText(String bookmarkURl)
+    {
+        
+        bookmarkURLTextField.setText(bookmarkURl);
+    }
+    
+    public static void setBookmarkTitleText(String bookmarkTitle)
+    {
+        bookmarkTitleTextField.setText(bookmarkTitle);
+    }
+    
+    public static String getBookmarkTitle()
+    {
+        return bookmarkTitleTextField.getText();
+    }
+    
+    public static String getBookmarkURL()
+    {
+        return bookmarkURLTextField.getText();
+    }
+
+    /**
+     * @return the showBookmarkMenuItem
+     */
+    public static Menu getShowBookmarkMenuItem() {
+        return showBookmarkMenuItem;
+    }
 
 }
