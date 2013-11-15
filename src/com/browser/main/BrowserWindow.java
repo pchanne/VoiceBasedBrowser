@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.w3c.dom.DocumentFragment;
 
+import com.browser.helper.SmartNotes;
 import com.browser.reader.FileReader;
 import com.browser.speech.SpeechCommands;
 import com.browser.view.History;
@@ -37,6 +38,7 @@ public class BrowserWindow extends Region{
     public static String DEFAULT_HOME = "http://www.google.com"; 
     private String speechCommandSpoken;
     public FileReader titleReader;
+    private SmartNotes smartNoteObj;
     public TextField getLocField() {
 		return locField;
 	}
@@ -52,6 +54,8 @@ public class BrowserWindow extends Region{
 
 	//initialized browser with default home
     private void initBrowser(){
+    	
+    	smartNoteObj =  new SmartNotes();
     	
         //apply the styles
         getStyleClass().add("browser");
@@ -69,7 +73,7 @@ public class BrowserWindow extends Region{
             public void handle(MouseEvent arg0) {
                
                 System.out.println("Some text is selected by mouse event ---------------------");
-                String selection = null;; 
+                String selection = null;
     	    	FileReader objTemp = new FileReader();
     		    	 	 	selection= (String) BrowserWindow.webEngine
     		                 .executeScript("window.getSelection().toString()");
@@ -93,6 +97,8 @@ public class BrowserWindow extends Region{
     		    		System.out.println("Tag Name: "+s1.getChildNodes().item(i).getPrefix());
     		    		System.out.println("Text Content: "+s1.getChildNodes().item(i));
     		    	}
+    		    	
+    		    	smartNoteObj.copySelectedText(selection);
 //    		    	System.out.println("text content2 : " + s1.getChildNodes().item(0));
 //    		    	System.out.println("text content : " + s1.getChildNodes().item(1));
     		    	}
