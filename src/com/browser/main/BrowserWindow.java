@@ -2,6 +2,8 @@ package com.browser.main;
 
 import java.io.IOException;
 
+import org.w3c.dom.DocumentFragment;
+
 import com.browser.reader.FileReader;
 import com.browser.speech.SpeechCommands;
 import com.browser.view.History;
@@ -18,6 +20,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -57,6 +60,48 @@ public class BrowserWindow extends Region{
         
         //add the web view to the scene
         getChildren().add(browser);
+        
+       // browser.onMouseClickedProperty().addListener(new temo);
+        
+        browser.setOnMouseClicked(new EventHandler<MouseEvent>(){
+        	 
+            @Override
+            public void handle(MouseEvent arg0) {
+               
+                System.out.println("Some text is selected by mouse event ---------------------");
+                String selection = null;; 
+    	    	FileReader objTemp = new FileReader();
+    		    	 	 	selection= (String) BrowserWindow.webEngine
+    		                 .executeScript("window.getSelection().toString()");
+    		    	System.out.println("selected text is :  -----------------------------------------------   " + selection);
+    		    	if(!selection.equalsIgnoreCase(""))
+    		    	{
+    		    	try {
+    					objTemp.ReadTemp(selection);
+    				} catch (IOException e1) {
+    					// TODO Auto-generated catch block
+    					e1.printStackTrace();
+    				}
+//    		    	String s2 = BrowserWindow.webEngine.getTitle();
+//    		    	System.out.println("title: " + s2);
+    		    	DocumentFragment s1 = (DocumentFragment) BrowserWindow.webEngine
+    		                 .executeScript("window.getSelection().getRangeAt().cloneContents()");
+    		    	
+    		    	System.out.println("text content : " + s1.getChildNodes().getLength());
+    		    	for(int i = 0;i<s1.getChildNodes().getLength();i++)
+    		    	{
+    		    		System.out.println("Tag Name: "+s1.getChildNodes().item(i).getPrefix());
+    		    		System.out.println("Text Content: "+s1.getChildNodes().item(i));
+    		    	}
+//    		    	System.out.println("text content2 : " + s1.getChildNodes().item(0));
+//    		    	System.out.println("text content : " + s1.getChildNodes().item(1));
+    		    	}
+    		    	else{
+    		    		System.out.println("Selection else ---------------------------------");
+    		    	}
+            }
+   
+        });
         
      // monitor the web view for when it's location changes, so we can update the history lists and other items correctly.
         //final WebEngine engine = getView().getEngine();

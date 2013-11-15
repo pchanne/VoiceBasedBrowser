@@ -46,7 +46,6 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 import com.browser.helper.GetImagePath;
-
 import com.browser.main.VoiceBrowser;
 import com.browser.speech.SpeechRecognitionTask;
 
@@ -111,6 +110,7 @@ public class ToolbarView {
 
 	private static boolean isSpeechMode;
 	private static SpeechRecognitionTask sTask;
+	private static int counter;
 
 	public static Button getBackButton() {
 		return backButton;
@@ -140,6 +140,7 @@ public class ToolbarView {
 		getImgObj = new GetImagePath();
 
 		isSpeechMode = false;
+		counter = 0;
 		sTask = new SpeechRecognitionTask(voiceBrowserObj.getVoiceBrowser(), voiceBrowserObj);
 
 		// backButton.setOnMouseReleased(voiceBrowserObj.getVoiceBrowser().getHistory().createShowHistoryMouseEvent(backButton));
@@ -244,10 +245,18 @@ public class ToolbarView {
 				if (isSpeechMode) {
 					isSpeechMode = false;
 					createSpeechButtonHelper("Micro-off-icon", "Enable speech mode");
+					sTask.cancel();
 				} else {
 					isSpeechMode = true;
 					createSpeechButtonHelper("Micro-icon", "Disable speech mode");
-					sTask.start();
+					if(counter == 0)
+						{counter ++;
+						sTask.start();
+						}
+					else
+					{
+						sTask.restart();
+					}
 				}
 			}
 		});

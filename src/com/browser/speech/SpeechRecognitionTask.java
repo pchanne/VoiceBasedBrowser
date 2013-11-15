@@ -1,5 +1,6 @@
 package com.browser.speech;
 
+import com.browser.helper.SpeechHelper;
 import com.browser.main.BrowserWindow;
 import com.browser.main.VoiceBrowser;
 import com.browser.view.ToolbarView;
@@ -17,9 +18,11 @@ public class SpeechRecognitionTask extends Service<Void>{
 	boolean SpeechEnabled = true;
 	public BrowserWindow bw;
 	public VoiceBrowser vb;
+	private SpeechHelper speechHelper;
 	public SpeechRecognitionTask(BrowserWindow bw, VoiceBrowser vb){
 		this.bw = bw;
 		this.vb = vb;
+		speechHelper = new SpeechHelper();
 	}
 	@Override
 	protected Task<Void> createTask() {
@@ -29,6 +32,10 @@ public class SpeechRecognitionTask extends Service<Void>{
                 
                 
                 while(SpeechEnabled){
+                	if(isCancelled())
+                	{
+                		break;
+                	}
                 	//System.out.println("Sleeping");
                 	//speechCommand = "Go";
                 	speechCommand =  SpeechCommands.CommandSpoken();
@@ -37,7 +44,7 @@ public class SpeechRecognitionTask extends Service<Void>{
                 	//Thread.sleep(60);
                 	System.out.println("Website said :"+speechCommand);
                 	
-                	if(speechCommand != null){
+                	//if(speechCommand != null){
                 		//bw.navTo("www.yahoo.com");
                 		//System.out.println("inside if");
                 		//System.out.println("Browser View:"+BrowserWindow.browser.getEngine().getLocation());
@@ -45,13 +52,13 @@ public class SpeechRecognitionTask extends Service<Void>{
                 		//speechCommand =  SpeechCommands.CommandSpoken();
 						//System.out.println("Command spoken " +speechCommand);
                 		System.out.println("Speech Thread:"+Thread.currentThread().getName());
-                		vb.speechTest(speechCommand);
+                		speechHelper.speechTest(speechCommand,vb);
                 		
                 		//vb.getVoiceBrowser().navTo("www.yahoo.com");
                 		//System.out.println();
                 		//System.out.println("eventdes: "+ToolbarView.testButton.getEventDispatcher().dispatchEvent(null, null));
                 		//BrowserWindow.browser.getEngine().load("www.yahoo.com");
-                	}
+                	//}
                 	Thread.sleep(100);
 
                 }

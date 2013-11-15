@@ -3,11 +3,15 @@ package com.browser.main;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.w3c.dom.DocumentFragment;
+
 import com.browser.model.Bookmark;
 import com.browser.model.BookmarkModel;
+import com.browser.reader.FileReader;
 import com.browser.view.MenuBarView;
 import com.browser.view.SideBarView;
 import com.browser.view.ToolbarView;
+import com.sun.glass.events.MouseEvent;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -88,6 +92,7 @@ public class VoiceBrowser extends Application {
 				.addListener(new ChangeListener<State>() {
 					public void changed(ObservableValue ov, State oldState,
 							State newState) {
+						System.out.println("blah blah ++++++++++++++++++++++++++++");
 						if (newState == State.RUNNING) {
 							addressBarField.setText(browserWindow.getView()
 									.getEngine().getLocation());
@@ -240,46 +245,72 @@ public class VoiceBrowser extends Application {
 
 
 
-	public void speechTest(final String Command) {
-
-		
-		System.out.println("command received is:" + Command);
-		
-		Platform.runLater(new Runnable() {
-
-		    @Override
-		    public void run() {
-		    	System.out.println("UI Thread:"+Thread.currentThread().getName());
-		    	System.out.println("inside run");
-		    	System.out.println("BWObject:"+BrowserWindow.webEngine);
-		    	website = Command.replace(".dot", ".");
-            	website = website.replace(" ", "");
-            	System.out.println("Website said : "+website);
-		    	if(website.equalsIgnoreCase("yahoo.com"))
-		    	{
-		    		System.out.println("Website identified and set as the addressbar field ");
-		    		getAddressBarField().setText(website);
-		    	}
-		    	if(Command.equalsIgnoreCase("go")){
-		    		try {
-						getVoiceBrowser().navTo(getAddressBarField().getText());
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-		    	}
-		    	//BrowserWindow.webEngine.load("www.yahoo.com");
-		    	//getAddressBarField().setText("www.yahoo.com");
-		    	
-		    	//ToolbarView.backButton.setDisable(true);
-		    }
-		});
-		
-		//ToolbarView.getAddBookmarkButton().fire();
-		//ToolbarView.getBackButton().fire();
-		//getVoiceBrowser().navTo(Command);
-		
-	}
+//	public void speechTest(final String Command) {
+//
+//		
+//		System.out.println("command received is:" + Command);
+//		
+//		Platform.runLater(new Runnable() {
+//
+//		    @Override
+//		    public void run() {
+//		    	String selection; 
+//		    	FileReader objTemp = new FileReader();
+//		    	 	 	selection= (String) BrowserWindow.webEngine
+//		                 .executeScript("window.getSelection().toString()");
+//		    	System.out.println("selected text is :  -----------------------------------------------   " + selection);
+//		    	try {
+//					objTemp.ReadTemp(selection);
+//				} catch (IOException e1) {
+//					// TODO Auto-generated catch block
+//					e1.printStackTrace();
+//				}
+//		    	String s2 = BrowserWindow.webEngine.getTitle();
+//		    	System.out.println("title: " + s2);
+//		    	DocumentFragment s1 = (DocumentFragment) BrowserWindow.webEngine
+//		                 .executeScript("window.getSelection().getRangeAt().cloneContents()");
+//		    	
+//		    	System.out.println("text content : " + s1.getChildNodes().getLength());
+//		    	for(int i = 0;i<s1.getChildNodes().getLength();i++)
+//		    	{
+//		    		System.out.println("Tag Name: "+s1.getChildNodes().item(i).getPrefix());
+//		    		System.out.println("Text Content: "+s1.getChildNodes().item(i));
+//		    	}
+////		    	System.out.println("text content2 : " + s1.getChildNodes().item(0));
+////		    	System.out.println("text content : " + s1.getChildNodes().item(1));
+//		    	
+//		    	
+////		    	System.out.println("UI Thread:"+Thread.currentThread().getName());
+////		    	System.out.println("inside run");
+////		    	System.out.println("BWObject:"+BrowserWindow.webEngine);
+//		    	website = Command.replace(".dot", ".");
+//            	website = website.replace(" ", "");
+//            	System.out.println("Website said : "+website);
+//		    	if(website.equalsIgnoreCase("yahoo.com"))
+//		    	{
+//		    		System.out.println("Website identified and set as the addressbar field ");
+//		    		getAddressBarField().setText(website);
+//		    	}
+//		    	if(Command.equalsIgnoreCase("go")){
+//		    		try {
+//						getVoiceBrowser().navTo(getAddressBarField().getText());
+//					} catch (IOException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
+//		    	}
+//		    	//BrowserWindow.webEngine.load("www.yahoo.com");
+//		    	//getAddressBarField().setText("www.yahoo.com");
+//		    	
+//		    	//ToolbarView.backButton.setDisable(true);
+//		    }
+//		});
+//		
+//		//ToolbarView.getAddBookmarkButton().fire();
+//		//ToolbarView.getBackButton().fire();
+//		//getVoiceBrowser().navTo(Command);
+//		
+//	}
 
 	
 	

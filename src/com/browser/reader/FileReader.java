@@ -24,5 +24,16 @@ public class FileReader {
 		
 		new formTTS("You have opened "+title);
 	}
+	
+	public void ReadTemp(String URLString) throws IOException
+	{
+		//Jsoup : to read doc from url
+		//Document doc = Jsoup.connect(URLString).get();
+	
+		//String title = doc.title();
+		//System.out.println(URLString);
+		
+		new formTTS(URLString);
+	}
 
 }
