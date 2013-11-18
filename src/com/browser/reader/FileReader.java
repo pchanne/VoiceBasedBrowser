@@ -25,7 +25,7 @@ public class FileReader {
 		new formTTS("You have opened "+title);
 	}
 	
-	public void ReadTemp(String URLString) throws IOException
+	public void ReadSelectedText(String URLString) throws IOException
 	{
 		//Jsoup : to read doc from url
 		//Document doc = Jsoup.connect(URLString).get();
@@ -36,4 +36,10 @@ public class FileReader {
 		new formTTS(URLString);
 	}
 
+	public void ReadWholePage(String URLString) throws IOException
+	{
+		Document doc = Jsoup.connect(URLString).get();
+		
+		new formTTS(doc.text());
+	}
 }

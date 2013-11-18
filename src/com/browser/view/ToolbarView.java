@@ -16,6 +16,7 @@ import javafx.animation.Animation;
 import javafx.animation.Transition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -33,10 +34,14 @@ import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Popup;
@@ -45,6 +50,9 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
+import com.browser.controller.BookmarkController;
+import com.browser.controller.ViewController;
+import com.browser.controller.ViewController.BackActionEvent;
 import com.browser.helper.GetImagePath;
 import com.browser.main.VoiceBrowser;
 import com.browser.speech.SpeechRecognitionTask;
@@ -87,7 +95,7 @@ public class ToolbarView {
 	private static Button addBookmarkButton;
 	private static Button addBookmarkToModelButton;
 	private static TextField bookmarkURLTextField;
-	private static Stage bookmarkStage;
+	public static Stage bookmarkStage;
 	private static TextField bookmarkTitleTextField;
 
 	private static ImageView speechGraphic;
@@ -112,6 +120,58 @@ public class ToolbarView {
 	private static SpeechRecognitionTask sTask;
 	private static int counter;
 
+	public boolean isSpeechMode() {
+		return isSpeechMode;
+	}
+
+	public void setSpeechMode(boolean isSpeechMode) {
+		ToolbarView.isSpeechMode = isSpeechMode;
+	}
+
+	public static String DEFAULT_HOME = "http://www.google.com"; // TO DO: move
+																	// in
+																	// constants
+	private static TextField addressBarField = new TextField(); // URL location
+
+	private BookmarkController bookMarkController;
+	
+	
+	//Event Handlers
+	public EventHandler<ActionEvent> backAction;
+	public EventHandler<ActionEvent> goAction;
+	public EventHandler<KeyEvent> goActionOnEnter;
+	public EventHandler<ActionEvent> forwardAction;
+	public EventHandler<ActionEvent> refreshAction;
+	public EventHandler<ActionEvent> bookmarkAction;
+	public EventHandler<ActionEvent> bookmarkToModelAction;
+	public EventHandler<ActionEvent> speechAction;
+	public EventHandler<ActionEvent> exitAction;
+	//Constructor
+	public ToolbarView(EventHandler<ActionEvent> backAction,
+			EventHandler<ActionEvent> goAction,EventHandler<KeyEvent> goActionOnEnter, EventHandler<ActionEvent> forwardAction,
+			EventHandler<ActionEvent> refreshAction, EventHandler<ActionEvent> bookmarkAction, EventHandler<ActionEvent> bookmarkToModelAction,EventHandler<ActionEvent> speechAction,
+			EventHandler<ActionEvent> exitAction
+
+	) {
+		this.backAction = backAction;
+		this.goAction = goAction;
+		this.goActionOnEnter = goActionOnEnter;
+		this.forwardAction = forwardAction;
+		this.refreshAction = refreshAction;
+		this.bookmarkAction = bookmarkAction;
+		this.bookmarkToModelAction = bookmarkToModelAction;
+		this.speechAction = speechAction;
+		this.exitAction = exitAction;
+	}
+
+	public TextField getAddressBarField() {
+		return addressBarField;
+	}
+
+	public void setAddressBarFieldText(String url) {
+		this.addressBarField.setText(url);
+	}
+
 	public static Button getBackButton() {
 		return backButton;
 	}
@@ -131,35 +191,36 @@ public class ToolbarView {
 	/**
 	 * @return the bookmarkStage
 	 */
-	public static Stage getBookmarkStage() {
+	public Stage getBookmarkStage() {
 		return bookmarkStage;
 	}
 
-	public static Pane CreateNavToolbar(final VoiceBrowser voiceBrowserObj) {
+	public Pane CreateNavToolbar() {
 
 		getImgObj = new GetImagePath();
 
 		isSpeechMode = false;
 		counter = 0;
-		sTask = new SpeechRecognitionTask(voiceBrowserObj.getVoiceBrowser(), voiceBrowserObj);
+		//sTask = new SpeechRecognitionTask();
 
-		// backButton.setOnMouseReleased(voiceBrowserObj.getVoiceBrowser().getHistory().createShowHistoryMouseEvent(backButton));
+		createAddressBarField();
+
 		createBackButton();
 
 		createForwardButton();
 
-		createNavigateButton(voiceBrowserObj);
+		createNavigateButton();
 
 		createHomeButton();
 
 		createRefreshButton();
 
 		createSpeechButton();
-		//createSpeechButtonHelper();
+		// createSpeechButtonHelper();
 
 		createBookmarkButton();
 
-		createMenuButton(voiceBrowserObj);
+		createMenuButton();
 
 		// align all of the navigation widgets in a horizontal toolbar.
 		final HBox navPane = new HBox();
@@ -173,7 +234,7 @@ public class ToolbarView {
 		// chrome.getChromeLocField(), chrome.getTabManager().getTabPane(),
 		// chrome.getTabManager().getNewTabButton(), navButton);
 		navPane.getChildren().addAll(backButton, forwardButton, refreshButton,
-				voiceBrowserObj.getAddressBarField(), navButton,
+				getAddressBarField(), navButton,
 				addBookmarkButton, homeButton, speechButton, menuButton);
 
 		navPane.setFillHeight(false);
@@ -190,13 +251,14 @@ public class ToolbarView {
 		return navPane;
 	}
 
-	public static Parent getAddBookmarkPopupScene() {
+	public  Parent getAddBookmarkPopupScene() {
 		GridPane grid = new GridPane();
 		grid.setAlignment(Pos.CENTER);
 		grid.setHgap(10);
 		grid.setVgap(10);
 
 		addBookmarkToModelButton = new Button("Add");
+		
 
 		// Text text = new Text("Welcome");
 
@@ -214,22 +276,33 @@ public class ToolbarView {
 		grid.add(urlLabel, 1, 1);
 		grid.add(bookmarkURLTextField, 2, 1);
 		// grid.add(button, 0, 2);
-
+		addBookmarkToModelButton.setOnAction(bookmarkToModelAction);
 		HBox hbox = new HBox(10);
 		hbox.getChildren().add(addBookmarkToModelButton);
 		hbox.setAlignment(Pos.BASELINE_RIGHT);
 		grid.add(hbox, 1, 3);
+		
 
 		return grid;
 
 	}
 
+	private void createAddressBarField() {
+		setAddressBarFieldText(DEFAULT_HOME);
+		addressBarField.setStyle("-fx-font-size: 20;");
+		addressBarField.setPromptText("Where do you want to go today?");
+		addressBarField.setTooltip(new Tooltip("Enter a location"));
+		addressBarField.setOnKeyReleased(goActionOnEnter);
 
-	private static void createSpeechButton() {
+		HBox.setHgrow(addressBarField, Priority.ALWAYS);
+	}
+
+	private void createSpeechButton() {
 		iconPath = getImgObj.jarScan("icons.jar", "Micro-off-icon");
 		speechButton = new Button(null);
 		speechButton.setTranslateX(-2);
-		speechButton.setStyle("-fx-background-color: WHITE; -fx-border-color: WHITE; -fx-border-width: 0;");
+		speechButton
+				.setStyle("-fx-background-color: WHITE; -fx-border-color: WHITE; -fx-border-width: 0;");
 		speechGraphic = new ImageView(new Image(iconPath));
 		speechColorAdjust = new ColorAdjust();
 		speechColorAdjust.setBrightness(-0.1);
@@ -240,36 +313,18 @@ public class ToolbarView {
 		speechButton.setGraphic(speechGraphic);
 		speechButton.setTooltip(new Tooltip("Enable speech mode"));
 		// speechButton.set
-		speechButton.onActionProperty().set(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent actionEvent) {
-				if (isSpeechMode) {
-					isSpeechMode = false;
-					createSpeechButtonHelper("Micro-off-icon", "Enable speech mode");
-					sTask.cancel();
-				} else {
-					isSpeechMode = true;
-					createSpeechButtonHelper("Micro-icon", "Disable speech mode");
-					if(counter == 0)
-						{counter ++;
-						sTask.start();
-						}
-					else
-					{
-						sTask.restart();
-					}
-				}
-			}
-		});
+		speechButton.onActionProperty().set(speechAction);
 	}
 
-	private static void createSpeechButtonHelper(String imgName, String toolTipValue) {
+	public void createSpeechButtonHelper(String imgName,
+			String toolTipValue) {
 		iconPath = getImgObj.jarScan("icons.jar", imgName);
 		speechGraphic = new ImageView(new Image(iconPath));
 		speechButton.setGraphic(speechGraphic);
 		speechButton.setTooltip(new Tooltip(toolTipValue));
 	}
 
-	private static void createBackButton() {
+	private void createBackButton() {
 		/*
 		 * 
 		 * Back button
@@ -288,24 +343,25 @@ public class ToolbarView {
 		backButton.setGraphic(backGraphic);
 		backGraphic.setPreserveRatio(true);
 		backGraphic.setFitHeight(24);
-		backButton.onActionProperty().set(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent actionEvent) {
-				System.out.println("Clicked");
-				/*
-				 * if
-				 * (voiceBrowserObj.getVoiceBrowser().getHistory().canNavBack())
-				 * { //System.out.println("inside navback");
-				 * //voiceBrowserObj.getVoiceBrowser
-				 * ().navTo(voiceBrowserObj.getVoiceBrowser
-				 * ().getHistory().requestNavBack());
-				 * 
-				 * }
-				 */
-			}
-		});
+		backButton.onActionProperty().set(backAction);
+		/*
+		 * backButton.onActionProperty().set(new EventHandler<ActionEvent>() {
+		 * public void handle(ActionEvent actionEvent) {
+		 * System.out.println("Clicked");
+		 * 
+		 * if (voiceBrowserObj.getVoiceBrowser().getHistory().canNavBack()) {
+		 * //System.out.println("inside navback");
+		 * //voiceBrowserObj.getVoiceBrowser
+		 * ().navTo(voiceBrowserObj.getVoiceBrowser
+		 * ().getHistory().requestNavBack());
+		 * 
+		 * }
+		 * 
+		 * } });
+		 */
 	}
 
-	private static void createForwardButton() {
+	private void createForwardButton() {
 		iconPath = getImgObj.jarScan("icons.jar", "Arrows-Forward-icon");
 		forwardButton = new Button(null);
 		forwardButton.setTranslateX(-2);
@@ -320,6 +376,7 @@ public class ToolbarView {
 		forwardGraphic.setFitHeight(24);
 		forwardButton.setGraphic(forwardGraphic);
 		forwardButton.setTooltip(new Tooltip("Go forward"));
+		forwardButton.onActionProperty().set(forwardAction);
 		/*
 		 * forwardButton.onActionProperty().set(new EventHandler<ActionEvent>()
 		 * {
@@ -335,7 +392,7 @@ public class ToolbarView {
 
 	}
 
-	private static void createRefreshButton() {
+	private void createRefreshButton() {
 		/*
 		 * 
 		 * Refresh page button
@@ -354,9 +411,10 @@ public class ToolbarView {
 		refreshGraphic.setFitHeight(24);
 		refreshButton.setGraphic(refreshGraphic);
 		refreshButton.setTooltip(new Tooltip("Refresh"));
+		refreshButton.onActionProperty().set(refreshAction);
 	}
 
-	private static void createNavigateButton(final VoiceBrowser voiceBrowserObj) {
+	private void createNavigateButton() {
 		/*
 		 * 
 		 * create navigate button
@@ -374,17 +432,7 @@ public class ToolbarView {
 		navGraphic.setPreserveRatio(true);
 		navGraphic.setFitHeight(24);
 		navButton.setGraphic(navGraphic);
-		navButton.onActionProperty().set(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent actionEvent) {
-				try {
-					voiceBrowserObj.getVoiceBrowser().navTo(
-							voiceBrowserObj.getAddressBarField().getText());
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		});
+		navButton.onActionProperty().set(goAction);
 	}
 
 	private static void createHomeButton() {
@@ -408,7 +456,7 @@ public class ToolbarView {
 		homeButton.setTooltip(new Tooltip("Take me home"));
 	}
 
-	private static void createMenuButton(final VoiceBrowser voiceBrowserObj) {
+	private void createMenuButton() {
 		/*
 		 * 
 		 * Menu button
@@ -442,11 +490,7 @@ public class ToolbarView {
 		userManualMenuItem = new MenuItem("Help");
 		aboutMenuItem = new MenuItem("About");
 
-		exitMenuItem.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent e) {
-				voiceBrowserObj.closeBrowser();
-			}
-		});
+		exitMenuItem.setOnAction(exitAction);
 		menuButton.getItems().addAll(saveMenuItem, loadMenuItem,
 				showStatusBarMenuItem, showBookmarkMenuItem,
 				showHistoryMenuItem, speechModeEnable, userManualMenuItem,
@@ -454,13 +498,13 @@ public class ToolbarView {
 
 	}
 
-	private static void createBookmarkButton() {
+	private void createBookmarkButton() {
 		/*
 		 * 
 		 * Bookmark page button
 		 */
 
-		addBookmarkButton = new Button("Add Bookmark");
+		//addBookmarkButton = new Button("Add Bookmark");
 
 		bookmarkStage = new Stage();
 		bookmarkStage.initStyle(StageStyle.DECORATED);
@@ -488,56 +532,45 @@ public class ToolbarView {
 		Scene bookmarkScene = new Scene(getAddBookmarkPopupScene(), 300, 150);
 		bookmarkStage.setScene(bookmarkScene);
 
-		addBookmarkButton.setOnAction(new EventHandler<ActionEvent>() {
-
-			public void handle(ActionEvent actionEvent) {
-
-				bookmarkStage.show();
-			}
-
-		});
+		addBookmarkButton.setOnAction(bookmarkAction);
 	}
 
-    /**
-     * @return the addBookmarkButton
-     */
-    public static Button getAddBookmarkButton() {
-        return addBookmarkButton;
-    }
+	/**
+	 * @return the addBookmarkButton
+	 */
+	public static Button getAddBookmarkButton() {
+		return addBookmarkButton;
+	}
 
-    /**
-     * @return the addBookmarkToModelButton
-     */
-    public static Button getAddBookmarkToModelButton() {
-        return addBookmarkToModelButton;
-    }
-    
-    public static void setBookmarkUrlText(String bookmarkURl)
-    {
-        
-        bookmarkURLTextField.setText(bookmarkURl);
-    }
-    
-    public static void setBookmarkTitleText(String bookmarkTitle)
-    {
-        bookmarkTitleTextField.setText(bookmarkTitle);
-    }
-    
-    public static String getBookmarkTitle()
-    {
-        return bookmarkTitleTextField.getText();
-    }
-    
-    public static String getBookmarkURL()
-    {
-        return bookmarkURLTextField.getText();
-    }
+	/**
+	 * @return the addBookmarkToModelButton
+	 */
+	public  Button getAddBookmarkToModelButton() {
+		return addBookmarkToModelButton;
+	}
 
-    /**
-     * @return the showBookmarkMenuItem
-     */
-    public static Menu getShowBookmarkMenuItem() {
-        return showBookmarkMenuItem;
-    }
+	public  void setBookmarkUrlText(String bookmarkURl) {
+
+		bookmarkURLTextField.setText(bookmarkURl);
+	}
+
+	public  void setBookmarkTitleText(String bookmarkTitle) {
+		bookmarkTitleTextField.setText(bookmarkTitle);
+	}
+
+	public  String getBookmarkTitle() {
+		return bookmarkTitleTextField.getText();
+	}
+
+	public  String getBookmarkURL() {
+		return bookmarkURLTextField.getText();
+	}
+
+	/**
+	 * @return the showBookmarkMenuItem
+	 */
+	public  Menu getShowBookmarkMenuItem() {
+		return showBookmarkMenuItem;
+	}
 
 }

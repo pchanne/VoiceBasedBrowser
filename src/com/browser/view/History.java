@@ -3,7 +3,7 @@ package com.browser.view;
 
 import java.io.IOException;
 
-import com.browser.main.BrowserWindow;
+import com.browser.controller.BrowserWindow;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

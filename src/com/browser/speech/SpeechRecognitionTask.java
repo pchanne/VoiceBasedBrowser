@@ -1,7 +1,8 @@
 package com.browser.speech;
 
+import com.browser.controller.BrowserWindow;
+import com.browser.controller.ViewController;
 import com.browser.helper.SpeechHelper;
-import com.browser.main.BrowserWindow;
 import com.browser.main.VoiceBrowser;
 import com.browser.view.ToolbarView;
 import com.sun.glass.ui.Launchable;
@@ -13,16 +14,14 @@ import javafx.stage.Stage;
 
 public class SpeechRecognitionTask extends Service<Void>{
 
-	String speechCommand = null; //= "Go";
+	String speechCommand = null; 
 	String website;
 	boolean SpeechEnabled = true;
-	public BrowserWindow bw;
-	public VoiceBrowser vb;
+	private ViewController viewController;
 	private SpeechHelper speechHelper;
-	public SpeechRecognitionTask(BrowserWindow bw, VoiceBrowser vb){
-		this.bw = bw;
-		this.vb = vb;
-		speechHelper = new SpeechHelper();
+	public SpeechRecognitionTask(ViewController viewController){
+		this.viewController = viewController;
+		speechHelper = new SpeechHelper(viewController);
 	}
 	@Override
 	protected Task<Void> createTask() {
@@ -52,14 +51,14 @@ public class SpeechRecognitionTask extends Service<Void>{
                 		//speechCommand =  SpeechCommands.CommandSpoken();
 						//System.out.println("Command spoken " +speechCommand);
                 		System.out.println("Speech Thread:"+Thread.currentThread().getName());
-                		speechHelper.speechTest(speechCommand,vb);
+                		speechHelper.speechTest(speechCommand);
                 		
                 		//vb.getVoiceBrowser().navTo("www.yahoo.com");
                 		//System.out.println();
                 		//System.out.println("eventdes: "+ToolbarView.testButton.getEventDispatcher().dispatchEvent(null, null));
                 		//BrowserWindow.browser.getEngine().load("www.yahoo.com");
                 	//}
-                	Thread.sleep(100);
+                	Thread.sleep(50);
 
                 }
 

@@ -5,10 +5,11 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Timer;
 
+
 //import java.util.Timer;
 import java.util.TimerTask;
 
-import com.browser.main.BrowserWindow;
+import com.browser.controller.BrowserWindow;
 import com.browser.main.VoiceBrowser;
 import com.browser.speech.SpeechCommands;
 import com.browser.speech.SpeechRecognitionTask;
@@ -54,7 +55,7 @@ public class MenuBarView {
         helpMenu = new Menu("Help");
         speechMenu= new Menu("Speech");
         speechCommandSpoken = null;
-        sTask = new SpeechRecognitionTask(browserObj,voiceBrowserObj);
+       // sTask = new SpeechRecognitionTask(browserObj,voiceBrowserObj);
         
     
     }

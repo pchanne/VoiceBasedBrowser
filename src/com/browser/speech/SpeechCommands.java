@@ -12,7 +12,7 @@ package com.browser.speech;
  */
 
 
-import com.browser.main.BrowserWindow;
+import com.browser.controller.BrowserWindow;
 import com.browser.main.VoiceBrowser;
 
 import edu.cmu.sphinx.frontend.util.Microphone;

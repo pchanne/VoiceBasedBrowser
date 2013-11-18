@@ -1,4 +1,4 @@
-package com.browser.main;
+package com.browser.controller;
 
 import java.io.IOException;
 
@@ -39,7 +39,18 @@ public class BrowserWindow extends Region{
     private String speechCommandSpoken;
     public FileReader titleReader;
     private SmartNotes smartNoteObj;
-    public TextField getLocField() {
+    private String selectedText;
+
+    
+    public String getSelectedText() {
+		return selectedText;
+	}
+
+	public void setSelectedText(String selectedText) {
+		this.selectedText = selectedText;
+	}
+
+	public TextField getLocField() {
 		return locField;
 	}
 
@@ -56,7 +67,8 @@ public class BrowserWindow extends Region{
     private void initBrowser(){
     	
     	smartNoteObj =  new SmartNotes();
-    	
+    	selectedText = new String();
+
         //apply the styles
         getStyleClass().add("browser");
         // load the web page
@@ -73,19 +85,19 @@ public class BrowserWindow extends Region{
             public void handle(MouseEvent arg0) {
                
                 System.out.println("Some text is selected by mouse event ---------------------");
-                String selection = null;
-    	    	FileReader objTemp = new FileReader();
-    		    	 	 	selection= (String) BrowserWindow.webEngine
+                //String selection = null;
+    	    
+    		    	 	 	selectedText= (String) BrowserWindow.webEngine
     		                 .executeScript("window.getSelection().toString()");
-    		    	System.out.println("selected text is :  -----------------------------------------------   " + selection);
-    		    	if(!selection.equalsIgnoreCase(""))
+    		    	System.out.println("selected text is :  -----------------------------------------------   " + selectedText);
+    		    	if(!selectedText.equalsIgnoreCase(""))
     		    	{
-    		    	try {
-    					objTemp.ReadTemp(selection);
+    		    	/*try {
+    					objTemp.ReadTemp(selectedText);
     				} catch (IOException e1) {
     					// TODO Auto-generated catch block
     					e1.printStackTrace();
-    				}
+    				}*/
 //    		    	String s2 = BrowserWindow.webEngine.getTitle();
 //    		    	System.out.println("title: " + s2);
     		    	DocumentFragment s1 = (DocumentFragment) BrowserWindow.webEngine
@@ -98,7 +110,7 @@ public class BrowserWindow extends Region{
     		    		System.out.println("Text Content: "+s1.getChildNodes().item(i));
     		    	}
     		    	
-    		    	smartNoteObj.copySelectedText(selection);
+    		    	//smartNoteObj.copySelectedText(selectedText);
 //    		    	System.out.println("text content2 : " + s1.getChildNodes().item(0));
 //    		    	System.out.println("text content : " + s1.getChildNodes().item(1));
     		    	}
@@ -265,7 +277,7 @@ public class BrowserWindow extends Region{
 		}
 	}
 	
-	public void test(){
+	/*public void test(){
 		Platform.runLater(new Runnable() {
 	          public void run() {
 	            //getView().requestFocus();
@@ -275,6 +287,6 @@ public class BrowserWindow extends Region{
 		
 		//System.out.println(webEngine.getLocation());
 	
-	}
+	}*/
 
 }

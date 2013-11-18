@@ -20,8 +20,6 @@ public class SideBarView {
     
     private Button bookmarkButton;
     ArrayList<MenuItem> bookmarkMenuItemList;
-    
-    
     private Button historyButton;
     
     
