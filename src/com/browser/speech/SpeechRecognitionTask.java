@@ -58,7 +58,7 @@ public class SpeechRecognitionTask extends Service<Void>{
                 		//System.out.println("eventdes: "+ToolbarView.testButton.getEventDispatcher().dispatchEvent(null, null));
                 		//BrowserWindow.browser.getEngine().load("www.yahoo.com");
                 	//}
-                	Thread.sleep(50);
+                	Thread.sleep(100);
 
                 }
 

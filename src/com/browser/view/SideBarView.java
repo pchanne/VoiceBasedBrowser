@@ -1,91 +1,95 @@
+
 package com.browser.view;
 
 import java.util.ArrayList;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Side;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextAreaBuilder;
 import javafx.scene.layout.VBox;
 
 public class SideBarView {
 
-    private VBox sideBar;   
-    
-    private Button bookmarkButton;
-    ArrayList<MenuItem> bookmarkMenuItemList;
-    private Button historyButton;
-    
-    
-    
-    public SideBarView()
-    {
-        sideBar= new VBox();
-        
-        bookmarkButton= new Button("Bookmark");
-        bookmarkMenuItemList= new ArrayList<MenuItem>();
-        
-        historyButton= new Button("History");
-    }
-    
-    public Node createSideBar()
-    {
-                                
-        sideBar.getChildren().addAll(bookmarkButton,historyButton);
-        
-        final ContextMenu bookmarkContextMenu = new ContextMenu();                          
-        
-        bookmarkButton.setContextMenu(bookmarkContextMenu);        
-        bookmarkButton.setOnAction(new EventHandler<ActionEvent>(){
+	private static VBox sideBar;
+	private static TabPane tabs;
+	private static TextArea textArea;
+	private static TabPane sideBarTabPane;
+	private static Tab smartNotesTab;
+	private static Tab speechTab;
 
-            public void handle(ActionEvent arg0) {
-                // TODO Auto-generated method stub
-                              
-                bookmarkContextMenu.show(bookmarkButton, Side.RIGHT, 0, 0);
-            }
-            
-        });
-                      
-        
-        
-        return sideBar;
-    }
+	
+	public static void setTextAreaText(ArrayList<String> noteText)
+	{
+		for(int i = 0;i<noteText.size();i++)
+		{
+			textArea.setText(noteText.get(i)+"\n");
+		}
+		
+	}
+	
+	//private static SideBarView instance=null;
+	
+	
+	public SideBarView() {
+		
+		sideBar = new VBox();
+		sideBar.setStyle("-fx-background-color: WHITE; -fx-border-color: BLACK; -fx-border-width: 0 0.5 0 0;");
+		// sideBar.setSpacing(1);
+		sideBar.setPrefWidth(350.00);
+		// sideBar.setPadding(new Insets(0, 20, 10, 20));
+		tabs = new TabPane();
+		textArea = TextAreaBuilder.create().prefWidth(400)
+				.prefHeight(1600).wrapText(true).build();
+		sideBarTabPane = new TabPane();
+		smartNotesTab = new Tab("Smart Notes");
+		speechTab = new Tab("Speech");
+		createSideBar();
+		
+	}
+	
+	
+	public static VBox getBarDisplay() {
+		return sideBar;
+	}
 
-    /**
-     * @return the bookmarkMenuItemList
-     */
-    public ArrayList<MenuItem> getBookmarkMenuItemList() {
-        return bookmarkMenuItemList;
-    }
+	public static Node createSideBar() {
+		/*TabPane tabs = new TabPane();
+		TextArea textArea = TextAreaBuilder.create().prefWidth(400)
+				.prefHeight(1600).wrapText(true).build();
+		TabPane sideBarTabPane = new TabPane();
+		Tab smartNotesTab = new Tab("Smart Notes");
+		Tab speechTab = new Tab("Speech");*/
+		speechTab.setClosable(false);
+		smartNotesTab.setClosable(false);
+		ScrollPane scrollpane = new ScrollPane();
+		scrollpane.setContent(textArea);
+		sideBarTabPane.setPrefHeight(600.00);
+		smartNotesTab.setContent(scrollpane);
+		sideBarTabPane.getTabs().add(smartNotesTab);
+		sideBarTabPane.getTabs().add(speechTab);
+		sideBar.getChildren().add(sideBarTabPane);
 
-    /**
-     * @param bookmarkMenuItemList the bookmarkMenuItemList to set
-     */
-    public void setBookmarkMenuItemList(ArrayList<MenuItem> bookmarkMenuItemList) {
-        this.bookmarkMenuItemList = bookmarkMenuItemList;
-    }
+		return sideBar;
+	}
 
-    /**
-     * @return the bookmarkButton
-     */
-    public Button getBookmarkButton() {
-        return bookmarkButton;
-    }
+	public static Node getSideBar() {
+		System.out.println("sidebar contents: " + sideBar.getChildren().get(0));
+		System.out.println("sidebar contents2: " + sideBar.toString());
+		return sideBar;
+	}
 
-    /**
-     * @param bookmarkButton the bookmarkButton to set
-     */
-    public void setBookmarkButton(Button bookmarkButton) {
-        this.bookmarkButton = bookmarkButton;
-    }
-    
-    
-    
-    
+	public static void setSideBar(VBox sideBar) {
+		SideBarView.sideBar = sideBar;
+	}
+
 }

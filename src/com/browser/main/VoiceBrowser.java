@@ -50,6 +50,7 @@ public class VoiceBrowser extends Application {
 	BookmarkModel bookmarkModel;
 	public String website = null;
 	public ViewController viewController;
+	private static SideBarView sidebarViewObj;
 
 	// layout of the browser application.
 
@@ -68,6 +69,7 @@ public class VoiceBrowser extends Application {
 
 		viewController = new ViewController();
 		bookmarkModel = new BookmarkModel();
+		sidebarViewObj = new SideBarView();
 		stage.setTitle("Voice Based Browser");
 		// browserWindow = new BrowserWindow();
 		/*
@@ -106,6 +108,7 @@ public class VoiceBrowser extends Application {
 		// set up main Layout
 		mainLayout.setTop(viewController.getToolBar().CreateNavToolbar());
 		mainLayout.setCenter(viewController.getBrowserWindowView().getBrowser());
+		mainLayout.setLeft(sidebarViewObj.getSideBar());
 
 		/*
 		 * MenuBarView menuBar = new MenuBarView(this.getVoiceBrowser(), this);
