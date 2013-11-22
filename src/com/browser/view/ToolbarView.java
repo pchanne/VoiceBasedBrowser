@@ -344,21 +344,7 @@ public class ToolbarView {
 		backGraphic.setPreserveRatio(true);
 		backGraphic.setFitHeight(24);
 		backButton.onActionProperty().set(backAction);
-		/*
-		 * backButton.onActionProperty().set(new EventHandler<ActionEvent>() {
-		 * public void handle(ActionEvent actionEvent) {
-		 * System.out.println("Clicked");
-		 * 
-		 * if (voiceBrowserObj.getVoiceBrowser().getHistory().canNavBack()) {
-		 * //System.out.println("inside navback");
-		 * //voiceBrowserObj.getVoiceBrowser
-		 * ().navTo(voiceBrowserObj.getVoiceBrowser
-		 * ().getHistory().requestNavBack());
-		 * 
-		 * }
-		 * 
-		 * } });
-		 */
+		
 	}
 
 	private void createForwardButton() {

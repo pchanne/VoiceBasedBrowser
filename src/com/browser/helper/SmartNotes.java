@@ -16,8 +16,8 @@ public class SmartNotes {
 		System.out.println("Copied Notes are :\n");
 		for(int i = 0;i<copyNotes.size();i++){
 			System.out.println(copyNotes.get(i)+"\t");
-			SideBarView.setTextAreaText(copyNotes);
 		}
+		SideBarView.setTextAreaText(copyNotes);
 	}
 
 }

@@ -153,7 +153,16 @@ public class ViewController {
 		public void handle(ActionEvent actionEvent) {
 			// TODO Auto-generated method stub
 			System.out.println("Back Clicked!");
-
+			if(browserWindowView.getHistory().canNavBack()){
+				try {
+					System.out.println("navigating back......");
+					browserWindowView.navTo(browserWindowView.getHistory().requestNavBack());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
 		}
 	}
 	

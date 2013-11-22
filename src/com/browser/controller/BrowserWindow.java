@@ -201,9 +201,9 @@ public class BrowserWindow extends Region{
         if (loc == null) loc = "";
         if (loc.startsWith("google")) { // search google
           loc = "http://www.google.com/search?q=" + loc.substring("google".length()).trim().replaceAll(" ", "+");
-        } else if (loc.startsWith("bing")) { // search bing
+        } /*else if (loc.startsWith("bing")) { // search bing
           loc = "http://www.bing.com/search?q=" + loc.substring("bing".length()).trim().replaceAll(" ", "+");
-        } /*else if (loc.startsWith("yahoo")) { // search yahoo
+        } else if (loc.startsWith("yahoo")) { // search yahoo
           loc = "http://search.yahoo.com/search?p=" + loc.substring("yahoo".length()).trim().replaceAll(" ", "+");
         }*/ else if (loc.startsWith("wiki")) {
           loc = "http://en.wikipedia.org/w/index.php?search=" + loc.substring("wiki".length()).trim().replaceAll(" ", "+");
@@ -226,7 +226,7 @@ public class BrowserWindow extends Region{
         	  System.out.println("Browser "+browser);
         	  browser.getEngine().load(loc);
         	  //Read the loaded page....
-        	  titleReader.ReadTitle(loc);
+        	  //titleReader.ReadTitle(loc);
         	  //System.out.println("webEngine history: " + browser.getEngine().getHistory().getEntries());
           } else {
             getView().getEngine().loadContent("");
