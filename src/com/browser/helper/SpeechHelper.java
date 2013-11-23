@@ -69,7 +69,7 @@ public class SpeechHelper {
 							viewController.getToolBar().getBackButton().fire();
 						}
 						if (Command.equalsIgnoreCase("forward")) {
-							System.out.println("Forward");
+							viewController.getToolBar().getForwardButton().fire();
 						}
 						if (Command.equalsIgnoreCase("refresh")) {
 							try {

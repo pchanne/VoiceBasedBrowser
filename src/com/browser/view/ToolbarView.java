@@ -164,6 +164,14 @@ public class ToolbarView {
 		this.exitAction = exitAction;
 	}
 
+	public static Button getForwardButton() {
+		return forwardButton;
+	}
+
+	public static void setForwardButton(Button forwardButton) {
+		ToolbarView.forwardButton = forwardButton;
+	}
+
 	public TextField getAddressBarField() {
 		return addressBarField;
 	}
