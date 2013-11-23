@@ -24,13 +24,14 @@ public class SpeechHelper {
 	private ViewController viewController;
 	private SpeechReaderTask speechReaderTask;
 	private int ReadCounter;
-	
+	private boolean bookmarkFlag;
 	
 	public SpeechHelper(ViewController viewController){
 		ReadCounter = 0;
 		this.viewController = viewController;
 		speechReaderTask = new SpeechReaderTask(viewController);
 		website = null;
+		bookmarkFlag = false;
 	}
 	
 	public void speechTest(final String Command) {
@@ -79,6 +80,16 @@ public class SpeechHelper {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
+						}
+						if (Command.equalsIgnoreCase("book mark")) {
+							bookmarkFlag = true;
+							viewController.getToolBar().getAddBookmarkButton().fire();
+							
+						}
+						if (Command.equalsIgnoreCase("Add") && bookmarkFlag) {
+							System.out.println("Adding bookmark..........");
+							viewController.getToolBar().getAddBookmarkToModelButton().fire();
+							bookmarkFlag = false;
 						}
 //						if (Command.equalsIgnoreCase("exit")) {
 //							System.exit(0);

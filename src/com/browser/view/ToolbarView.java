@@ -164,6 +164,10 @@ public class ToolbarView {
 		this.exitAction = exitAction;
 	}
 
+	public static void setAddBookmarkButton(Button addBookmarkButton) {
+		ToolbarView.addBookmarkButton = addBookmarkButton;
+	}
+
 	public static Button getForwardButton() {
 		return forwardButton;
 	}
@@ -194,6 +198,11 @@ public class ToolbarView {
 
 	public static void setNavButton(Button navButton) {
 		ToolbarView.navButton = navButton;
+	}
+	
+
+	public static void setAddBookmarkToModelButton(Button addBookmarkToModelButton) {
+		ToolbarView.addBookmarkToModelButton = addBookmarkToModelButton;
 	}
 
 	/**
