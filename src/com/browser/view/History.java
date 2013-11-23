@@ -27,16 +27,23 @@ public class History {
   private final ContextMenu historyMenu = new ContextMenu();
   private WebHistory history; 
   
-  public History(BrowserWindow browser) {
+  public ObservableList<String> getItems() {
+	return items;
+}
+
+public History(BrowserWindow browser) {
     this.browser = browser;
     //this.history = this.browser.webEngine.getHistory();
     
   }
 
   public boolean canNavForward() { return pointer < items.size() - 1; }
-  public boolean canNavBack()    { System.out.println("items: " + items);
-  System.out.println("num : " + items.size());
-  return pointer > 0; }
+  public boolean canNavBack()    
+  {
+	//System.out.println("items: " + items);
+	  System.out.println("num : " + items.size());
+	  return pointer > 0; 
+  }
 
   public String requestNav(Integer index) {
     if (index >= 0 && index <= items.size())  {
@@ -64,25 +71,13 @@ public class History {
   }
 
   public void executeNav(String newLoc) { 
-	  this.history = this.browser.webEngine.getHistory();
+	  //this.history = this.browser.webEngine.getHistory();
 	  //System.out.println("history at curr index: "+history.getEntries().get(history.getCurrentIndex()));
 	  //items.add(history.getEntries().get(history.getCurrentIndex()).getUrl());
 	  //history.getEntries().get(history.getCurrentIndex());
-	  System.out.println("items list:"+items);
 	  
 	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
+
 	  // todo add some validation that this is the request nav, so that we ensure all updates occur correctly.
     // don't need to show the history menu anymore.
     historyMenu.hide();
@@ -91,8 +86,9 @@ public class History {
       if (pointer < items.size() - 1) { // wipe any forward button history.
         items.remove(pointer + 1, items.size());
       }
-      //items.add(newLoc);
-      items.add(history.getEntries().get(history.getCurrentIndex()).getUrl());
+      items.add(newLoc);
+      
+      //items.add(history.getEntries().get(history.getCurrentIndex()).getUrl());
       if (items.size() >= MAX_HISTORY_SIZE) {
         items.remove(0);
       }
