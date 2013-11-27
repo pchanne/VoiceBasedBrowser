@@ -134,8 +134,13 @@ public class BrowserWindow extends Region{
         //final WebEngine engine = getView().getEngine();
         webEngine.locationProperty().addListener(new ChangeListener<String>() { 
           public void changed(ObservableValue<? extends String> observableValue, String oldLoc, String newLoc) {
-            getHistory().executeNav(newLoc); // update the history lists.
-            getLocField().setText(newLoc);   // update the location field.
+            //getHistory().executeNav(newLoc); 
+            /*System.out.println("items List:"+getHistory().getItems());// update the history lists.
+            System.out.println("webengine history:"+webEngine.getHistory().getEntries());
+            System.out.println("Current Location:"+(browser.getEngine().getLocation()));*/
+            
+            //history.getEntries().get(history.getCurrentIndex()).getUrl(
+            //getLocField().setText(newLoc);   // update the location field.
            // favicon.set(favIconHandler.fetchFavIcon(newLoc));
           }
         });
@@ -159,7 +164,7 @@ public class BrowserWindow extends Region{
           }
         });
       //not sure why this is required
-        locField.focusedProperty().addListener(new ChangeListener<Boolean>() {
+        /*locField.focusedProperty().addListener(new ChangeListener<Boolean>() {
             public void changed(ObservableValue<? extends Boolean> observableValue, Boolean from, Boolean to) {
               if (to) {
                 Platform.runLater(new Runnable() {
@@ -169,7 +174,7 @@ public class BrowserWindow extends Region{
                 });
               }
             }
-          });
+          });*/
                        
     }
     
@@ -210,9 +215,9 @@ public class BrowserWindow extends Region{
         if (loc == null) loc = "";
         if (loc.startsWith("google")) { // search google
           loc = "http://www.google.com/search?q=" + loc.substring("google".length()).trim().replaceAll(" ", "+");
-        } else if (loc.startsWith("bing")) { // search bing
+        } /*else if (loc.startsWith("bing")) { // search bing
           loc = "http://www.bing.com/search?q=" + loc.substring("bing".length()).trim().replaceAll(" ", "+");
-        } /*else if (loc.startsWith("yahoo")) { // search yahoo
+        } else if (loc.startsWith("yahoo")) { // search yahoo
           loc = "http://search.yahoo.com/search?p=" + loc.substring("yahoo".length()).trim().replaceAll(" ", "+");
         }*/ else if (loc.startsWith("wiki")) {
           loc = "http://en.wikipedia.org/w/index.php?search=" + loc.substring("wiki".length()).trim().replaceAll(" ", "+");
@@ -234,8 +239,9 @@ public class BrowserWindow extends Region{
         	  System.out.println("new: " + loc);
         	  System.out.println("Browser "+browser);
         	  browser.getEngine().load(loc);
+        	  //System.out.println(browser.getEngine().getHistory().getEntries());
         	  //Read the loaded page....
-        	  titleReader.ReadTitle(loc);
+        	  //titleReader.ReadTitle(loc);
         	  //System.out.println("webEngine history: " + browser.getEngine().getHistory().getEntries());
           } else {
             getView().getEngine().loadContent("");

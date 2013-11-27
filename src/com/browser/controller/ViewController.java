@@ -8,6 +8,7 @@ import com.browser.model.Bookmark;
 import com.browser.model.BookmarkModel;
 import com.browser.reader.FileReader;
 import com.browser.speech.SpeechRecognitionTask;
+import com.browser.view.History;
 import com.browser.view.SideBarView;
 import com.browser.view.ToolbarView;
 
@@ -33,7 +34,7 @@ public class ViewController {
 	private FileReader textReader;
 	private SmartNotes smartNoteObj;
 	
-	
+
 	public SmartNotes getSmartNoteObj() {
 		return smartNoteObj;
 	}
@@ -123,6 +124,11 @@ public class ViewController {
 							System.out.println("Page "
 									+ browserWindowView.getView().getEngine()
 											.getLocation() + " loaded");
+							
+							System.out.println("Curr :"+browserWindowView.getView().getEngine().getLocation());
+							browserWindowView.getHistory().executeNav(browserWindowView.getView().getEngine().getLocation());
+							System.out.println("items list:"+browserWindowView.getHistory().getItems());
+							
 						}
 
 					}
@@ -153,7 +159,16 @@ public class ViewController {
 		public void handle(ActionEvent actionEvent) {
 			// TODO Auto-generated method stub
 			System.out.println("Back Clicked!");
-
+			if(browserWindowView.getHistory().canNavBack()){
+				try {
+					System.out.println("navigating back......");
+					browserWindowView.navTo(browserWindowView.getHistory().requestNavBack());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
 		}
 	}
 	
@@ -163,6 +178,17 @@ public class ViewController {
 		public void handle(ActionEvent actionEvent) {
 			// TODO Auto-generated method stub
 			System.out.println("forward Clicked!");
+			if(browserWindowView.getHistory().canNavForward()){
+				
+				try {
+					browserWindowView.navTo(browserWindowView.getHistory().requestNavForward());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+		
 
 		}
 	}
@@ -206,7 +232,6 @@ public class ViewController {
 		@Override
 		public void handle(KeyEvent keyEvent) {
 			// TODO Auto-generated method stub
-			System.out.println("Enter Pressed : Go");
 			if (keyEvent.getCode().equals(KeyCode.ENTER)) {
 			try {
 				browserWindowView.navTo(toolBar

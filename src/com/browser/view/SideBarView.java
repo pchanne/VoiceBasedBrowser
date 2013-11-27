@@ -26,13 +26,18 @@ public class SideBarView {
 	private static TabPane sideBarTabPane;
 	private static Tab smartNotesTab;
 	private static Tab speechTab;
-
 	
+	public static TextArea getTextArea() {
+		return textArea;
+	}
+
 	public static void setTextAreaText(ArrayList<String> noteText)
 	{
+		textArea.clear();
+		System.out.println("List size "+noteText.size());
 		for(int i = 0;i<noteText.size();i++)
 		{
-			textArea.setText(noteText.get(i)+"\n");
+			textArea.appendText(noteText.get(i));
 		}
 		
 	}
@@ -82,10 +87,10 @@ public class SideBarView {
 		sideBar = new VBox();
 		sideBar.setStyle("-fx-background-color: WHITE; -fx-border-color: BLACK; -fx-border-width: 0 0.5 0 0;");
 		// sideBar.setSpacing(1);
-		sideBar.setPrefWidth(350.00);
+		sideBar.setPrefWidth(250.00);
 		// sideBar.setPadding(new Insets(0, 20, 10, 20));
 		tabs = new TabPane();
-		textArea = TextAreaBuilder.create().prefWidth(400)
+		textArea = TextAreaBuilder.create().prefWidth(300)
 				.prefHeight(1600).wrapText(true).build();
 		sideBarTabPane = new TabPane();
 		smartNotesTab = new Tab("Smart Notes");

@@ -164,6 +164,18 @@ public class ToolbarView {
 		this.exitAction = exitAction;
 	}
 
+	public static void setAddBookmarkButton(Button addBookmarkButton) {
+		ToolbarView.addBookmarkButton = addBookmarkButton;
+	}
+
+	public static Button getForwardButton() {
+		return forwardButton;
+	}
+
+	public static void setForwardButton(Button forwardButton) {
+		ToolbarView.forwardButton = forwardButton;
+	}
+
 	public TextField getAddressBarField() {
 		return addressBarField;
 	}
@@ -186,6 +198,11 @@ public class ToolbarView {
 
 	public static void setNavButton(Button navButton) {
 		ToolbarView.navButton = navButton;
+	}
+	
+
+	public static void setAddBookmarkToModelButton(Button addBookmarkToModelButton) {
+		ToolbarView.addBookmarkToModelButton = addBookmarkToModelButton;
 	}
 
 	/**
@@ -344,21 +361,7 @@ public class ToolbarView {
 		backGraphic.setPreserveRatio(true);
 		backGraphic.setFitHeight(24);
 		backButton.onActionProperty().set(backAction);
-		/*
-		 * backButton.onActionProperty().set(new EventHandler<ActionEvent>() {
-		 * public void handle(ActionEvent actionEvent) {
-		 * System.out.println("Clicked");
-		 * 
-		 * if (voiceBrowserObj.getVoiceBrowser().getHistory().canNavBack()) {
-		 * //System.out.println("inside navback");
-		 * //voiceBrowserObj.getVoiceBrowser
-		 * ().navTo(voiceBrowserObj.getVoiceBrowser
-		 * ().getHistory().requestNavBack());
-		 * 
-		 * }
-		 * 
-		 * } });
-		 */
+		
 	}
 
 	private void createForwardButton() {
