@@ -245,7 +245,7 @@ public class ToolbarView {
 		});
 
 		final InnerShadow innerShadow = new InnerShadow();
-		innerShadow.setColor(Color.ANTIQUEWHITE);
+		innerShadow.setColor(Color.WHITE);
 		navPane.setEffect(innerShadow);
 
 		return navPane;

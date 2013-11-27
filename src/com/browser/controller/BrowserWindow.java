@@ -2,6 +2,8 @@ package com.browser.controller;
 
 import java.io.IOException;
 
+import netscape.javascript.JSObject;
+
 import org.w3c.dom.DocumentFragment;
 
 import com.browser.helper.SmartNotes;
@@ -90,6 +92,12 @@ public class BrowserWindow extends Region{
     		    	 	 	selectedText= (String) BrowserWindow.webEngine
     		                 .executeScript("window.getSelection().toString()");
     		    	System.out.println("selected text is :  -----------------------------------------------   " + selectedText);
+    		    	
+    		    	//BrowserWindow.webEngine.executeScript("var d = document.getElementsByTagName('h4'); for (var i = 0; i < d.length; i++) {d[i].style.backgroundColor = 'blue';};");
+    	        	//BrowserWindow.webEngine.executeScript("var sel = window.getSelection();var range = sel.getRangeAt(0);var newTextNode = document.createTextNode('hello world!!!!');range.insertNode(newTextNode);range.setStartAfter(newTextNode);sel.removeAllRanges();sel.addRange(range);");
+    		    	//BrowserWindow.webEngine.executeScript("if (document.selection) {var range = document.body.createTextRange();range.moveToElementText(document.getElementById('div'));range.select();} else if (window.getSelection()) {var range = document.createRange();range.selectNode(document.getElementById('div'));window.getSelection().removeAllRanges();window.getSelection().addRange(range);}");
+    		    	//BrowserWindow.webEngine.executeScript("var range = document.body.createTextRange();range.moveToElementText(document.getElementById('post_message_4959224'));range.select();");
+    		    	//  System.out.println("dom2===============================================================================" + dom2.toString());
     		    	if(!selectedText.equalsIgnoreCase(""))
     		    	{
     		    	/*try {
@@ -102,6 +110,7 @@ public class BrowserWindow extends Region{
 //    		    	System.out.println("title: " + s2);
     		    	DocumentFragment s1 = (DocumentFragment) BrowserWindow.webEngine
     		                 .executeScript("window.getSelection().getRangeAt().cloneContents()");
+    		    	//BrowserWindow.webEngine.executeScript("if (window.getSelection) { var sel = window.getSelection();sel.removeAllRanges();var range = document.createRange();range.selectNodeContents(element);sel.addRange(range);} else if (document.selection) {var textRange = document.body.createTextRange();textRange.moveToElementText(element);textRange.select();}");
     		    	
     		    	System.out.println("text content : " + s1.getChildNodes().getLength());
     		    	for(int i = 0;i<s1.getChildNodes().getLength();i++)

@@ -39,8 +39,45 @@ public class SideBarView {
 	
 	//private static SideBarView instance=null;
 	
+	/*
+	 * 
+	 * this method would be called once, where sidebar will be created and this is stored
+	 * in sidebar which later can be assigned to any javafx element  
+	 * 
+	 */
+	public static void initSideBar()
+	{
+	    //this method will be called once
+	    //where sidebar will be created and this stored in sidebar which later can
+	    //be assigned to any javafx element
+	    
+	    sideBar = new VBox();
+        sideBar.setStyle("-fx-background-color: WHITE; " +
+        		"-fx-border-color: BLACK; -fx-border-width: 0 0.5 0 0;");
+        // sideBar.setSpacing(1);
+        sideBar.setPrefWidth(350.00);
+        // sideBar.setPadding(new Insets(0, 20, 10, 20));
+        TabPane tabs = new TabPane();
+        TextArea textArea = TextAreaBuilder.create().prefWidth(400)
+                .prefHeight(1600).wrapText(true).build();
+        TabPane sideBarTabPane = new TabPane();
+        Tab smartNotesTab = new Tab("Smart Notes");
+        Tab speechTab = new Tab("Speech");
+        
+        speechTab.setClosable(false);
+        smartNotesTab.setClosable(false);
+        ScrollPane scrollpane = new ScrollPane();
+        scrollpane.setContent(textArea);
+        sideBarTabPane.setPrefHeight(600.00);
+        smartNotesTab.setContent(scrollpane);
+        sideBarTabPane.getTabs().add(smartNotesTab);
+        sideBarTabPane.getTabs().add(speechTab);
+        sideBar.getChildren().add(sideBarTabPane);
+	    
+	}
 	
-	public SideBarView() {
+	
+	/*public SideBarView() {
 		
 		sideBar = new VBox();
 		sideBar.setStyle("-fx-background-color: WHITE; -fx-border-color: BLACK; -fx-border-width: 0 0.5 0 0;");
@@ -55,7 +92,7 @@ public class SideBarView {
 		speechTab = new Tab("Speech");
 		createSideBar();
 		
-	}
+	}*/
 	
 	
 	public static VBox getBarDisplay() {

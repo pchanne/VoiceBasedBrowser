@@ -9,8 +9,10 @@ import com.browser.controller.ViewController;
 import com.browser.model.Bookmark;
 import com.browser.model.BookmarkModel;
 import com.browser.reader.FileReader;
+import com.browser.view.BrowserTabBarView;
 import com.browser.view.MenuBarView;
 import com.browser.view.SideBarView;
+import com.browser.view.TabView;
 import com.browser.view.ToolbarView;
 import com.sun.glass.events.MouseEvent;
 
@@ -69,7 +71,7 @@ public class VoiceBrowser extends Application {
 
 		viewController = new ViewController();
 		bookmarkModel = new BookmarkModel();
-		sidebarViewObj = new SideBarView();
+		//sidebarViewObj = new SideBarView();
 		stage.setTitle("Voice Based Browser");
 		// browserWindow = new BrowserWindow();
 		/*
@@ -108,7 +110,10 @@ public class VoiceBrowser extends Application {
 		// set up main Layout
 		mainLayout.setTop(viewController.getToolBar().CreateNavToolbar());
 		mainLayout.setCenter(viewController.getBrowserWindowView().getBrowser());
-		mainLayout.setLeft(sidebarViewObj.getSideBar());
+		//mainLayout.setLeft(sidebarViewObj.getSideBar());
+		
+		// initialize the sidebar once and for all!!!
+		SideBarView.initSideBar();
 
 		/*
 		 * MenuBarView menuBar = new MenuBarView(this.getVoiceBrowser(), this);
@@ -135,8 +140,16 @@ public class VoiceBrowser extends Application {
 		overlaidLayout.getChildren().addAll(mainLayout, overlayLayer);
 		overlayLayer.setPickOnBounds(false);
 
+		BrowserTabBarView browserTabPane = new BrowserTabBarView();
+		TabView newTab = new TabView();
+		//n1.setContent(overlaidLayout);
+		browserTabPane.getBrowserTabHolder().getTabs().add(newTab);
+
 		// create scene from overlaidLayout
-		scene = new Scene(overlaidLayout, 1020, 650);
+		scene = new Scene(browserTabPane.getBrowserTabHolder(), 1020, 650);
+		
+		// create scene from overlaidLayout
+		//scene = new Scene(overlaidLayout, 1020, 650);
 
 		/*
 		 * ToolbarView.getAddBookmarkButton().setOnAction( new
