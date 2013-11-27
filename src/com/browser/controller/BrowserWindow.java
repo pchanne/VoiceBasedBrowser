@@ -33,8 +33,8 @@ import javafx.scene.web.WebView;
 
 public class BrowserWindow extends Region{
 	
-	public static WebView browser;
-    public static WebEngine webEngine;
+	public WebView browser;
+    public WebEngine webEngine;
     private History history = new History(this);
     private final TextField locField = new TextField();    // the location the browser engine is currently pointing at (or where the user can type in where to go next).
     public static String DEFAULT_HOME = "http://www.google.com"; 
@@ -89,11 +89,11 @@ public class BrowserWindow extends Region{
                 System.out.println("Some text is selected by mouse event ---------------------");
                 //String selection = null;
     	    
-    		    	 	 	selectedText= (String) BrowserWindow.webEngine
+    		    	 	 	selectedText= (String) webEngine
     		                 .executeScript("window.getSelection().toString()");
     		    	System.out.println("selected text is :  -----------------------------------------------   " + selectedText);
     		    	
-    		    	//BrowserWindow.webEngine.executeScript("var d = document.getElementsByTagName('h4'); for (var i = 0; i < d.length; i++) {d[i].style.backgroundColor = 'blue';};");
+    		    	webEngine.executeScript("var d = document.getElementsByTagName('h4'); for (var i = 0; i < d.length; i++) {d[i].style.backgroundColor = 'blue';};");
     	        	//BrowserWindow.webEngine.executeScript("var sel = window.getSelection();var range = sel.getRangeAt(0);var newTextNode = document.createTextNode('hello world!!!!');range.insertNode(newTextNode);range.setStartAfter(newTextNode);sel.removeAllRanges();sel.addRange(range);");
     		    	//BrowserWindow.webEngine.executeScript("if (document.selection) {var range = document.body.createTextRange();range.moveToElementText(document.getElementById('div'));range.select();} else if (window.getSelection()) {var range = document.createRange();range.selectNode(document.getElementById('div'));window.getSelection().removeAllRanges();window.getSelection().addRange(range);}");
     		    	//BrowserWindow.webEngine.executeScript("var range = document.body.createTextRange();range.moveToElementText(document.getElementById('post_message_4959224'));range.select();");
@@ -108,7 +108,7 @@ public class BrowserWindow extends Region{
     				}*/
 //    		    	String s2 = BrowserWindow.webEngine.getTitle();
 //    		    	System.out.println("title: " + s2);
-    		    	DocumentFragment s1 = (DocumentFragment) BrowserWindow.webEngine
+    		    	DocumentFragment s1 = (DocumentFragment) webEngine
     		                 .executeScript("window.getSelection().getRangeAt().cloneContents()");
     		    	//BrowserWindow.webEngine.executeScript("if (window.getSelection) { var sel = window.getSelection();sel.removeAllRanges();var range = document.createRange();range.selectNodeContents(element);sel.addRange(range);} else if (document.selection) {var textRange = document.body.createTextRange();textRange.moveToElementText(element);textRange.select();}");
     		    	

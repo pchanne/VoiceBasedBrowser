@@ -52,7 +52,7 @@ public class VoiceBrowser extends Application {
 	BookmarkModel bookmarkModel;
 	public String website = null;
 	public ViewController viewController;
-	private static SideBarView sidebarViewObj;
+	//private static SideBarView sidebarViewObj;
 
 	// layout of the browser application.
 
