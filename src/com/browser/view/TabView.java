@@ -2,7 +2,10 @@ package com.browser.view;
 
 import java.io.IOException;
 
+import org.jsoup.select.Elements;
+
 import com.browser.controller.BrowserWindow;
+import com.browser.helper.JSoupHelper;
 import com.browser.main.VoiceBrowser;
 import com.browser.view.ToolbarView;
 
@@ -27,9 +30,12 @@ public class TabView extends Tab {
 	
 	//testing
 	private TextField searchBar;
-    private Button findTagButton;
-    private Button selectButton;
-	
+    private Button findPositionButton;
+    private Button selectButton;       
+	private int headerIndex=0;
+	private Button allHeadersButton;
+	private Button nextButton;
+	private Elements allHeaderTags;
 
 	public TabView() {
 		
@@ -83,17 +89,51 @@ public class TabView extends Tab {
 				browserWindow);*/
 		
 		searchBar= new TextField();
-		findTagButton = new Button("Find Tag");
+		findPositionButton = new Button("Find Position");
 		selectButton= new Button("Select");
 		
 		HBox selectTagLayout= new HBox();
 		
-		selectTagLayout.getChildren().addAll(searchBar, findTagButton, selectButton);
+		selectTagLayout.getChildren().addAll(searchBar, findPositionButton, selectButton);
+		
+		findPositionButton.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent actionEvent) {
+                
+                String url= browserWindow.webEngine.getLocation();
+                String textToFind= searchBar.getText();
+                
+                System.out.println(url+" "+textToFind);
+                
+                JSoupHelper jsoupHelperInstance= new JSoupHelper();
+                headerIndex=jsoupHelperInstance.getPosition(url, textToFind)-1;
+                
+                browserWindow.webEngine.executeScript("var d = document.getElementsByTagName('p'); " +                		
+                		" d["+headerIndex+"].style.backgroundColor = 'blue';");
+                
+                
+            }
+        });
+		
+		
 		HBox.setHgrow(searchBar, Priority.ALWAYS);
 		
+		allHeadersButton= new Button("Select all Headers");
+		
+		allHeadersButton.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent actionEvent) {
+                
+            }
+        });
+		
+		nextButton= new Button("Next");
+		
+		HBox headerTagLayout= new HBox();
+		
+		headerTagLayout.getChildren().addAll(allHeadersButton, nextButton);
+					
 		VBox testLayout= new VBox();
 		
-		testLayout.getChildren().addAll(tabToolbarViewObj.CreateNavToolbar(),selectTagLayout);
+		testLayout.getChildren().addAll(tabToolbarViewObj.CreateNavToolbar(),selectTagLayout, headerTagLayout);
 		tabLayout.setTop(testLayout);
 		
 		//tabLayout.setTop(tabToolbarViewObj.CreateNavToolbar());
