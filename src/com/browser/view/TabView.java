@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.jsoup.select.Elements;
 
 import com.browser.controller.BrowserWindow;
+import com.browser.controller.TagHandler;
 import com.browser.helper.JSoupHelper;
 import com.browser.main.VoiceBrowser;
 import com.browser.view.ToolbarView;
@@ -36,12 +37,16 @@ public class TabView extends Tab {
 	private Button allHeadersButton;
 	private Button nextButton;
 	private Elements allHeaderTags;
+	private JSoupHelper jsoupHelperTest;
+	private TagHandler headerTagHandler;
 
 	public TabView() {
 		
 		tabToolbarViewObj = new TabToolbarView();
 
 		browserWindow = new BrowserWindow();
+		
+		headerTagHandler= new TagHandler(browserWindow.webEngine);
 		
 		//sideBarViewObj = new SideBarView();
 		//sideBarViewObj=SideBarView.getInstance();
@@ -80,6 +85,7 @@ public class TabView extends Tab {
 							System.out.println("Page "
 									+ browserWindow.getView().getEngine()
 											.getLocation() + " loaded");
+							headerTagHandler.initialise();
 						}
 
 					}
@@ -87,6 +93,8 @@ public class TabView extends Tab {
 
 		/*tabLayout.getChildren().addAll(tabToolbarViewObj.CreateNavToolbar(),
 				browserWindow);*/
+		
+		
 		
 		searchBar= new TextField();
 		findPositionButton = new Button("Find Position");
@@ -117,15 +125,22 @@ public class TabView extends Tab {
 		
 		HBox.setHgrow(searchBar, Priority.ALWAYS);
 		
+		jsoupHelperTest= new JSoupHelper();		
+		
 		allHeadersButton= new Button("Select all Headers");
 		
 		allHeadersButton.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent actionEvent) {
-                
+                headerTagHandler.selectAllHeaderTags();
             }
         });
 		
 		nextButton= new Button("Next");
+		nextButton.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent actionEvent) {
+                headerTagHandler.selectNextHeader();
+            }
+        });
 		
 		HBox headerTagLayout= new HBox();
 		
@@ -176,5 +191,6 @@ public class TabView extends Tab {
 		tabLayout.setLeft(sideBarContainer);
 		setContent(tabLayout);
 	}
-
+	
+	
 }
