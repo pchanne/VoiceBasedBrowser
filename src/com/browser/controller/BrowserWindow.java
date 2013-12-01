@@ -35,7 +35,7 @@ public class BrowserWindow extends Region{
 	
 	public WebView browser;
     public WebEngine webEngine;
-    private History history = new History(this);
+    private History history;
     private final TextField locField = new TextField();    // the location the browser engine is currently pointing at (or where the user can type in where to go next).
     public static String DEFAULT_HOME = "http://www.google.com"; 
     private String speechCommandSpoken;
@@ -58,6 +58,7 @@ public class BrowserWindow extends Region{
 
 	public BrowserWindow(){
 		System.out.println("Browser Window");
+		history = new History(this);
     	browser = new WebView();
         webEngine = browser.getEngine();
         speechCommandSpoken = null;
@@ -65,6 +66,11 @@ public class BrowserWindow extends Region{
         initBrowser();
     }
 
+	public BrowserWindow(String temp)
+	{
+		history = new History();
+	}
+	
 	//initialized browser with default home
     private void initBrowser(){
     	
