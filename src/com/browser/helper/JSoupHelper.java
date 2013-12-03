@@ -10,19 +10,42 @@ import org.jsoup.select.Elements;
 public class JSoupHelper {
     
     
-    public void getHeaderTags()
+    public Elements getHeaderTags(String url)
     {
-        String html="<h1>H1:1</h1><h2>H2:1</h2><h2>H2:2</h2><h1>H1:2</h1>";
+        //String html="<h1>H1:1</h1><h2>H2:1</h2><h2>H2:2</h2><h1>H1:2</h1>";
+        Document doc;
+        try {
+            doc = Jsoup.connect(url).get();
+            Elements hTags = doc.select("h1, h2, h3, h4, h5, h6");
+            for(int i=0; i< hTags.size(); i++)
+            {
+                Element currentHTag= hTags.get(i);
+                System.out.println(currentHTag.tagName());
+            }
+            
+            return hTags;
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;                                 
+    }
+    
+    
+    public void getPTags()
+    {
+        String html="<p>Para1</p><pre>Pre1</pre><p>Para2</p><pre>Pre2</pre>";
         Document doc= Jsoup.parse(html);
         
-        Elements hTags = doc.select("h1, h2, h3, h4, h5, h6");
+        Elements pTags = doc.select("p,pre");
         
-        for(int i=0; i< hTags.size(); i++)
+        for(int i=0; i< pTags.size(); i++)
         {
-            Element currentHTag= hTags.get(i);
+            Element currentHTag= pTags.get(i);
             System.out.println(currentHTag.tagName());
         }
         
+                
     }
     
     public String getTag(String url, String textToFind)
