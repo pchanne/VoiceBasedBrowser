@@ -36,27 +36,29 @@ public class SpeechReaderTask extends Service<Void>{
                 	}*/
                 	//System.out.println("Sleeping");
                 	//speechCommand = "Go";
-                	
-                	if(viewController.getBrowserWindowView().getSelectedText().equalsIgnoreCase("") || viewController.getBrowserWindowView().getSelectedText()==null)
-		    		{
-		    			System.out.println("Reading the whole page ");
-		    			try {
-							viewController.getTextReader().ReadWholePage(viewController.getToolBar().getAddressBarField().getText());
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-		    		}
-		    		else
-		    		{
+//                	
+//                	if(viewController.getBrowserWindowView().getSelectedText().equalsIgnoreCase("") || viewController.getBrowserWindowView().getSelectedText()==null)
+//		    		{
+//		    			System.out.println("Reading the whole page ");
+//		    			try {
+//							viewController.getTextReader().ReadWholePage(viewController.getToolBar().getAddressBarField().getText());
+//						} catch (IOException e) {
+//							// TODO Auto-generated catch block
+//							e.printStackTrace();
+//						}
+//		    		}
+//		    		else
+//		    		{
 		    			System.out.println("Reading the selected text in the page ");
 		    			try {
-							viewController.getTextReader().ReadSelectedText(viewController.getBrowserWindowView().getSelectedText());
+		    				System.out.println("currentlink :"+viewController.getHeaderTagHandler().getCurrentHeader().getHeaderTag().text());
+							//viewController.getTextReader().ReadSelectedText(viewController.getBrowserWindowView().getSelectedText());
+		    				viewController.getTextReader().ReadSelectedText(viewController.getHeaderTagHandler().getCurrentHeader().getHeaderTag().text());
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-		    		}
+		    		//}
                 		
                 		//vb.getVoiceBrowser().navTo("www.yahoo.com");
                 		//System.out.println();
