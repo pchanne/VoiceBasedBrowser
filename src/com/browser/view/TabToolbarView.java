@@ -108,9 +108,13 @@ public class TabToolbarView {
 	private ImageView bookmarkGraphic;
 	private ColorAdjust bookmarkColorAdjust;
 	
+	public static String DEFAULT_HOME = "http://www.google.com"; // default home url
     
-    
-    public Button getForwardButton() {
+    public void setAddressBarFieldText(String addressBarFieldText) {
+		this.addressBarField.setText(addressBarFieldText);
+	}
+
+	public Button getForwardButton() {
 		return forwardButton;
 	}
 
@@ -159,7 +163,7 @@ public class TabToolbarView {
         addressBarField.setStyle("-fx-font-size: 20;");
 		addressBarField.setPromptText("Where do you want to go today?");
 		addressBarField.setTooltip(new Tooltip("Enter a location"));
-
+		setAddressBarFieldText(DEFAULT_HOME);
 		addressBarField.setOnKeyReleased(new EventHandler<KeyEvent>() {
 			public void handle(KeyEvent keyEvent) {
 				if (keyEvent.getCode().equals(KeyCode.ENTER)) {
@@ -282,22 +286,7 @@ public class TabToolbarView {
 		backButton.setGraphic(backGraphic);
 		backGraphic.setPreserveRatio(true);
 		backGraphic.setFitHeight(24);
-		backButton.onActionProperty().set(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent actionEvent) {
-				PropertyConfigurator.configure("log4j.properties"); 
-				logger.debug("Inback button click handler");
-				
-				 /** if
-				 * (voiceBrowserObj.getVoiceBrowser().getHistory().canNavBack())
-				 * { //System.out.println("inside navback");
-				 * //voiceBrowserObj.getVoiceBrowser
-				 * ().navTo(voiceBrowserObj.getVoiceBrowser
-				 * ().getHistory().requestNavBack());
-				 * 
-				 * }*/
-				 
-			}
-		});
+		backButton.onActionProperty().set(backAction);
 	}
     
     
@@ -384,6 +373,7 @@ public class TabToolbarView {
 		refreshGraphic.setFitHeight(24);
 		refreshButton.setGraphic(refreshGraphic);
 		refreshButton.setTooltip(new Tooltip("Refresh"));
+		refreshButton.onActionProperty().set(refreshAction);
 	}
 	
 	
@@ -423,14 +413,7 @@ public class TabToolbarView {
 		Scene bookmarkScene = new Scene(getAddBookmarkPopupScene(), 300, 150);
 		bookmarkStage.setScene(bookmarkScene);
 
-		addBookmarkButton.setOnAction(new EventHandler<ActionEvent>() {
-
-			public void handle(ActionEvent actionEvent) {
-
-				bookmarkStage.show();
-			}
-
-		});
+		addBookmarkButton.setOnAction(bookmarkAction);
 	}
 	
 	
@@ -646,7 +629,7 @@ public class TabToolbarView {
 		grid.add(urlLabel, 1, 1);
 		grid.add(bookmarkURLTextField, 2, 1);
 		// grid.add(button, 0, 2);
-
+		addBookmarkToModelButton.setOnAction(bookmarkToModelAction);
 		HBox hbox = new HBox(10);
 		hbox.getChildren().add(addBookmarkToModelButton);
 		hbox.setAlignment(Pos.BASELINE_RIGHT);
