@@ -99,7 +99,7 @@ public class BrowserWindow extends Region{
     		                 .executeScript("window.getSelection().toString()");
     		    	System.out.println("selected text is :  -----------------------------------------------   " + selectedText);
     		    	
-    		    	webEngine.executeScript("var d = document.getElementsByTagName('h4'); for (var i = 0; i < d.length; i++) {d[i].style.backgroundColor = 'blue';};");
+    		    	//webEngine.executeScript("var d = document.getElementsByTagName('h4'); for (var i = 0; i < d.length; i++) {d[i].style.backgroundColor = 'blue';};");
     	        	//BrowserWindow.webEngine.executeScript("var sel = window.getSelection();var range = sel.getRangeAt(0);var newTextNode = document.createTextNode('hello world!!!!');range.insertNode(newTextNode);range.setStartAfter(newTextNode);sel.removeAllRanges();sel.addRange(range);");
     		    	//BrowserWindow.webEngine.executeScript("if (document.selection) {var range = document.body.createTextRange();range.moveToElementText(document.getElementById('div'));range.select();} else if (window.getSelection()) {var range = document.createRange();range.selectNode(document.getElementById('div'));window.getSelection().removeAllRanges();window.getSelection().addRange(range);}");
     		    	//BrowserWindow.webEngine.executeScript("var range = document.body.createTextRange();range.moveToElementText(document.getElementById('post_message_4959224'));range.select();");

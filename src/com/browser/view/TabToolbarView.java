@@ -98,7 +98,7 @@ public class TabToolbarView {
 	private ColorAdjust speechColorAdjust;
 	private ImageView speechGraphic;
 	private int counter;
-	private boolean isSpeechMode;
+	private static boolean isSpeechMode;
 	
 	private Button addBookmarkButton;
 	private Button addBookmarkToModelButton;
@@ -107,11 +107,48 @@ public class TabToolbarView {
 	private TextField bookmarkTitleTextField;
 	private ImageView bookmarkGraphic;
 	private ColorAdjust bookmarkColorAdjust;
+	
     
     
-    public static final Logger logger = Logger.getLogger(Application.class);
+    public Button getForwardButton() {
+		return forwardButton;
+	}
+
+	public Button getBackButton() {
+		return backButton;
+	}
+
+	public static final Logger logger = Logger.getLogger(Application.class);
         
     private static CheckMenuItem speechModeEnable;
+    
+  //Event Handlers
+  	public EventHandler<ActionEvent> backAction;
+  	public EventHandler<ActionEvent> goAction;
+  	public EventHandler<KeyEvent> goActionOnEnter;
+  	public EventHandler<ActionEvent> forwardAction;
+  	public EventHandler<ActionEvent> refreshAction;
+  	public EventHandler<ActionEvent> bookmarkAction;
+  	public EventHandler<ActionEvent> bookmarkToModelAction;
+  	public EventHandler<ActionEvent> speechAction;
+  	public EventHandler<ActionEvent> exitAction;
+  	//Constructor
+  	public TabToolbarView(EventHandler<ActionEvent> backAction,
+  			EventHandler<ActionEvent> goAction,EventHandler<KeyEvent> goActionOnEnter, EventHandler<ActionEvent> forwardAction,
+  			EventHandler<ActionEvent> refreshAction, EventHandler<ActionEvent> bookmarkAction, EventHandler<ActionEvent> bookmarkToModelAction,EventHandler<ActionEvent> speechAction,
+  			EventHandler<ActionEvent> exitAction
+
+  	) {
+  		this.backAction = backAction;
+  		this.goAction = goAction;
+  		this.goActionOnEnter = goActionOnEnter;
+  		this.forwardAction = forwardAction;
+  		this.refreshAction = refreshAction;
+  		this.bookmarkAction = bookmarkAction;
+  		this.bookmarkToModelAction = bookmarkToModelAction;
+  		this.speechAction = speechAction;
+  		this.exitAction = exitAction;
+  	}
     
     public Pane CreateNavToolbar()
     {
@@ -287,17 +324,7 @@ public class TabToolbarView {
 		navGraphic.setPreserveRatio(true);
 		navGraphic.setFitHeight(24);
 		navButton.setGraphic(navGraphic);
-		navButton.onActionProperty().set(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent actionEvent) {
-				/*try {
-					voiceBrowserObj.getVoiceBrowser().navTo(
-							voiceBrowserObj.getAddressBarField().getText());
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}*/
-			}
-		});
+		navButton.onActionProperty().set(goAction);
 	}
     
     
@@ -411,7 +438,7 @@ public class TabToolbarView {
 	 *  speech button helper method
 	 **/ 
 	 
-	private void createSpeechButtonHelper(String imgName, String toolTipValue) {
+	public void createSpeechButtonHelper(String imgName, String toolTipValue) {
 		iconPath = getImgObj.jarScan("icons.jar", imgName);
 		speechGraphic = new ImageView(new Image(iconPath));
 		speechButton.setGraphic(speechGraphic);
@@ -440,27 +467,7 @@ public class TabToolbarView {
 		speechButton.setGraphic(speechGraphic);
 		speechButton.setTooltip(new Tooltip("Enable speech mode"));
 		// speechButton.set
-		speechButton.onActionProperty().set(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent actionEvent) {
-				//SideBarView sidebarview=SideBarView.getInstance();
-				if (isSpeechMode) {
-					isSpeechMode = false;
-					createSpeechButtonHelper("Micro-off-icon", "Enable speech mode");
-					//sTask.cancel();
-				} else {
-					isSpeechMode = true;
-					createSpeechButtonHelper("Micro-icon", "Disable speech mode");
-					if(counter == 0)
-						{counter ++;
-						//sTask.start();
-						}
-					else
-					{
-						//sTask.restart();
-					}
-				}
-			}
-		});
+		speechButton.onActionProperty().set(speechAction);
 	}
 	
 	
@@ -648,9 +655,22 @@ public class TabToolbarView {
 		return grid;
 
 	}
-    
-    
-    /**
+	
+	
+	
+    public Stage getBookmarkStage() {
+		return bookmarkStage;
+	}
+
+	public static boolean isSpeechMode() {
+		return isSpeechMode;
+	}
+
+	public static void setSpeechMode(boolean isSpeechMode) {
+		TabToolbarView.isSpeechMode = isSpeechMode;
+	}
+
+	/**
      * @return the addTabButton
      */
     public Button getAddTabButton() {

@@ -106,6 +106,31 @@ public class SpeechHelper {
 						}
 							
 						}
+						if(Command.equalsIgnoreCase("Titles")){
+							viewController.getHeaderTagHandler().clearSelectedTags();
+							viewController.getHeaderTagHandler().selectAllHeaderTags();
+						}
+						if(Command.equalsIgnoreCase("Next Title")){
+							viewController.getHeaderTagHandler().clearSelectedTags();
+							viewController.getHeaderTagHandler().selectNextHeader();
+						}
+						if(Command.equalsIgnoreCase("Links")){
+							viewController.getHeaderTagHandler().clearSelectedTags();
+							viewController.getHeaderTagHandler().selectAllLinkTags();;
+						}
+						if(Command.equalsIgnoreCase("Next Link")){
+							viewController.getHeaderTagHandler().clearSelectedTags();
+							viewController.getHeaderTagHandler().selectNextLinkHeader();
+						}
+						if(Command.equalsIgnoreCase("navigate")){
+							viewController.getHeaderTagHandler().navigateurl();
+						}
+						if(Command.equalsIgnoreCase("scroll down")){
+							viewController.getBrowserWindowView().webEngine.executeScript("window.scrollBy(0,500);");
+						}
+						if(Command.equalsIgnoreCase("scroll up")){
+							viewController.getBrowserWindowView().webEngine.executeScript("window.scrollBy(0,-500);");
+						}
 						if(Command.equalsIgnoreCase("smart notes")&& !(viewController.getBrowserWindowView().getSelectedText().equalsIgnoreCase(""))){
 							
 							viewController.getSmartNoteObj().copySelectedText(viewController.getBrowserWindowView().getSelectedText());

@@ -102,5 +102,29 @@ public class JSoupHelper {
         
         
     }
+    
+    //This function is used to get all the links from the url.   
+    public Elements getLinkTags(String url)
+    {
+        //String html="<h1>H1:1</h1><h2>H2:1</h2><h2>H2:2</h2><h1>H1:2</h1>";
+        Document doc;
+        try {
+            doc = Jsoup.connect(url).get();
+           
+            Elements lTags =doc.select("a");
+            /*for(int i=0; i< lTags.size(); i++)
+            {
+                Element currentHTag= lTags.get(i);
+                VoiceBrowser.log.info(currentHTag.tagName());
+               
+            }
+            */
+            return lTags;
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;                                
+    }
    
 }

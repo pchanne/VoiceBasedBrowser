@@ -6,6 +6,7 @@ import org.jsoup.select.Elements;
 
 import com.browser.controller.BrowserWindow;
 import com.browser.controller.TagHandler;
+import com.browser.controller.ViewController;
 import com.browser.helper.JSoupHelper;
 import com.browser.main.VoiceBrowser;
 import com.browser.view.ToolbarView;
@@ -26,9 +27,8 @@ import javafx.scene.layout.VBox;
 
 public class TabView extends Tab {
 
-	private TabToolbarView tabToolbarViewObj;
-	private BrowserWindow browserWindow;
-	
+	//private TabToolbarView tabToolbarViewObj;
+	private ViewController viewController;
 	//testing
 	private TextField searchBar;
     private Button findPositionButton;
@@ -38,26 +38,52 @@ public class TabView extends Tab {
 	private Button nextButton;
 	private Elements allHeaderTags;
 	private JSoupHelper jsoupHelperTest;
-	private TagHandler headerTagHandler;
+	
+	
+
+	
+
+	public ViewController getViewController() {
+		return viewController;
+	}
+
+	public void setViewController(ViewController viewController) {
+		this.viewController = viewController;
+	}
+
+	public Button getAllHeadersButton() {
+		return allHeadersButton;
+	}
+
+	public void setAllHeadersButton(Button allHeadersButton) {
+		this.allHeadersButton = allHeadersButton;
+	}
+
+	public Button getNextButton() {
+		return nextButton;
+	}
+
+	public void setNextButton(Button nextButton) {
+		this.nextButton = nextButton;
+	}
 
 	public TabView() {
 		
-		tabToolbarViewObj = new TabToolbarView();
-
-		browserWindow = new BrowserWindow();
+		//tabToolbarViewObj = new TabToolbarView();
+		viewController = new ViewController();
 		
-		headerTagHandler= new TagHandler(browserWindow.webEngine);
+		//headerTagHandler= new TagHandler(browserWindow.webEngine);
 		
 		//sideBarViewObj = new SideBarView();
 		//sideBarViewObj=SideBarView.getInstance();
 		
-		
 		final BorderPane tabLayout = new BorderPane();
 		
-		tabLayout.setTop(tabToolbarViewObj.CreateNavToolbar());
-		tabLayout.setCenter(browserWindow);
+		tabLayout.setTop(viewController.getToolBar().CreateNavToolbar());
+		tabLayout.setCenter(viewController.getBrowserWindowView());
+		viewController.reflectURLChange();
 
-		browserWindow.getView().getEngine().titleProperty()
+		viewController.getBrowserWindowView().getView().getEngine().titleProperty()
 				.addListener(new ChangeListener<String>() {
 					@Override
 					public void changed(
@@ -69,27 +95,27 @@ public class TabView extends Tab {
 					}
 				});
 
-		browserWindow.getView().getEngine().getLoadWorker().stateProperty()
-				.addListener(new ChangeListener<State>() {
-					public void changed(ObservableValue ov, State oldState,
-							State newState) {
-						if (newState == State.RUNNING) {
-
-							tabToolbarViewObj.getAddressBarField().setText(
-									browserWindow.getView().getEngine()
-											.getLocation());
-						}
-
-						if (newState == State.SUCCEEDED) {
-							System.out.println("in tab: " + getText());
-							System.out.println("Page "
-									+ browserWindow.getView().getEngine()
-											.getLocation() + " loaded");
-							headerTagHandler.initialise();
-						}
-
-					}
-				});
+//		browserWindow.getView().getEngine().getLoadWorker().stateProperty()
+//				.addListener(new ChangeListener<State>() {
+//					public void changed(ObservableValue ov, State oldState,
+//							State newState) {
+//						if (newState == State.RUNNING) {
+//
+//							tabToolbarViewObj.getAddressBarField().setText(
+//									browserWindow.getView().getEngine()
+//											.getLocation());
+//						}
+//
+//						if (newState == State.SUCCEEDED) {
+//							System.out.println("in tab: " + getText());
+//							System.out.println("Page "
+//									+ browserWindow.getView().getEngine()
+//											.getLocation() + " loaded");
+//							headerTagHandler.initialise();
+//						}
+//
+//					}
+//				});
 
 		/*tabLayout.getChildren().addAll(tabToolbarViewObj.CreateNavToolbar(),
 				browserWindow);*/
@@ -107,7 +133,7 @@ public class TabView extends Tab {
 		findPositionButton.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent actionEvent) {
                 
-                String url= browserWindow.webEngine.getLocation();
+                String url= viewController.getBrowserWindowView().webEngine.getLocation();
                 String textToFind= searchBar.getText();
                 
                 System.out.println(url+" "+textToFind);
@@ -115,7 +141,7 @@ public class TabView extends Tab {
                 JSoupHelper jsoupHelperInstance= new JSoupHelper();
                 headerIndex=jsoupHelperInstance.getPosition(url, textToFind)-1;
                 
-                browserWindow.webEngine.executeScript("var d = document.getElementsByTagName('p'); " +                		
+                viewController.getBrowserWindowView().webEngine.executeScript("var d = document.getElementsByTagName('p'); " +                		
                 		" d["+headerIndex+"].style.backgroundColor = 'blue';");
                 
                 
@@ -129,43 +155,43 @@ public class TabView extends Tab {
 		
 		allHeadersButton= new Button("Select all Headers");
 		
-		allHeadersButton.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent actionEvent) {
-                headerTagHandler.selectAllHeaderTags();
-            }
-        });
+//		allHeadersButton.setOnAction(new EventHandler<ActionEvent>() {
+//            public void handle(ActionEvent actionEvent) {
+//                headerTagHandler.selectAllHeaderTags();
+//            }
+//        });
+//		
+//		nextButton= new Button("Next");
+//		nextButton.setOnAction(new EventHandler<ActionEvent>() {
+//            public void handle(ActionEvent actionEvent) {
+//                headerTagHandler.selectNextHeader();
+//            }
+//        });
 		
-		nextButton= new Button("Next");
-		nextButton.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent actionEvent) {
-                headerTagHandler.selectNextHeader();
-            }
-        });
-		
-		HBox headerTagLayout= new HBox();
-		
-		headerTagLayout.getChildren().addAll(allHeadersButton, nextButton);
-					
-		VBox testLayout= new VBox();
-		
-		testLayout.getChildren().addAll(tabToolbarViewObj.CreateNavToolbar(),selectTagLayout, headerTagLayout);
-		tabLayout.setTop(testLayout);
-		
-		//tabLayout.setTop(tabToolbarViewObj.CreateNavToolbar());
-		tabLayout.setCenter(browserWindow);
-		
-		//tabLayout.setLeft(sideBarViewObj.getInstance().getSideBar());
-
-		tabToolbarViewObj.getNavButton().setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent actionEvent) {
-				try {
-					browserWindow.navTo(tabToolbarViewObj.getAddressBarField().getText());
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		});
+//		HBox headerTagLayout= new HBox();
+//		
+//		headerTagLayout.getChildren().addAll(allHeadersButton, nextButton);
+//					
+//		VBox testLayout= new VBox();
+//		
+//		testLayout.getChildren().addAll(tabToolbarViewObj.CreateNavToolbar(),selectTagLayout, headerTagLayout);
+//		tabLayout.setTop(testLayout);
+//		
+//		//tabLayout.setTop(tabToolbarViewObj.CreateNavToolbar());
+//		tabLayout.setCenter(browserWindow);
+//		
+//		//tabLayout.setLeft(sideBarViewObj.getInstance().getSideBar());
+//
+//		tabToolbarViewObj.getNavButton().setOnAction(new EventHandler<ActionEvent>() {
+//			public void handle(ActionEvent actionEvent) {
+//				try {
+//					browserWindow.navTo(tabToolbarViewObj.getAddressBarField().getText());
+//				} catch (IOException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//			}
+//		});
 		
 		final VBox sideBarContainer= new VBox();
 		

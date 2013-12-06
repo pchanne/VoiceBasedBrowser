@@ -10,6 +10,8 @@ import com.browser.reader.FileReader;
 import com.browser.speech.SpeechRecognitionTask;
 import com.browser.view.History;
 import com.browser.view.SideBarView;
+import com.browser.view.TabToolbarView;
+import com.browser.view.TabView;
 import com.browser.view.ToolbarView;
 
 import javafx.beans.value.ChangeListener;
@@ -25,7 +27,8 @@ import javafx.scene.input.MouseEvent;
 
 public class ViewController {
 
-	private ToolbarView toolBar;
+	//private ToolbarView toolBar;
+	private TabToolbarView toolBar;
 	private SideBarView sideBar;
 	private BrowserWindow browserWindowView;
 	private BookmarkController bookMarkController;
@@ -33,7 +36,32 @@ public class ViewController {
 	private SpeechRecognitionTask sTask;
 	private FileReader textReader;
 	private SmartNotes smartNoteObj;
+	//private TabView tabView;
+	private TagHandler headerTagHandler;
 	
+	public TagHandler getHeaderTagHandler() {
+		return headerTagHandler;
+	}
+
+	public void setHeaderTagHandler(TagHandler headerTagHandler) {
+		this.headerTagHandler = headerTagHandler;
+	}
+	
+	public TabToolbarView getToolBar() {
+		return toolBar;
+	}
+
+	public void setToolBar(TabToolbarView toolBar) {
+		this.toolBar = toolBar;
+	}
+
+//	public TabView getTabView() {
+//		return tabView;
+//	}
+//
+//	public void setTabView(TabView tabView) {
+//		this.tabView = tabView;
+//	}
 
 	public SmartNotes getSmartNoteObj() {
 		return smartNoteObj;
@@ -51,13 +79,6 @@ public class ViewController {
 		this.textReader = textReader;
 	}
 
-	public ToolbarView getToolBar() {
-		return toolBar;
-	}
-
-	public void setToolBar(ToolbarView toolBar) {
-		this.toolBar = toolBar;
-	}
 
 	public SideBarView getSideBar() {
 		return sideBar;
@@ -99,9 +120,11 @@ public class ViewController {
 		textReader = new FileReader();
 		smartNoteObj = new SmartNotes();
 		
-		this.toolBar = new ToolbarView(backActionEvent, goActionEvent, goActionEventOnEnter,forwardActionEvent, refreshActionEvent, bookmarkActionEvent,bookmarkToModelActionEvent,speechActionEvent, exitActionEvent);
+		this.toolBar = new TabToolbarView(backActionEvent, goActionEvent, goActionEventOnEnter,forwardActionEvent, refreshActionEvent, bookmarkActionEvent,bookmarkToModelActionEvent,speechActionEvent, exitActionEvent);
 		this.sideBar = new SideBarView();
 		this.browserWindowView = new BrowserWindow();
+		headerTagHandler = new TagHandler(this.browserWindowView.webEngine);
+		//this.tabView = new TabView();
 		//this.bookMarkController = new BookmarkController(toolBar,	browserWindowView);
 
 	}
@@ -128,6 +151,7 @@ public class ViewController {
 							System.out.println("Curr :"+browserWindowView.getView().getEngine().getLocation());
 							browserWindowView.getHistory().executeNav(browserWindowView.getView().getEngine().getLocation());
 							System.out.println("items list:"+browserWindowView.getHistory().getItems());
+							headerTagHandler.initialise();
 							
 						}
 

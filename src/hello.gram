@@ -6,4 +6,4 @@
 
 grammar hello;
 
-public <greet> = (Good morning | Hello | Go | Back | Forward | Refresh | Exit | Yahoo ".Dot" Com | Bing ".Dot" Com | Smart Notes | Read | Save | Cnn ".Dot" Com | Book Mark | Add);
+public <greet> = (Good morning | Hello | Go | Back | Forward | Refresh | Yahoo ".Dot" Com | Bing ".Dot" Com | Smart Notes | Read | Save | Cnn ".Dot" Com | Book Mark | Add | Titles | Next Title | Links | Next Link | Navigate | Scroll Up | Scroll Down);
