@@ -13,8 +13,6 @@ public class BrowserTabBarView {
 		// TODO Auto-generated constructor stub
 	}
 
-	
-
 	/*
 	 * 
 	 * setup the properties of the tab holder

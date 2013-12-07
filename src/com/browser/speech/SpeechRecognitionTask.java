@@ -4,7 +4,6 @@ import com.browser.controller.BrowserWindow;
 import com.browser.controller.ViewController;
 import com.browser.helper.SpeechHelper;
 import com.browser.main.VoiceBrowser;
-import com.browser.view.ToolbarView;
 import com.sun.glass.ui.Launchable;
 
 import javafx.application.Application;

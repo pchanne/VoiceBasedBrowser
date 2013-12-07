@@ -64,7 +64,7 @@ public class TabToolbarView {
 	private static ImageView menuGraphic;
 	private static ColorAdjust menuColorAdjust;
     
-    private Button homeButton;
+    private static Button homeButton;
     private ImageView homeGraphic;
 	private ColorAdjust homeColorAdjust;
     
@@ -73,7 +73,8 @@ public class TabToolbarView {
 	private ColorAdjust refreshColorAdjust;
     
     private Button forwardButton;
-    private ImageView forwardGraphic;
+
+	private ImageView forwardGraphic;
 	private ColorAdjust forwardColorAdjust;
 	
     private TextField addressBarField;
@@ -94,11 +95,11 @@ public class TabToolbarView {
 	private static ColorAdjust sidebarColorAdjust;
 	private static SideBarView sidebarView;
 	
-	private Button speechButton;
+	private static Button speechButton;
 	private ColorAdjust speechColorAdjust;
 	private ImageView speechGraphic;
 	private int counter;
-	private static boolean isSpeechMode;
+	private boolean isSpeechMode;
 	
 	private Button addBookmarkButton;
 	private Button addBookmarkToModelButton;
@@ -107,81 +108,148 @@ public class TabToolbarView {
 	private TextField bookmarkTitleTextField;
 	private ImageView bookmarkGraphic;
 	private ColorAdjust bookmarkColorAdjust;
-	
-	public static String DEFAULT_HOME = "http://www.google.com"; // default home url
     
-    public void setAddressBarFieldText(String addressBarFieldText) {
-		this.addressBarField.setText(addressBarFieldText);
+	public static String DEFAULT_HOME = "http://www.google.com";
+    public static final Logger logger = Logger.getLogger(Application.class);
+        
+    private static CheckMenuItem speechModeEnable;
+    
+    
+    public void setAddressBarFieldText(String url) {
+		this.addressBarField.setText(url);
+	}
+
+	public boolean isSpeechMode() {
+		return isSpeechMode;
+	}
+
+	public void setSpeechMode(boolean isSpeechMode) {
+		this.isSpeechMode = isSpeechMode;
+	}
+	
+    public Button getBackButton() {
+		return backButton;
+	}
+
+	public void setBackButton(Button backButton) {
+		this.backButton = backButton;
 	}
 
 	public Button getForwardButton() {
 		return forwardButton;
 	}
 
-	public Button getBackButton() {
-		return backButton;
+	public void setForwardButton(Button forwardButton) {
+		this.forwardButton = forwardButton;
+	}
+    
+	  /**
+     * @return the addTabButton
+     */
+    public Button getAddTabButton() {
+        return addTabButton;
+    }
+    /**
+     * @return the navButton
+     */
+    public Button getNavButton() {
+        return navButton;
+    }
+    /**
+     * @return the addressBarField
+     */
+    public TextField getAddressBarField() {
+        return addressBarField;
+    }
+    
+    /**
+     * @return the addBookmarkButton
+     */
+    public Button getAddBookmarkButton() {
+        return addBookmarkButton;
+    }
+
+    /**
+     * @return the addBookmarkToModelButton
+     */
+    public Button getAddBookmarkToModelButton() {
+        return addBookmarkToModelButton;
+    }
+    
+    public void setBookmarkUrlText(String bookmarkURl)
+    {
+        
+        bookmarkURLTextField.setText(bookmarkURl);
+    }
+    
+    public void setBookmarkTitleText(String bookmarkTitle)
+    {
+        bookmarkTitleTextField.setText(bookmarkTitle);
+    }
+    
+    public String getBookmarkTitle()
+    {
+        return bookmarkTitleTextField.getText();
+    }
+    
+    public String getBookmarkURL()
+    {
+        return bookmarkURLTextField.getText();
+    }
+
+    /**
+     * @return the showBookmarkMenuItem
+     */
+    public Menu getShowBookmarkMenuItem() {
+        return showBookmarkMenuItem;
+    }
+    
+    public Stage getBookmarkStage() {
+		return bookmarkStage;
 	}
 
-	public static final Logger logger = Logger.getLogger(Application.class);
-        
-    private static CheckMenuItem speechModeEnable;
-    
-  //Event Handlers
-  	public EventHandler<ActionEvent> backAction;
-  	public EventHandler<ActionEvent> goAction;
-  	public EventHandler<KeyEvent> goActionOnEnter;
-  	public EventHandler<ActionEvent> forwardAction;
-  	public EventHandler<ActionEvent> refreshAction;
-  	public EventHandler<ActionEvent> bookmarkAction;
-  	public EventHandler<ActionEvent> bookmarkToModelAction;
-  	public EventHandler<ActionEvent> speechAction;
-  	public EventHandler<ActionEvent> exitAction;
-  	//Constructor
-  	public TabToolbarView(EventHandler<ActionEvent> backAction,
-  			EventHandler<ActionEvent> goAction,EventHandler<KeyEvent> goActionOnEnter, EventHandler<ActionEvent> forwardAction,
-  			EventHandler<ActionEvent> refreshAction, EventHandler<ActionEvent> bookmarkAction, EventHandler<ActionEvent> bookmarkToModelAction,EventHandler<ActionEvent> speechAction,
-  			EventHandler<ActionEvent> exitAction
+    //Event Handler's
+    public EventHandler<ActionEvent> backAction;
+	public EventHandler<ActionEvent> goAction;
+	public EventHandler<KeyEvent> goActionOnEnter;
+	public EventHandler<ActionEvent> forwardAction;
+	public EventHandler<ActionEvent> refreshAction;
+	public EventHandler<ActionEvent> bookmarkAction;
+	public EventHandler<ActionEvent> bookmarkToModelAction;
+	public EventHandler<ActionEvent> speechAction;
+	public EventHandler<ActionEvent> exitAction;
+	public EventHandler<ActionEvent> addTabAction;
+	public EventHandler<ActionEvent> homeAction;
+	
+	//Constructor
+	public TabToolbarView(EventHandler<ActionEvent> backAction,
+			EventHandler<ActionEvent> goAction,EventHandler<KeyEvent> goActionOnEnter, EventHandler<ActionEvent> forwardAction,
+			EventHandler<ActionEvent> refreshAction, EventHandler<ActionEvent> bookmarkAction, EventHandler<ActionEvent> bookmarkToModelAction,EventHandler<ActionEvent> speechAction,
+			EventHandler<ActionEvent> exitAction, EventHandler<ActionEvent> addTabAction,EventHandler<ActionEvent> homeAction 
 
-  	) {
-  		this.backAction = backAction;
-  		this.goAction = goAction;
-  		this.goActionOnEnter = goActionOnEnter;
-  		this.forwardAction = forwardAction;
-  		this.refreshAction = refreshAction;
-  		this.bookmarkAction = bookmarkAction;
-  		this.bookmarkToModelAction = bookmarkToModelAction;
-  		this.speechAction = speechAction;
-  		this.exitAction = exitAction;
-  	}
+	) {
+		this.backAction = backAction;
+		this.goAction = goAction;
+		this.goActionOnEnter = goActionOnEnter;
+		this.forwardAction = forwardAction;
+		this.refreshAction = refreshAction;
+		this.bookmarkAction = bookmarkAction;
+		this.bookmarkToModelAction = bookmarkToModelAction;
+		this.speechAction = speechAction;
+		this.exitAction = exitAction;
+		this.addTabAction = addTabAction;
+		this.homeAction = homeAction;
+	}
     
     public Pane CreateNavToolbar()
     {
         getImgObj = new GetImagePath();
         addressBarField = new TextField();
         sidebarView = new SideBarView();
-        HBox.setHgrow(addressBarField, Priority.ALWAYS);
-        addressBarField.setStyle("-fx-font-size: 20;");
-		addressBarField.setPromptText("Where do you want to go today?");
-		addressBarField.setTooltip(new Tooltip("Enter a location"));
-		setAddressBarFieldText(DEFAULT_HOME);
-		addressBarField.setOnKeyReleased(new EventHandler<KeyEvent>() {
-			public void handle(KeyEvent keyEvent) {
-				if (keyEvent.getCode().equals(KeyCode.ENTER)) {
-					/*try {
-						getVoiceBrowser().navTo(addressBarField.getText());
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}*/
-					// System.out.println("in actionlistener");
-				}
-			}
-		});
-        
         isSpeechMode = false;
 		counter = 0;
-		//sTask = new SpeechRecognitionTask(voiceBrowserObj.getVoiceBrowser(), voiceBrowserObj);
-        
+		
+		createAddressBarField();
         //call createBackButton() to create the back button in the tabToolbarview
         createBackButton();
         //call createForwardButton() to create the forward button in the tabToolbarview
@@ -211,9 +279,6 @@ public class TabToolbarView {
 		navPane.setAlignment(Pos.CENTER);
 		navPane.getStyleClass().add("toolbar");
 		navPane.setSpacing(6);
-		/*navPane.getChildren().addAll(sidebarButton, backButton, forwardButton, refreshButton,
-				voiceBrowserObj.getAddressBarField(), navButton,
-				addBookmarkButton, addTabButton, homeButton, speechButton, menuButton);*/
 		navPane.getChildren().addAll(sidebarButton, backButton, forwardButton, refreshButton, addressBarField, navButton, addBookmarkButton, homeButton, speechButton, addTabButton, menuButton);
 
 		navPane.setFillHeight(false);
@@ -225,6 +290,21 @@ public class TabToolbarView {
                         
         return navPane;
     }
+    
+    /**
+     * Create addressBar
+     */
+    
+	public void createAddressBarField(){
+		
+		setAddressBarFieldText(DEFAULT_HOME);
+		addressBarField.setStyle("-fx-font-size: 20;");
+		addressBarField.setPromptText("Where do you want to go today?");
+		addressBarField.setTooltip(new Tooltip("Enter a location"));
+		addressBarField.setOnKeyReleased(goActionOnEnter);
+
+		HBox.setHgrow(addressBarField, Priority.ALWAYS);
+	}
     
     
      /** 
@@ -246,17 +326,7 @@ public class TabToolbarView {
 		forwardGraphic.setFitHeight(24);
 		forwardButton.setGraphic(forwardGraphic);
 		forwardButton.setTooltip(new Tooltip("Go forward"));
-		
-		 /** forwardButton.onActionProperty().set(new EventHandler<ActionEvent>()
-		 * {
-		 * 
-		 * @Override public void handle(ActionEvent actionEvent) { if
-		 * (chrome.getBrowser().getHistory().canNavForward()) {
-		 * chrome.getBrowser
-		 * ().navTo(chrome.getBrowser().getHistory().requestNavForward()); } }
-		 * });
-		 * forwardButton.setOnMouseReleased(chrome.getBrowser().getHistory().
-		 * createShowHistoryMouseEvent(backButton));*/
+		forwardButton.onActionProperty().set(forwardAction);
 		 
 
 	}
@@ -338,14 +408,7 @@ public class TabToolbarView {
 		addTabGraphic.setFitHeight(24);
 		addTabButton.setGraphic(addTabGraphic);
 		addTabButton.setTooltip(new Tooltip("Open a new tab"));
-		addTabButton.setOnAction(new EventHandler<ActionEvent>(){
-            public void handle(ActionEvent arg0) {
-                // TODO Auto-generated method stub
-                TabView addTab = new TabView();
-                BrowserTabBarView.getBrowserTabHolder().getTabs().add(addTab);
-            }
-            
-        });
+		addTabButton.setOnAction(addTabAction);
 	}
 	
 	
@@ -373,7 +436,7 @@ public class TabToolbarView {
 		refreshGraphic.setFitHeight(24);
 		refreshButton.setGraphic(refreshGraphic);
 		refreshButton.setTooltip(new Tooltip("Refresh"));
-		refreshButton.onActionProperty().set(refreshAction);
+		refreshButton.setOnAction(refreshAction);
 	}
 	
 	
@@ -477,6 +540,7 @@ public class TabToolbarView {
 		homeGraphic.setFitHeight(24);
 		homeButton.setGraphic(homeGraphic);
 		homeButton.setTooltip(new Tooltip("Take me home"));
+		homeButton.setOnAction(homeAction);
 	}
 	
 	
@@ -638,80 +702,9 @@ public class TabToolbarView {
 		return grid;
 
 	}
-	
-	
-	
-    public Stage getBookmarkStage() {
-		return bookmarkStage;
-	}
-
-	public static boolean isSpeechMode() {
-		return isSpeechMode;
-	}
-
-	public static void setSpeechMode(boolean isSpeechMode) {
-		TabToolbarView.isSpeechMode = isSpeechMode;
-	}
-
-	/**
-     * @return the addTabButton
-     */
-    public Button getAddTabButton() {
-        return addTabButton;
-    }
-    /**
-     * @return the navButton
-     */
-    public Button getNavButton() {
-        return navButton;
-    }
-    /**
-     * @return the addressBarField
-     */
-    public TextField getAddressBarField() {
-        return addressBarField;
-    }
     
-    /**
-     * @return the addBookmarkButton
-     */
-    public Button getAddBookmarkButton() {
-        return addBookmarkButton;
-    }
+    
+      
 
-    /**
-     * @return the addBookmarkToModelButton
-     */
-    public Button getAddBookmarkToModelButton() {
-        return addBookmarkToModelButton;
-    }
-    
-    public void setBookmarkUrlText(String bookmarkURl)
-    {
-        
-        bookmarkURLTextField.setText(bookmarkURl);
-    }
-    
-    public void setBookmarkTitleText(String bookmarkTitle)
-    {
-        bookmarkTitleTextField.setText(bookmarkTitle);
-    }
-    
-    public String getBookmarkTitle()
-    {
-        return bookmarkTitleTextField.getText();
-    }
-    
-    public String getBookmarkURL()
-    {
-        return bookmarkURLTextField.getText();
-    }
-
-    /**
-     * @return the showBookmarkMenuItem
-     */
-    public Menu getShowBookmarkMenuItem() {
-        return showBookmarkMenuItem;
-    }
     
 }

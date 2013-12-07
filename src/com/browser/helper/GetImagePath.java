@@ -7,13 +7,14 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import com.browser.view.ToolbarView;
+import com.browser.view.TabToolbarView;
+
 
 public class GetImagePath {
 
 	public String jarScan(String jarName, String iconName) {
 		final List<String> fileNamesImgs = new ArrayList<String>();
-		URL urlString = ToolbarView.class.getClassLoader().getResource(jarName);
+		URL urlString = TabToolbarView.class.getClassLoader().getResource(jarName);
 		String fileName = new String();
 		ZipInputStream zip;
 		try {
