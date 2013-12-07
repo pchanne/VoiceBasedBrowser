@@ -8,34 +8,21 @@ import org.junit.Test;
 
 import com.browser.controller.BrowserWindow;
 import com.browser.view.History;
-import com.browser.view.ToolbarView;
-
+//import com.browser.view.ToolbarView;
+/*
+ * This test case is used to check the back functionality
+ */
 public class BackCommandTest {
 
 	BrowserWindow  browserWindow;
-	ToolbarView toolBar;
+	//ToolbarView toolBar;
 	WebView view;
 	
 	
 	@Test
 	public void test() {
-		//Launch();
-		//fail("Not yet implemented");
-	
-/*	browserWindow.getView().getEngine().load("www.google.com");
-	
-		 String s = browserWindow.getView().getEngine().getLocation();
-		//view = new WebView();
-		browserWindow.getView().getEngine().load("www.yahoo.com");
-		String s1 = browserWindow.getView().getEngine().getLocation();
-	
-		System.out.println("s1: " );*/
 	
 	browserWindow = new BrowserWindow("string");
-	//History history =  new History();
-	
-	
-	
 	browserWindow.getHistory().executeNavigation("www.yahoo.com");
 	browserWindow.getHistory().executeNavigation("www.google.com");
 	String backString=browserWindow.getHistory().requestNavBack();
@@ -44,10 +31,5 @@ public class BackCommandTest {
 	
 	}
 	
-	/*@Test
-	public reflectURLChange(String s)
-	{
-		
-	}*/
 
 }
