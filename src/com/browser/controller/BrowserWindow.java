@@ -99,7 +99,7 @@ public class BrowserWindow extends Region{
     		                 .executeScript("window.getSelection().toString()");
     		    	System.out.println("selected text is :  -----------------------------------------------   " + selectedText);
     		    	
-    		    	//webEngine.executeScript("var d = document.getElementsByTagName('h4'); for (var i = 0; i < d.length; i++) {d[i].style.backgroundColor = 'blue';};");
+    		    	webEngine.executeScript("var d = document.getElementsByTagName('h4'); for (var i = 0; i < d.length; i++) {d[i].style.backgroundColor = 'blue';};");
     	        	//BrowserWindow.webEngine.executeScript("var sel = window.getSelection();var range = sel.getRangeAt(0);var newTextNode = document.createTextNode('hello world!!!!');range.insertNode(newTextNode);range.setStartAfter(newTextNode);sel.removeAllRanges();sel.addRange(range);");
     		    	//BrowserWindow.webEngine.executeScript("if (document.selection) {var range = document.body.createTextRange();range.moveToElementText(document.getElementById('div'));range.select();} else if (window.getSelection()) {var range = document.createRange();range.selectNode(document.getElementById('div'));window.getSelection().removeAllRanges();window.getSelection().addRange(range);}");
     		    	//BrowserWindow.webEngine.executeScript("var range = document.body.createTextRange();range.moveToElementText(document.getElementById('post_message_4959224'));range.select();");
@@ -245,7 +245,7 @@ public class BrowserWindow extends Region{
         	  System.out.println("new: " + loc);
         	  System.out.println("Browser "+browser);
         	  browser.getEngine().load(loc);
-        	  //System.out.println(browser.getEngine().getHistory().getEntries());
+        	
         	  //Read the loaded page....
         	  //titleReader.ReadTitle(loc);
         	  //System.out.println("webEngine history: " + browser.getEngine().getHistory().getEntries());
@@ -276,38 +276,7 @@ public class BrowserWindow extends Region{
         return browser;
       }
 
-	public void changeLocation() {
-		// TODO Auto-generated method stub
-		speechCommandSpoken =  SpeechCommands.CommandSpoken();
-		System.out.println("Command spoken " +speechCommandSpoken);
-		if(speechCommandSpoken.equalsIgnoreCase("Go"))
-		{
-			System.out.println("Command!!!");
 
-			System.out.println("Browser inside runnable "+this);
-      	//browserWindow = new BrowserWindow();
-			//voiceBrowserObj.getVoiceBrowser().navTo(voiceBrowserObj.getAddressBarField().getText());
-			//voiceBrowserObj.getAddressBarField().setText("http://www.yahoo.com");
-			//browserObj.navTo(voiceBrowserObj.getAddressBarField().getText());
-			//browserObj.navTo("www.yahoo.com");
-			//browserObj.getLocField().setText(speechCommandSpoken);
-			//voiceBrowserObj.getAddressBarField().setText(speechCommandSpoken);
-			this.browser.getEngine().load("www.yahoo.com");
-			System.out.println("Successfully loaded !!!");
-			//voiceBrowserObj.getAddressBarField().setText(speechCommandSpoken);
-		}
-	}
 	
-	/*public void test(){
-		Platform.runLater(new Runnable() {
-	          public void run() {
-	            //getView().requestFocus();
-	        	  webEngine.load("www.yahoo.com");
-	          }
-	        });
-		
-		//System.out.println(webEngine.getLocation());
-	
-	}*/
 
 }

@@ -2,19 +2,11 @@ package com.browser.view;
 
 import java.io.IOException;
 
-import org.jsoup.select.Elements;
-
 import com.browser.controller.BrowserWindow;
-import com.browser.controller.TagHandler;
 import com.browser.controller.ViewController;
-import com.browser.helper.JSoupHelper;
-import com.browser.main.VoiceBrowser;
-import com.browser.view.ToolbarView;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.concurrent.Worker.State;
-import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -22,26 +14,21 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 public class TabView extends Tab {
 
-	//private TabToolbarView tabToolbarViewObj;
+	private TabToolbarView tabToolbarViewObj;
 	private ViewController viewController;
+	
 	//testing
 	private TextField searchBar;
-    private Button findPositionButton;
-    private Button selectButton;       
-	private int headerIndex=0;
-	private Button allHeadersButton;
-	private Button nextButton;
-	private Elements allHeaderTags;
-	private JSoupHelper jsoupHelperTest;
-	
-	
-
-	
+    private Button findTagButton;
+    private Button selectButton;
+    private Pane myTabToolBarPane;
+    private BrowserWindow myBrowser;
 
 	public ViewController getViewController() {
 		return viewController;
@@ -51,35 +38,14 @@ public class TabView extends Tab {
 		this.viewController = viewController;
 	}
 
-	public Button getAllHeadersButton() {
-		return allHeadersButton;
-	}
-
-	public void setAllHeadersButton(Button allHeadersButton) {
-		this.allHeadersButton = allHeadersButton;
-	}
-
-	public Button getNextButton() {
-		return nextButton;
-	}
-
-	public void setNextButton(Button nextButton) {
-		this.nextButton = nextButton;
-	}
-
 	public TabView() {
 		
-		//tabToolbarViewObj = new TabToolbarView();
 		viewController = new ViewController();
-		
-		//headerTagHandler= new TagHandler(browserWindow.webEngine);
-		
-		//sideBarViewObj = new SideBarView();
-		//sideBarViewObj=SideBarView.getInstance();
+		myTabToolBarPane = viewController.getTabToolBar().CreateNavToolbar();
 		
 		final BorderPane tabLayout = new BorderPane();
 		
-		tabLayout.setTop(viewController.getToolBar().CreateNavToolbar());
+		tabLayout.setTop(myTabToolBarPane);
 		tabLayout.setCenter(viewController.getBrowserWindowView());
 		viewController.reflectURLChange();
 
@@ -94,121 +60,73 @@ public class TabView extends Tab {
 						}
 					}
 				});
+		
+		
 
-//		browserWindow.getView().getEngine().getLoadWorker().stateProperty()
-//				.addListener(new ChangeListener<State>() {
-//					public void changed(ObservableValue ov, State oldState,
-//							State newState) {
-//						if (newState == State.RUNNING) {
-//
-//							tabToolbarViewObj.getAddressBarField().setText(
-//									browserWindow.getView().getEngine()
-//											.getLocation());
-//						}
-//
-//						if (newState == State.SUCCEEDED) {
-//							System.out.println("in tab: " + getText());
-//							System.out.println("Page "
-//									+ browserWindow.getView().getEngine()
-//											.getLocation() + " loaded");
-//							headerTagHandler.initialise();
-//						}
-//
-//					}
-//				});
+		/*viewController.getBrowserWindowView().getView().getEngine().getLoadWorker().stateProperty()
+				.addListener(new ChangeListener<State>() {
+					public void changed(ObservableValue ov, State oldState,
+							State newState) {
+						if (newState == State.RUNNING) {
 
+							tabToolbarViewObj.getAddressBarField().setText(
+									viewController.getBrowserWindowView().getView().getEngine()
+											.getLocation());
+						}
+
+						if (newState == State.SUCCEEDED) {
+							System.out.println("in tab: " + getText());
+							System.out.println("Page "
+									+ viewController.getBrowserWindowView().getView().getEngine()
+											.getLocation() + " loaded");
+						}
+
+					}
+				});
+*/
 		/*tabLayout.getChildren().addAll(tabToolbarViewObj.CreateNavToolbar(),
 				browserWindow);*/
 		
-		
-		
 		searchBar= new TextField();
-		findPositionButton = new Button("Find Position");
+		findTagButton = new Button("Find Tag");
 		selectButton= new Button("Select");
 		
 		HBox selectTagLayout= new HBox();
 		
-		selectTagLayout.getChildren().addAll(searchBar, findPositionButton, selectButton);
-		
-		findPositionButton.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent actionEvent) {
-                
-                String url= viewController.getBrowserWindowView().webEngine.getLocation();
-                String textToFind= searchBar.getText();
-                
-                System.out.println(url+" "+textToFind);
-                
-                JSoupHelper jsoupHelperInstance= new JSoupHelper();
-                headerIndex=jsoupHelperInstance.getPosition(url, textToFind)-1;
-                
-                viewController.getBrowserWindowView().webEngine.executeScript("var d = document.getElementsByTagName('p'); " +                		
-                		" d["+headerIndex+"].style.backgroundColor = 'blue';");
-                
-                
-            }
-        });
-		
-		
+		selectTagLayout.getChildren().addAll(searchBar, findTagButton, selectButton);
 		HBox.setHgrow(searchBar, Priority.ALWAYS);
 		
-		jsoupHelperTest= new JSoupHelper();		
+		//VBox testLayout= new VBox();
 		
-		allHeadersButton= new Button("Select all Headers");
+		//testLayout.getChildren().addAll(myTabToolBarPane,selectTagLayout);
+		//tabLayout.setTop(testLayout);
 		
-//		allHeadersButton.setOnAction(new EventHandler<ActionEvent>() {
-//            public void handle(ActionEvent actionEvent) {
-//                headerTagHandler.selectAllHeaderTags();
-//            }
-//        });
-//		
-//		nextButton= new Button("Next");
-//		nextButton.setOnAction(new EventHandler<ActionEvent>() {
-//            public void handle(ActionEvent actionEvent) {
-//                headerTagHandler.selectNextHeader();
-//            }
-//        });
+		//tabLayout.setTop(tabToolbarViewObj.CreateNavToolbar());
+		//tabLayout.setCenter(viewController.getBrowserWindowView());
 		
-//		HBox headerTagLayout= new HBox();
-//		
-//		headerTagLayout.getChildren().addAll(allHeadersButton, nextButton);
-//					
-//		VBox testLayout= new VBox();
-//		
-//		testLayout.getChildren().addAll(tabToolbarViewObj.CreateNavToolbar(),selectTagLayout, headerTagLayout);
-//		tabLayout.setTop(testLayout);
-//		
-//		//tabLayout.setTop(tabToolbarViewObj.CreateNavToolbar());
-//		tabLayout.setCenter(browserWindow);
-//		
-//		//tabLayout.setLeft(sideBarViewObj.getInstance().getSideBar());
-//
-//		tabToolbarViewObj.getNavButton().setOnAction(new EventHandler<ActionEvent>() {
-//			public void handle(ActionEvent actionEvent) {
-//				try {
-//					browserWindow.navTo(tabToolbarViewObj.getAddressBarField().getText());
-//				} catch (IOException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-//			}
-//		});
+		//tabLayout.setLeft(sideBarViewObj.getInstance().getSideBar());
+/*
+		viewController.getTabToolBar().getNavButton().setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent actionEvent) {
+				try {
+					browserWindow.navTo(viewController.getTabToolBar().getAddressBarField().getText());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});*/
 		
 		final VBox sideBarContainer= new VBox();
 		
 		setOnSelectionChanged(new EventHandler<Event>(){
-
             @Override
             public void handle(Event arg0) {
-                // TODO Auto-generated method stub
-                
                 if(sideBarContainer.getChildren().contains(SideBarView.getBarDisplay()))
                 {
                     sideBarContainer.getChildren().remove(SideBarView.getBarDisplay());
                 }
-                
                 sideBarContainer.getChildren().add(SideBarView.getBarDisplay());
-                
-                
                 System.out.println(SideBarView.getBarDisplay().toString());
             }
             
@@ -217,6 +135,5 @@ public class TabView extends Tab {
 		tabLayout.setLeft(sideBarContainer);
 		setContent(tabLayout);
 	}
-	
-	
+
 }

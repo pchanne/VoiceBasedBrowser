@@ -48,18 +48,18 @@ public class SpeechHelper {
 						if (website.equalsIgnoreCase("yahoo.com")) {
 							System.out
 									.println("Website identified and set as the addressbar field ");
-							viewController.getToolBar()
+							viewController.getTabToolBar()
 									.getAddressBarField().setText(website);
 						}
 						if (website.equalsIgnoreCase("bing.com")) {
-							viewController.getToolBar().getAddressBarField().setText(website);
+							viewController.getTabToolBar().getAddressBarField().setText(website);
 						}
 						if(website.equalsIgnoreCase("cnn.com")){
-							viewController.getToolBar().getAddressBarField().setText(website);
+							viewController.getTabToolBar().getAddressBarField().setText(website);
 						}
 						if (Command.equalsIgnoreCase("go")) {
 							try {
-								viewController.getBrowserWindowView().navTo(viewController.getToolBar().getAddressBarField().getText());
+								viewController.getBrowserWindowView().navTo(viewController.getTabToolBar().getAddressBarField().getText());
 							} catch (IOException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -67,15 +67,14 @@ public class SpeechHelper {
 						}
 						if (Command.equalsIgnoreCase("back")) {
 							
-							viewController.getToolBar().getBackButton().fire();
+							viewController.getTabToolBar().getBackButton().fire();
 						}
 						if (Command.equalsIgnoreCase("forward")) {
-							viewController.getToolBar().getForwardButton().fire();
+							viewController.getTabToolBar().getForwardButton().fire();
 						}
 						if (Command.equalsIgnoreCase("refresh")) {
 							try {
-								viewController.getBrowserWindowView().navTo(viewController.getToolBar()
-										.getAddressBarField().getText());
+								viewController.getBrowserWindowView().navTo(viewController.getTabToolBar().getAddressBarField().getText());
 							} catch (IOException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -83,17 +82,14 @@ public class SpeechHelper {
 						}
 						if (Command.equalsIgnoreCase("book mark")) {
 							bookmarkFlag = true;
-							viewController.getToolBar().getAddBookmarkButton().fire();
+							viewController.getTabToolBar().getAddBookmarkButton().fire();
 							
 						}
 						if (Command.equalsIgnoreCase("Add") && bookmarkFlag) {
 							System.out.println("Adding bookmark..........");
-							viewController.getToolBar().getAddBookmarkToModelButton().fire();
+							viewController.getTabToolBar().getAddBookmarkToModelButton().fire();
 							bookmarkFlag = false;
 						}
-//						if (Command.equalsIgnoreCase("exit")) {
-//							System.exit(0);
-//						}
 						if (Command.equalsIgnoreCase("read")) {
 						if(ReadCounter == 0)	
 							{	
@@ -105,31 +101,6 @@ public class SpeechHelper {
 								speechReaderTask.restart();
 						}
 							
-						}
-						if(Command.equalsIgnoreCase("Titles")){
-							viewController.getHeaderTagHandler().clearSelectedTags();
-							viewController.getHeaderTagHandler().selectAllHeaderTags();
-						}
-						if(Command.equalsIgnoreCase("Next Title")){
-							viewController.getHeaderTagHandler().clearSelectedTags();
-							viewController.getHeaderTagHandler().selectNextHeader();
-						}
-						if(Command.equalsIgnoreCase("Links")){
-							viewController.getHeaderTagHandler().clearSelectedTags();
-							viewController.getHeaderTagHandler().selectAllLinkTags();;
-						}
-						if(Command.equalsIgnoreCase("Next Link")){
-							viewController.getHeaderTagHandler().clearSelectedTags();
-							viewController.getHeaderTagHandler().selectNextLinkHeader();
-						}
-						if(Command.equalsIgnoreCase("navigate")){
-							viewController.getHeaderTagHandler().navigateurl();
-						}
-						if(Command.equalsIgnoreCase("scroll down")){
-							viewController.getBrowserWindowView().webEngine.executeScript("window.scrollBy(0,500);");
-						}
-						if(Command.equalsIgnoreCase("scroll up")){
-							viewController.getBrowserWindowView().webEngine.executeScript("window.scrollBy(0,-500);");
 						}
 						if(Command.equalsIgnoreCase("smart notes")&& !(viewController.getBrowserWindowView().getSelectedText().equalsIgnoreCase(""))){
 							
@@ -156,6 +127,37 @@ public class SpeechHelper {
 						        e.printStackTrace();
 						    }
 						}
+						if (Command.equalsIgnoreCase("Titles")) {
+							viewController.getTagHandler().clearSelectedTags();
+							viewController.getTagHandler()
+									.selectAllHeaderTags();
+						}
+						if (Command.equalsIgnoreCase("Next Title")) {
+							viewController.getTagHandler().clearSelectedTags();
+							viewController.getTagHandler().selectNextHeader();
+						}
+						if (Command.equalsIgnoreCase("Links")) {
+							viewController.getTagHandler().clearSelectedTags();
+							viewController.getTagHandler().selectAllLinkTags();
+							;
+						}
+						if (Command.equalsIgnoreCase("Next Link")) {
+							viewController.getTagHandler().clearSelectedTags();
+							viewController.getTagHandler()
+									.selectNextLinkHeader();
+						}
+						if (Command.equalsIgnoreCase("navigate")) {
+							viewController.getTagHandler().navigateurl();
+						}
+						if (Command.equalsIgnoreCase("scroll down")) {
+							viewController.getBrowserWindowView().webEngine
+									.executeScript("window.scrollBy(0,500);");
+						}
+						if (Command.equalsIgnoreCase("scroll up")) {
+							viewController.getBrowserWindowView().webEngine
+									.executeScript("window.scrollBy(0,-500);");
+						}
+						
 					}
 				}
 			}

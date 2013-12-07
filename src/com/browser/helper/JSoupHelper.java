@@ -25,7 +25,6 @@ public class JSoupHelper {
             
             return hTags;
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return null;                                 
@@ -65,7 +64,6 @@ public class JSoupHelper {
             System.out.println("Index is:"+ allElements.indexOf(currentElement));
                         
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             System.out.println(e.getMessage());
             //e.printStackTrace();
         }

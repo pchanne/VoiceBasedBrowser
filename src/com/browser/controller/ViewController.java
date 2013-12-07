@@ -8,11 +8,11 @@ import com.browser.model.Bookmark;
 import com.browser.model.BookmarkModel;
 import com.browser.reader.FileReader;
 import com.browser.speech.SpeechRecognitionTask;
+import com.browser.view.BrowserTabBarView;
 import com.browser.view.History;
 import com.browser.view.SideBarView;
 import com.browser.view.TabToolbarView;
 import com.browser.view.TabView;
-import com.browser.view.ToolbarView;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -24,44 +24,34 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 
 public class ViewController {
 
-	//private ToolbarView toolBar;
-	private TabToolbarView toolBar;
-	private SideBarView sideBar;
+	private TabToolbarView tabToolBar;
 	private BrowserWindow browserWindowView;
-	private BookmarkController bookMarkController;
 	private BookmarkModel bookmarkModel;
 	private SpeechRecognitionTask sTask;
 	private FileReader textReader;
 	private SmartNotes smartNoteObj;
-	//private TabView tabView;
-	private TagHandler headerTagHandler;
+	private TagHandler tagHandler;
 	
-	public TagHandler getHeaderTagHandler() {
-		return headerTagHandler;
-	}
-
-	public void setHeaderTagHandler(TagHandler headerTagHandler) {
-		this.headerTagHandler = headerTagHandler;
-	}
 	
-	public TabToolbarView getToolBar() {
-		return toolBar;
+	public TagHandler getTagHandler() {
+		return tagHandler;
 	}
 
-	public void setToolBar(TabToolbarView toolBar) {
-		this.toolBar = toolBar;
+	public void setTagHandler(TagHandler tagHandler) {
+		this.tagHandler = tagHandler;
 	}
 
-//	public TabView getTabView() {
-//		return tabView;
-//	}
-//
-//	public void setTabView(TabView tabView) {
-//		this.tabView = tabView;
-//	}
+	public TabToolbarView getTabToolBar() {
+		return tabToolBar;
+	}
+
+	public void setTabToolBar(TabToolbarView tabToolBar) {
+		this.tabToolBar = tabToolBar;
+	}
 
 	public SmartNotes getSmartNoteObj() {
 		return smartNoteObj;
@@ -80,13 +70,6 @@ public class ViewController {
 	}
 
 
-	public SideBarView getSideBar() {
-		return sideBar;
-	}
-
-	public void setSideBar(SideBarView sideBar) {
-		this.sideBar = sideBar;
-	}
 
 	public BrowserWindow getBrowserWindowView() {
 		return browserWindowView;
@@ -96,13 +79,9 @@ public class ViewController {
 		this.browserWindowView = browserWindowView;
 	}
 
-	public BookmarkController getBookMarkController() {
-		return bookMarkController;
-	}
 
-	public void setBookMarkController(BookmarkController bookMarkController) {
-		this.bookMarkController = bookMarkController;
-	}
+	
+	
 
 	public ViewController() {
 		
@@ -116,17 +95,18 @@ public class ViewController {
 		EventHandler<ActionEvent> bookmarkToModelActionEvent = new BookmarkToModelActionEvent();
 		EventHandler<ActionEvent> speechActionEvent = new SpeechActionEvent(); 
 		EventHandler<ActionEvent> exitActionEvent = new ExitActionEvent();
+		EventHandler<ActionEvent> addTabActionEvent = new addTabActionEvent();
+		EventHandler<ActionEvent> homeActionEvent = new homeActionEvent();
+		
 		bookmarkModel = new BookmarkModel();
 		textReader = new FileReader();
 		smartNoteObj = new SmartNotes();
 		
-		this.toolBar = new TabToolbarView(backActionEvent, goActionEvent, goActionEventOnEnter,forwardActionEvent, refreshActionEvent, bookmarkActionEvent,bookmarkToModelActionEvent,speechActionEvent, exitActionEvent);
-		this.sideBar = new SideBarView();
+		
+		this.tabToolBar = new TabToolbarView(backActionEvent, goActionEvent, goActionEventOnEnter,forwardActionEvent, refreshActionEvent, bookmarkActionEvent,bookmarkToModelActionEvent,speechActionEvent, exitActionEvent, addTabActionEvent, homeActionEvent);
 		this.browserWindowView = new BrowserWindow();
-		headerTagHandler = new TagHandler(this.browserWindowView.webEngine);
-		//this.tabView = new TabView();
-		//this.bookMarkController = new BookmarkController(toolBar,	browserWindowView);
-
+		tagHandler = new TagHandler(browserWindowView.webEngine);
+		
 	}
 
 	public void reflectURLChange() {
@@ -135,26 +115,17 @@ public class ViewController {
 				.addListener(new ChangeListener<State>() {
 					public void changed(ObservableValue ov, State oldState,
 							State newState) {
-						System.out
-								.println("blah blah ++++++++++++++++++++++++++++");
+						
 						if (newState == State.RUNNING) {
-							toolBar.getAddressBarField().setText(
-									browserWindowView.getView().getEngine()
-											.getLocation());
+							tabToolBar.getAddressBarField().setText(browserWindowView.getView().getEngine().getLocation());
 						}
-
 						if (newState == State.SUCCEEDED) {
-							System.out.println("Page "
-									+ browserWindowView.getView().getEngine()
-											.getLocation() + " loaded");
-							
+							System.out.println("Page "+ browserWindowView.getView().getEngine().getLocation() + " loaded");
 							System.out.println("Curr :"+browserWindowView.getView().getEngine().getLocation());
 							browserWindowView.getHistory().executeNav(browserWindowView.getView().getEngine().getLocation());
 							System.out.println("items list:"+browserWindowView.getHistory().getItems());
-							headerTagHandler.initialise();
-							
+							tagHandler.initialise();
 						}
-
 					}
 				});
 
@@ -162,14 +133,13 @@ public class ViewController {
 
 	public void perfomGoAction() {
 
-		toolBar.getNavButton().onActionProperty()
+		tabToolBar.getNavButton().onActionProperty()
 				.set(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent actionEvent) {
 						try {
-							browserWindowView.navTo(toolBar
+							browserWindowView.navTo(tabToolBar
 									.getAddressBarField().getText());
 						} catch (IOException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					}
@@ -181,18 +151,15 @@ public class ViewController {
 
 		@Override
 		public void handle(ActionEvent actionEvent) {
-			// TODO Auto-generated method stub
 			System.out.println("Back Clicked!");
 			if(browserWindowView.getHistory().canNavBack()){
 				try {
 					System.out.println("navigating back......");
 					browserWindowView.navTo(browserWindowView.getHistory().requestNavBack());
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
-			
 		}
 	}
 	
@@ -200,14 +167,12 @@ public class ViewController {
 
 		@Override
 		public void handle(ActionEvent actionEvent) {
-			// TODO Auto-generated method stub
 			System.out.println("forward Clicked!");
 			if(browserWindowView.getHistory().canNavForward()){
 				
 				try {
 					browserWindowView.navTo(browserWindowView.getHistory().requestNavForward());
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				
@@ -224,8 +189,7 @@ public class ViewController {
 			// TODO Auto-generated method stub
 			System.out.println("Go Clicked!");
 			try {
-				browserWindowView.navTo(toolBar
-						.getAddressBarField().getText());
+				browserWindowView.navTo(tabToolBar.getAddressBarField().getText());
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -241,8 +205,7 @@ public class ViewController {
 			// TODO Auto-generated method stub
 			System.out.println("Refresh Clicked!");
 			try {
-				browserWindowView.navTo(toolBar
-						.getAddressBarField().getText());
+				browserWindowView.navTo(tabToolBar.getAddressBarField().getText());
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -258,8 +221,7 @@ public class ViewController {
 			// TODO Auto-generated method stub
 			if (keyEvent.getCode().equals(KeyCode.ENTER)) {
 			try {
-				browserWindowView.navTo(toolBar
-						.getAddressBarField().getText());
+				browserWindowView.navTo(tabToolBar.getAddressBarField().getText());
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -275,10 +237,10 @@ public class ViewController {
 		public void handle(ActionEvent actionEvent) {
 			// TODO Auto-generated method stub
 			System.out.println("bookmark clicked");
-			toolBar.getBookmarkStage().show();
+			tabToolBar.getBookmarkStage().show();
 
-			toolBar.setBookmarkTitleText(browserWindowView.getView().getEngine().getTitle());
-			toolBar.setBookmarkUrlText(toolBar.getAddressBarField().getText());
+			tabToolBar.setBookmarkTitleText(browserWindowView.getView().getEngine().getTitle());
+			tabToolBar.setBookmarkUrlText(tabToolBar.getAddressBarField().getText());
 
 		
 
@@ -291,12 +253,12 @@ public class ViewController {
 			// TODO Auto-generated method stub
 			System.out.println("bm in action");
 			Bookmark bookmark = new Bookmark();
-			bookmark.setBookmarkName(toolBar.getBookmarkTitle());
-			bookmark.setBookmarkURL(toolBar.getBookmarkURL());
+			bookmark.setBookmarkName(tabToolBar.getBookmarkTitle());
+			bookmark.setBookmarkURL(tabToolBar.getBookmarkURL());
 
 			bookmarkModel.addBookmark(bookmark);
 			setBookmarkItems();
-			toolBar.getBookmarkStage().close();
+			tabToolBar.getBookmarkStage().close();
 
 
 		}
@@ -304,10 +266,8 @@ public class ViewController {
 	
 	public void setBookmarkItems() {
 		
-	toolBar.getShowBookmarkMenuItem().getItems().removeAll(toolBar.getShowBookmarkMenuItem().getItems());
-
+		tabToolBar.getShowBookmarkMenuItem().getItems().removeAll(tabToolBar.getShowBookmarkMenuItem().getItems());
 		ArrayList<Bookmark> bookmarkList = bookmarkModel.getBookmarkList();
-		
 		for (final Bookmark bookmark : bookmarkList) {
 			MenuItem bookmarkMenuItem = new MenuItem(bookmark.getBookmarkName());
 
@@ -325,7 +285,7 @@ public class ViewController {
 				}
 
 			});		
-			toolBar.getShowBookmarkMenuItem().getItems().add(bookmarkMenuItem);
+			tabToolBar.getShowBookmarkMenuItem().getItems().add(bookmarkMenuItem);
 		}
 
 	}
@@ -338,14 +298,14 @@ public class ViewController {
 		public void handle(ActionEvent actionEvent) {
 			// TODO Auto-generated method stub
 			System.out.println("Speech enabled/disabled clicked");
-			if (toolBar.isSpeechMode()) {
-				toolBar.setSpeechMode(false);
-				toolBar.createSpeechButtonHelper("Micro-off-icon",
+			if (tabToolBar.isSpeechMode()) {
+				tabToolBar.setSpeechMode(false);
+				tabToolBar.createSpeechButtonHelper("Micro-off-icon",
 						"Enable speech mode");
 				sTask.cancel();
 			} else {
-				toolBar.setSpeechMode(true);
-				toolBar.createSpeechButtonHelper("Micro-icon",
+				tabToolBar.setSpeechMode(true);
+				tabToolBar.createSpeechButtonHelper("Micro-icon",
 						"Disable speech mode");
 				if (SpeechCounter == 0) {
 					SpeechCounter++;
@@ -369,4 +329,23 @@ public class ViewController {
 		}
 		}
 	
+	public class addTabActionEvent implements EventHandler<ActionEvent> {
+		@Override
+		public void handle(ActionEvent actionEvent) {
+			// TODO Auto-generated method stub
+			TabView addTab = new TabView();
+            BrowserTabBarView.getBrowserTabHolder().getTabs().add(addTab);
+		}
+	}
+	
+	public class homeActionEvent implements EventHandler<ActionEvent> {
+		@Override
+		public void handle(ActionEvent actionEvent) {
+			try {
+				browserWindowView.navTo(TabToolbarView.DEFAULT_HOME);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 }
