@@ -8,28 +8,23 @@ import org.junit.Test;
 
 import com.browser.controller.BrowserWindow;
 import com.browser.view.History;
-//import com.browser.view.ToolbarView;
+
 /*
- * This test case is use
+ * This test case is use to check the reflectUrlchange functionality
  */
 public class ViewControllerTest {
 
-	BrowserWindow  browserWindow;
-//	ToolbarView toolBar;
+	BrowserWindow browserWindow;
 	WebView view;
-	
-	
+
 	@Test
 	public void test() {
-		
-	browserWindow = new BrowserWindow("string");
-	
-	browserWindow.getHistory().executeNavigation("www.yahoo.com");
-	Assert.assertNotNull(browserWindow.getHistory().getItems());
-	
-	
-	}
-	
-	
-}
 
+		browserWindow = new BrowserWindow("string");
+
+		browserWindow.getHistory().executeNavigation("www.yahoo.com");
+		Assert.assertNotNull(browserWindow.getHistory().getItems());
+
+	}
+
+}
