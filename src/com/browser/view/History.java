@@ -24,7 +24,7 @@ public class History {
   private int pointer = 0;        // index into the history list for the currently displayed page from the history.
   private Integer navPointer = null;  // index into the history list for a new page to be displayed page in the history.
   private final BrowserWindow browser;      // browser window (contains WebView) managed by this history.
-  private final ContextMenu historyMenu = new ContextMenu();
+  private final ContextMenu historyMenu;
   private WebHistory history; 
   
   public ObservableList<String> getItems() {
@@ -33,9 +33,16 @@ public class History {
 
 public History(BrowserWindow browser) {
     this.browser = browser;
+    this.historyMenu = new ContextMenu();
     //this.history = this.browser.webEngine.getHistory();
     
   }
+
+//dummy constructor to test the History class functions 
+public History() {
+	this.browser = null;
+	 this.historyMenu = null;
+}
 
   public boolean canNavForward() { return pointer < items.size() - 1; }
   public boolean canNavBack()    
@@ -99,6 +106,44 @@ public History(BrowserWindow browser) {
     }
   }
 
+  
+  /**
+   * Dummy function to test the behavior of executeNav function
+   * @param newLoc
+   */
+  	public void executeNavigation(String newLoc) {
+  		// this.history = this.browser.webEngine.getHistory();
+  		// System.out.println("history at curr index: "+history.getEntries().get(history.getCurrentIndex()));
+  		// items.add(history.getEntries().get(history.getCurrentIndex()).getUrl());
+  		// history.getEntries().get(history.getCurrentIndex());
+
+  		// todo add some validation that this is the request nav, so that we
+  		// ensure all updates occur correctly.
+  		// don't need to show the history menu anymore.
+  	//	historyMenu.hide();
+System.out.println("inside navigation");
+  		if (navPointer == null) { // standard navPointer.
+  			if (pointer < items.size() - 1) { // wipe any forward button
+  												// history.
+  				items.remove(pointer + 1, items.size());
+  			}
+  			items.add(newLoc);
+
+  			// items.add(history.getEntries().get(history.getCurrentIndex()).getUrl());
+  			if (items.size() >= MAX_HISTORY_SIZE) {
+  				items.remove(0);
+  			}
+  			pointer = items.size() - 1;
+  		} else { // navPointer using history list.
+  			pointer = navPointer;
+  			navPointer = null;
+  		}
+  	}
+  
+  
+  
+  
+  
   /**
    * Show a history menu when the user right clicks.
    * @param displayNode the node under which the history menu is to be displayed.
