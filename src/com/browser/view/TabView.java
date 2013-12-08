@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import com.browser.controller.BrowserWindow;
 import com.browser.controller.ViewController;
+import com.browser.helper.GetImagePath;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -12,6 +13,10 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -29,6 +34,19 @@ public class TabView extends Tab {
     private Button selectButton;
     private Pane myTabToolBarPane;
     private BrowserWindow myBrowser;
+    private static boolean speechMode = false;
+    private Button speechButton;
+    private ImageView speechGraphic;
+    private ColorAdjust speechColorAdjust;
+    private static GetImagePath getImgObj;
+    
+	public static boolean isSpeechMode() {
+		return speechMode;
+	}
+
+	public static void setSpeechMode(boolean speechMode) {
+		TabView.speechMode = speechMode;
+	}
 
 	public ViewController getViewController() {
 		return viewController;
@@ -39,7 +57,7 @@ public class TabView extends Tab {
 	}
 
 	public TabView() {
-		
+		//System.out.println(this);
 		viewController = new ViewController();
 		myTabToolBarPane = viewController.getTabToolBar().CreateNavToolbar();
 		
@@ -63,29 +81,6 @@ public class TabView extends Tab {
 		
 		
 
-		/*viewController.getBrowserWindowView().getView().getEngine().getLoadWorker().stateProperty()
-				.addListener(new ChangeListener<State>() {
-					public void changed(ObservableValue ov, State oldState,
-							State newState) {
-						if (newState == State.RUNNING) {
-
-							tabToolbarViewObj.getAddressBarField().setText(
-									viewController.getBrowserWindowView().getView().getEngine()
-											.getLocation());
-						}
-
-						if (newState == State.SUCCEEDED) {
-							System.out.println("in tab: " + getText());
-							System.out.println("Page "
-									+ viewController.getBrowserWindowView().getView().getEngine()
-											.getLocation() + " loaded");
-						}
-
-					}
-				});
-*/
-		/*tabLayout.getChildren().addAll(tabToolbarViewObj.CreateNavToolbar(),
-				browserWindow);*/
 		
 		searchBar= new TextField();
 		findTagButton = new Button("Find Tag");
@@ -96,44 +91,45 @@ public class TabView extends Tab {
 		selectTagLayout.getChildren().addAll(searchBar, findTagButton, selectButton);
 		HBox.setHgrow(searchBar, Priority.ALWAYS);
 		
-		//VBox testLayout= new VBox();
-		
-		//testLayout.getChildren().addAll(myTabToolBarPane,selectTagLayout);
-		//tabLayout.setTop(testLayout);
-		
-		//tabLayout.setTop(tabToolbarViewObj.CreateNavToolbar());
-		//tabLayout.setCenter(viewController.getBrowserWindowView());
-		
-		//tabLayout.setLeft(sideBarViewObj.getInstance().getSideBar());
-/*
-		viewController.getTabToolBar().getNavButton().setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent actionEvent) {
-				try {
-					browserWindow.navTo(viewController.getTabToolBar().getAddressBarField().getText());
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		});*/
-		
 		final VBox sideBarContainer= new VBox();
 		
 		setOnSelectionChanged(new EventHandler<Event>(){
             @Override
             public void handle(Event arg0) {
+            	System.out.println("changed");
                 if(sideBarContainer.getChildren().contains(SideBarView.getBarDisplay()))
                 {
                     sideBarContainer.getChildren().remove(SideBarView.getBarDisplay());
                 }
                 sideBarContainer.getChildren().add(SideBarView.getBarDisplay());
-                System.out.println(SideBarView.getBarDisplay().toString());
+               
+                //Changing speech icon on tab change based on global speechMode status
+                getImgObj = new GetImagePath();
+                String iconPath = null;
+                System.out.println("VC object: "+TabView.this.viewController);
+                
+                
+                if(TabView.speechMode){
+                	iconPath = getImgObj.jarScan("icons.jar", "Micro-icon");
+                	speechGraphic = new ImageView(new Image(iconPath));
+            		((Button)viewController.getTabToolBar().getNavPane().getChildren().get(8)).setGraphic(speechGraphic);
+            		System.out.println("changing to mic on");
+            		
+                }else if(!TabView.speechMode){
+                	iconPath = getImgObj.jarScan("icons.jar", "Micro-off-icon");
+                	speechGraphic = new ImageView(new Image(iconPath));
+                	((Button)viewController.getTabToolBar().getNavPane().getChildren().get(8)).setGraphic(speechGraphic);
+                	System.out.println("changing to mic off");
+                }
+                
             }
             
         });
 
 		tabLayout.setLeft(sideBarContainer);
 		setContent(tabLayout);
+		
+		
 	}
 
 }

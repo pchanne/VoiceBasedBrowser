@@ -23,6 +23,8 @@ public class TabViewController {
 		
 		
 		tab = new TabView(); // creating first tab when browser opens.
+		//TabView.setSpeechMode(false);
+		System.out.println("first tab: "+tab);
 		browserTabBarView = new BrowserTabBarView(); // container for holding all the tabs.
 		SideBarView.initSideBar(); // static sidebar that is shared among all the tabs
 		

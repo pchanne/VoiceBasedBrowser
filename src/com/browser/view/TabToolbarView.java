@@ -54,7 +54,6 @@ public class TabToolbarView {
     private  MenuButton menuButton;
     private static MenuItem saveMenuItem;
 	private static MenuItem loadMenuItem;
-	private MenuItem newTabMenuItem;
 	private static MenuItem exitMenuItem;
 	private static MenuItem showStatusBarMenuItem;
 	private static Menu showBookmarkMenuItem;
@@ -95,10 +94,9 @@ public class TabToolbarView {
 	private static ColorAdjust sidebarColorAdjust;
 	private static SideBarView sidebarView;
 	
-	private static Button speechButton;
+	private Button speechButton;
 	private ColorAdjust speechColorAdjust;
 	private ImageView speechGraphic;
-	private int counter;
 	private boolean isSpeechMode;
 	
 	private Button addBookmarkButton;
@@ -111,11 +109,29 @@ public class TabToolbarView {
     
 	public static String DEFAULT_HOME = "http://www.google.com";
     public static final Logger logger = Logger.getLogger(Application.class);
+    
+    private HBox navPane;
         
-    private static CheckMenuItem speechModeEnable;
+    public HBox getNavPane() {
+		return navPane;
+	}
+
+	public void setNavPane(HBox navPane) {
+		this.navPane = navPane;
+	}
+
+	private static CheckMenuItem speechModeEnable;
     
     
-    public void setAddressBarFieldText(String url) {
+    public  Button getSpeechButton() {
+		return speechButton;
+	}
+
+	public void setSpeechButton(Button speechButton) {
+		this.speechButton = speechButton;
+	}
+
+	public void setAddressBarFieldText(String url) {
 		this.addressBarField.setText(url);
 	}
 
@@ -247,7 +263,6 @@ public class TabToolbarView {
         addressBarField = new TextField();
         sidebarView = new SideBarView();
         isSpeechMode = false;
-		counter = 0;
 		
 		createAddressBarField();
         //call createBackButton() to create the back button in the tabToolbarview
@@ -274,7 +289,7 @@ public class TabToolbarView {
         
      // align all of the navigation widgets in a horizontal toolbar.
        
-        final HBox navPane = new HBox();
+        navPane = new HBox();
 		navPane.setPadding(new Insets(5, 0, 5, 0));
 		navPane.setAlignment(Pos.CENTER);
 		navPane.getStyleClass().add("toolbar");
@@ -344,9 +359,7 @@ public class TabToolbarView {
 		 
 		backButton = new Button(null);
 		backButton.setTooltip(new Tooltip("Go back"));
-		backButton
-				.setStyle("-fx-background-color: WHITE; -fx-border-color: WHITE; -fx-border-width: 0;");
-
+		backButton.setStyle("-fx-background-color: WHITE; -fx-border-color: WHITE; -fx-border-width: 0;");
 		iconPath = getImgObj.jarScan("icons.jar", "Arrows-Back-icon");
 		backGraphic = new ImageView(new Image(iconPath));
 		backColorAdjust = new ColorAdjust();
@@ -619,16 +632,16 @@ public class TabToolbarView {
 	    sidebarButton.setOnAction(new EventHandler<ActionEvent>() {
 	      @Override public void handle(ActionEvent actionEvent) {
 	        // hide sidebar.
-	    	  System.out.println("sidebar button pressed!!!");
+	    	  //System.out.println("sidebar button pressed!!!");
 	        final double startWidth = getSidebarDisplay().getWidth();
-	        System.out.println("startwidth ----------------------------------------------------------------- " + startWidth);
+	        //System.out.println("startwidth ----------------------------------------------------------------- " + startWidth);
 	        final Animation hideSidebar = new Transition() {
 	          { setCycleDuration(Duration.millis(250)); }
 	          protected void interpolate(double frac) {
-	        	  System.out.println("start width: = " + startWidth);
-	        	  System.out.println("frac = " + frac);
+	        	  /*System.out.println("start width: = " + startWidth);
+	        	  System.out.println("frac = " + frac);*/
 	            final double curWidth = startWidth * (1.0 - frac);
-	            System.out.println("current width is: " + curWidth);
+	            //System.out.println("current width is: " + curWidth);
 	            getSidebarDisplay().setPrefWidth(curWidth);
 	            getSidebarDisplay().setTranslateX(-startWidth + curWidth);
 	          }
@@ -702,6 +715,9 @@ public class TabToolbarView {
 		return grid;
 
 	}
+	
+	
+	
     
     
       

@@ -95,8 +95,8 @@ public class ViewController {
 		EventHandler<ActionEvent> bookmarkToModelActionEvent = new BookmarkToModelActionEvent();
 		EventHandler<ActionEvent> speechActionEvent = new SpeechActionEvent(); 
 		EventHandler<ActionEvent> exitActionEvent = new ExitActionEvent();
-		EventHandler<ActionEvent> addTabActionEvent = new addTabActionEvent();
-		EventHandler<ActionEvent> homeActionEvent = new homeActionEvent();
+		EventHandler<ActionEvent> addTabActionEvent = new AddTabActionEvent();
+		EventHandler<ActionEvent> homeActionEvent = new HomeActionEvent();
 		
 		bookmarkModel = new BookmarkModel();
 		textReader = new FileReader();
@@ -120,10 +120,10 @@ public class ViewController {
 							tabToolBar.getAddressBarField().setText(browserWindowView.getView().getEngine().getLocation());
 						}
 						if (newState == State.SUCCEEDED) {
-							System.out.println("Page "+ browserWindowView.getView().getEngine().getLocation() + " loaded");
-							System.out.println("Curr :"+browserWindowView.getView().getEngine().getLocation());
+							//System.out.println("Page "+ browserWindowView.getView().getEngine().getLocation() + " loaded");
+							//System.out.println("Curr :"+browserWindowView.getView().getEngine().getLocation());
 							browserWindowView.getHistory().executeNav(browserWindowView.getView().getEngine().getLocation());
-							System.out.println("items list:"+browserWindowView.getHistory().getItems());
+							//System.out.println("items list:"+browserWindowView.getHistory().getItems());
 							tagHandler.initialise();
 						}
 					}
@@ -296,17 +296,18 @@ public class ViewController {
 		int SpeechCounter = 0 ;
 		@Override
 		public void handle(ActionEvent actionEvent) {
-			// TODO Auto-generated method stub
-			System.out.println("Speech enabled/disabled clicked");
-			if (tabToolBar.isSpeechMode()) {
+			
+			if (TabView.isSpeechMode()) {
+				System.out.println("disabling");
 				tabToolBar.setSpeechMode(false);
-				tabToolBar.createSpeechButtonHelper("Micro-off-icon",
-						"Enable speech mode");
+				TabView.setSpeechMode(false);
+				tabToolBar.createSpeechButtonHelper("Micro-off-icon","Enable speech mode");
 				sTask.cancel();
 			} else {
+				System.out.println("enabling");
 				tabToolBar.setSpeechMode(true);
-				tabToolBar.createSpeechButtonHelper("Micro-icon",
-						"Disable speech mode");
+				TabView.setSpeechMode(true);
+				tabToolBar.createSpeechButtonHelper("Micro-icon","Disable speech mode");
 				if (SpeechCounter == 0) {
 					SpeechCounter++;
 					sTask.start();
@@ -323,22 +324,19 @@ public class ViewController {
 	public class ExitActionEvent implements EventHandler<ActionEvent> {
 		@Override
 		public void handle(ActionEvent actionEvent) {
-			// TODO Auto-generated method stub
 			System.exit(0);
-
 		}
 		}
 	
-	public class addTabActionEvent implements EventHandler<ActionEvent> {
+	public class AddTabActionEvent implements EventHandler<ActionEvent> {
 		@Override
 		public void handle(ActionEvent actionEvent) {
-			// TODO Auto-generated method stub
 			TabView addTab = new TabView();
             BrowserTabBarView.getBrowserTabHolder().getTabs().add(addTab);
 		}
 	}
 	
-	public class homeActionEvent implements EventHandler<ActionEvent> {
+	public class HomeActionEvent implements EventHandler<ActionEvent> {
 		@Override
 		public void handle(ActionEvent actionEvent) {
 			try {

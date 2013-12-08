@@ -3,6 +3,8 @@ package com.browser.view;
 
 import java.util.ArrayList;
 
+import com.browser.helper.GetImagePath;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -16,6 +18,10 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextAreaBuilder;
+import javafx.scene.control.Tooltip;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
 public class SideBarView {
@@ -26,6 +32,12 @@ public class SideBarView {
 	private static TabPane sideBarTabPane;
 	private static Tab smartNotesTab;
 	private static Tab speechTab;
+	private static String iconPath;
+	private static GetImagePath getImgObj;
+	private static Button speechButton;
+	private static ColorAdjust speechColorAdjust;
+	private static ImageView speechGraphic;
+	
 	
 	public static TextArea getTextArea() {
 		return textArea;
@@ -55,7 +67,7 @@ public class SideBarView {
 	    //this method will be called once
 	    //where sidebar will be created and this stored in sidebar which later can
 	    //be assigned to any javafx element
-	    
+
 	    sideBar = new VBox();
         sideBar.setStyle("-fx-background-color: WHITE; " +
         		"-fx-border-color: BLACK; -fx-border-width: 0 0.5 0 0;");
@@ -80,6 +92,28 @@ public class SideBarView {
         sideBar.getChildren().add(sideBarTabPane);
 	    
 	}
+	
+/*	public static void initSpeechButton(){
+	    getImgObj = new GetImagePath();
+		Button speechButton = new Button();
+		iconPath = getImgObj.jarScan("icons.jar", "Micro-icon");
+		speechButton = new Button(null);
+		speechButton.setTranslateX(-2);
+		speechButton.setStyle("-fx-background-color: WHITE; -fx-border-color: WHITE; -fx-border-width: 0;");
+		speechGraphic = new ImageView(new Image(iconPath));
+		speechColorAdjust = new ColorAdjust();
+		speechColorAdjust.setBrightness(-0.1);
+		speechColorAdjust.setContrast(-0.1);
+		speechGraphic.setEffect(speechColorAdjust);
+		speechGraphic.setPreserveRatio(true);
+		speechGraphic.setFitHeight(24);
+		speechButton.setGraphic(speechGraphic);
+		speechButton.setTooltip(new Tooltip("Enable speech mode"));
+		// speechButton.set
+		//speechButton.onActionProperty().set(speechAction);
+		
+		
+	}*/
 	
 	
 	/*public SideBarView() {
@@ -133,5 +167,7 @@ public class SideBarView {
 	public static void setSideBar(VBox sideBar) {
 		SideBarView.sideBar = sideBar;
 	}
+	
+	
 
 }

@@ -236,8 +236,8 @@ public class BrowserWindow extends Region{
         	//System.out.println(getView().getEngine().getLocation());
           if (!loc.isEmpty()) {
         	  //System.out.println("location isn't empty!!: " + getView().getEngine());
-        	  System.out.println("new: " + loc);
-        	  System.out.println("Browser "+browser);
+        	  //System.out.println("new: " + loc);
+        	  //System.out.println("Browser "+browser);
         	  browser.getEngine().load(loc);
         	
         	  //Read the loaded page....

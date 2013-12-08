@@ -30,12 +30,6 @@ public class VoiceBrowser extends Application {
 		stage.setTitle("Voice Based Browser");
 		tabViewController = new TabViewController();
 		
-		/*bookmarkModel = new BookmarkModel();
-		BrowserTabBarView browserTabPane = new BrowserTabBarView();
-		TabView newTab = new TabView();
-		SideBarView.initSideBar();
-		browserTabPane.getBrowserTabHolder().getTabs().add(newTab);
-*/		// create scene from overlaidLayout
 		scene = new Scene(tabViewController.getBrowserTabBarView().getBrowserTabHolder(), 1020, 650);
 		stage.setScene(scene);
 		stage.show();
