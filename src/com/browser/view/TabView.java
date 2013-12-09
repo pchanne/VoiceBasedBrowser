@@ -36,9 +36,13 @@ public class TabView extends Tab {
 	private int headerIndex=0;
 	private Button allHeadersButton;
 	private Button nextButton;
+	private Button clearButton;
 	private Elements allHeaderTags;
 	private JSoupHelper jsoupHelperTest;
-	private TagHandler headerTagHandler;
+	private TagHandler tagHandler;
+	
+	private double currentWidth;
+	private double currentHeight;
 
 	public TabView() {
 		
@@ -46,12 +50,14 @@ public class TabView extends Tab {
 
 		browserWindow = new BrowserWindow();
 		
-		headerTagHandler= new TagHandler(browserWindow.webEngine);
+		tagHandler= new TagHandler(browserWindow.webEngine);
 		
 		//sideBarViewObj = new SideBarView();
 		//sideBarViewObj=SideBarView.getInstance();
 		
 		
+		//final BorderPane tabLayout = new BorderPane();
+				 
 		final BorderPane tabLayout = new BorderPane();
 		
 		tabLayout.setTop(tabToolbarViewObj.CreateNavToolbar());
@@ -85,7 +91,7 @@ public class TabView extends Tab {
 							System.out.println("Page "
 									+ browserWindow.getView().getEngine()
 											.getLocation() + " loaded");
-							headerTagHandler.initialise();
+							//headerTagHandler.initialise();
 						}
 
 					}
@@ -127,24 +133,44 @@ public class TabView extends Tab {
 		
 		jsoupHelperTest= new JSoupHelper();		
 		
-		allHeadersButton= new Button("Select all Headers");
-		
-		allHeadersButton.setOnAction(new EventHandler<ActionEvent>() {
+				
+		Button viewButton = new Button("Get Width/Height");
+		viewButton.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent actionEvent) {
-                headerTagHandler.selectAllHeaderTags();
+                System.out.println("Height: "+ browserWindow.getHeight()+"\n"+
+            "Width: "+browserWindow.getWidth());               
             }
         });
+			
 		
-		nextButton= new Button("Next");
-		nextButton.setOnAction(new EventHandler<ActionEvent>() {
+		Button goToViewButton = new Button("Go to View");
+		goToViewButton.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent actionEvent) {
-                headerTagHandler.selectNextHeader();
+                 
+                 currentWidth= browserWindow.getWidth();
+                 currentHeight= browserWindow.getHeight();
+                 
+                 tagHandler.initialiseViews(0, 0, currentWidth, currentHeight);              
             }
-        });
+        });	
+		
+		Button highlightTopTagButton= new Button("Highlight all top tags");
+		highlightTopTagButton.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent actionEvent) {
+                tagHandler.highlightAllLinksinTopView();                              
+           }
+       });
+		
+		Button highlightBottomTagButton= new Button("Highlight all bottom tags");
+        highlightBottomTagButton.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent actionEvent) {
+                tagHandler.highlightAllLinksinBottomView();                             
+           }
+       });
 		
 		HBox headerTagLayout= new HBox();
 		
-		headerTagLayout.getChildren().addAll(allHeadersButton, nextButton);
+		headerTagLayout.getChildren().addAll(viewButton, goToViewButton, highlightTopTagButton, highlightBottomTagButton);
 					
 		VBox testLayout= new VBox();
 		
