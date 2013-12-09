@@ -4,6 +4,7 @@ import com.browser.controller.BrowserWindow;
 import com.browser.controller.ViewController;
 import com.browser.helper.SpeechHelper;
 import com.browser.main.VoiceBrowser;
+import com.browser.view.TabView;
 import com.sun.glass.ui.Launchable;
 
 import javafx.application.Application;
@@ -16,11 +17,11 @@ public class SpeechRecognitionTask extends Service<Void>{
 	String speechCommand = null; 
 	String website;
 	boolean SpeechEnabled = true;
-	private ViewController viewController;
 	private SpeechHelper speechHelper;
-	public SpeechRecognitionTask(ViewController viewController){
-		this.viewController = viewController;
-		speechHelper = new SpeechHelper(viewController);
+	
+	public SpeechRecognitionTask(){
+		//this.viewController = TabView.getCurrentViewController();
+		speechHelper = new SpeechHelper();
 	}
 	@Override
 	protected Task<Void> createTask() {

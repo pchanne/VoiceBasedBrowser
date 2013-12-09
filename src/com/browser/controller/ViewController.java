@@ -31,7 +31,7 @@ public class ViewController {
 	private TabToolbarView tabToolBar;
 	private BrowserWindow browserWindowView;
 	private BookmarkModel bookmarkModel;
-	private SpeechRecognitionTask sTask;
+	//private SpeechRecognitionTask sTask;
 	private FileReader textReader;
 	private SmartNotes smartNoteObj;
 	private TagHandler tagHandler;
@@ -84,8 +84,7 @@ public class ViewController {
 	
 
 	public ViewController() {
-		
-		sTask = new SpeechRecognitionTask(this);
+		//sTask = new SpeechRecognitionTask();
 		EventHandler<ActionEvent> backActionEvent = new BackActionEvent();
 		EventHandler<ActionEvent> goActionEvent = new GoActionEvent();
 		EventHandler<KeyEvent> goActionEventOnEnter = new GoActionEventOnEnter();
@@ -298,21 +297,21 @@ public class ViewController {
 		public void handle(ActionEvent actionEvent) {
 			
 			if (TabView.isSpeechMode()) {
-				System.out.println("disabling");
+				//System.out.println("disabling");
 				tabToolBar.setSpeechMode(false);
 				TabView.setSpeechMode(false);
 				tabToolBar.createSpeechButtonHelper("Micro-off-icon","Enable speech mode");
-				sTask.cancel();
+				TabViewController.sTask.cancel();
 			} else {
-				System.out.println("enabling");
+				//System.out.println("enabling");
 				tabToolBar.setSpeechMode(true);
 				TabView.setSpeechMode(true);
 				tabToolBar.createSpeechButtonHelper("Micro-icon","Disable speech mode");
 				if (SpeechCounter == 0) {
 					SpeechCounter++;
-					sTask.start();
+					TabViewController.sTask.start();
 				} else {
-					sTask.restart();
+					TabViewController.sTask.restart();
 				}
 			}
 		}

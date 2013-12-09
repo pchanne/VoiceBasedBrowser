@@ -3,6 +3,7 @@ package com.browser.view;
 import java.io.IOException;
 
 import com.browser.controller.BrowserWindow;
+import com.browser.controller.TabViewController;
 import com.browser.controller.ViewController;
 import com.browser.helper.GetImagePath;
 
@@ -27,6 +28,7 @@ public class TabView extends Tab {
 
 	private TabToolbarView tabToolbarViewObj;
 	private ViewController viewController;
+	private static ViewController currentViewController;
 	
 	//testing
 	private TextField searchBar;
@@ -40,6 +42,14 @@ public class TabView extends Tab {
     private ColorAdjust speechColorAdjust;
     private static GetImagePath getImgObj;
     
+	public static ViewController getCurrentViewController() {
+		return currentViewController;
+	}
+
+	public static void setCurrentViewController(ViewController currentViewController) {
+		TabView.currentViewController = currentViewController;
+	}
+
 	public static boolean isSpeechMode() {
 		return speechMode;
 	}
@@ -106,20 +116,27 @@ public class TabView extends Tab {
                 //Changing speech icon on tab change based on global speechMode status
                 getImgObj = new GetImagePath();
                 String iconPath = null;
-                System.out.println("VC object: "+TabView.this.viewController);
+                //System.out.println("VC object: "+TabView.this.viewController);
+                //System.out.println("Selected Tab: "+BrowserTabBarView.getBrowserTabHolder().getSelectionModel().getSelectedItem().isSelected());
                 
+                if(BrowserTabBarView.getBrowserTabHolder().getSelectionModel().getSelectedItem().isSelected())
+                {
+                	System.out.println("Selected Tab :"+TabView.this.viewController);
+                	TabView.setCurrentViewController(TabView.this.viewController);
+                	//TabViewController.sTask.setViewController(TabView.this.viewController);
+                }
                 
                 if(TabView.speechMode){
                 	iconPath = getImgObj.jarScan("icons.jar", "Micro-icon");
                 	speechGraphic = new ImageView(new Image(iconPath));
             		((Button)viewController.getTabToolBar().getNavPane().getChildren().get(8)).setGraphic(speechGraphic);
-            		System.out.println("changing to mic on");
+            		//System.out.println("changing to mic on");
             		
                 }else if(!TabView.speechMode){
                 	iconPath = getImgObj.jarScan("icons.jar", "Micro-off-icon");
                 	speechGraphic = new ImageView(new Image(iconPath));
                 	((Button)viewController.getTabToolBar().getNavPane().getChildren().get(8)).setGraphic(speechGraphic);
-                	System.out.println("changing to mic off");
+                	//System.out.println("changing to mic off");
                 }
                 
             }

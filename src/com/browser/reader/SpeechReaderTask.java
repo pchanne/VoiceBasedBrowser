@@ -9,6 +9,7 @@ import com.browser.controller.ViewController;
 import com.browser.helper.SpeechHelper;
 import com.browser.main.VoiceBrowser;
 import com.browser.speech.SpeechCommands;
+import com.browser.view.TabView;
 
 public class SpeechReaderTask extends Service<Void>{
 	String speechCommand = null; 
@@ -28,7 +29,8 @@ public class SpeechReaderTask extends Service<Void>{
             protected Void call() throws Exception {
 		    			System.out.println("Reading the selected text in the page ");
 		    			try {
-							viewController.getTextReader().ReadSelectedText(viewController.getTagHandler().getCurrentHeader().getHeaderTag().text());
+		    				
+		    				TabView.getCurrentViewController().getTextReader().ReadSelectedText(TabView.getCurrentViewController().getTagHandler().getCurrentHeader().getHeaderTag().text());
 						} catch (IOException e) {
 							e.printStackTrace();
 						}

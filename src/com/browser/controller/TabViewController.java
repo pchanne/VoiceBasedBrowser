@@ -1,6 +1,7 @@
 package com.browser.controller;
 
 import com.browser.model.BookmarkModel;
+import com.browser.speech.SpeechRecognitionTask;
 import com.browser.view.BrowserTabBarView;
 import com.browser.view.SideBarView;
 import com.browser.view.TabToolbarView;
@@ -10,6 +11,7 @@ public class TabViewController {
 	private BrowserTabBarView browserTabBarView;
 	private TabView tab;
 	private static BookmarkModel bookmarkModel;
+	public static SpeechRecognitionTask sTask;
 	
 	public BrowserTabBarView getBrowserTabBarView() {
 		return browserTabBarView;
@@ -21,7 +23,7 @@ public class TabViewController {
 	
 	public TabViewController(){
 		
-		
+		sTask = new SpeechRecognitionTask();
 		tab = new TabView(); // creating first tab when browser opens.
 		//TabView.setSpeechMode(false);
 		System.out.println("first tab: "+tab);
@@ -30,7 +32,6 @@ public class TabViewController {
 		
 		browserTabBarView.getBrowserTabHolder().getTabs().add(tab); // adding first tab to container
 		bookmarkModel = new BookmarkModel();
+		//sTask = new SpeechRecognitionTask();
 	}
-	
-	
 }

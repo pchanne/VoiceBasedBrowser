@@ -12,11 +12,13 @@ import javafx.collections.ObservableList;
 import org.w3c.dom.DocumentFragment;
 
 import com.browser.controller.BrowserWindow;
+import com.browser.controller.TabViewController;
 import com.browser.controller.ViewController;
 import com.browser.main.VoiceBrowser;
 import com.browser.reader.FileReader;
 import com.browser.reader.SpeechReaderTask;
 import com.browser.view.SideBarView;
+import com.browser.view.TabView;
 
 public class SpeechHelper {
 
@@ -26,7 +28,7 @@ public class SpeechHelper {
 	private int ReadCounter;
 	private boolean bookmarkFlag;
 	
-	public SpeechHelper(ViewController viewController){
+	public SpeechHelper(){
 		ReadCounter = 0;
 		this.viewController = viewController;
 		speechReaderTask = new SpeechReaderTask(viewController);
@@ -40,6 +42,7 @@ public class SpeechHelper {
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
+				SpeechHelper.this.viewController = TabView.getCurrentViewController();
 								if (Command != null) {
 					website = Command.replace(".dot", ".");
 					website = website.replace(" ", "");
