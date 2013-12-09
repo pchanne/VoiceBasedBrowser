@@ -586,13 +586,13 @@ public class TabToolbarView {
 		 * creating menu items save load exit help about show status bar
 		 * bookmarks history enable/disable speech
 		 */
-		saveMenuItem = new MenuItem("Save");
-		loadMenuItem = new MenuItem("Load");
+		//saveMenuItem = new MenuItem("Save");
+		//loadMenuItem = new MenuItem("Load");
 		exitMenuItem = new MenuItem("Close");
-		showStatusBarMenuItem = new MenuItem("Show Status Bar");
+		//showStatusBarMenuItem = new MenuItem("Show Status Bar");
 		showBookmarkMenuItem = new Menu("BookMarks");
-		showHistoryMenuItem = new MenuItem("History");
-		speechModeEnable = new CheckMenuItem("Enable/Disable Speech Mode");
+		//showHistoryMenuItem = new MenuItem("History");
+		//speechModeEnable = new CheckMenuItem("Enable/Disable Speech Mode");
 		userManualMenuItem = new MenuItem("Help");
 		aboutMenuItem = new MenuItem("About");
 
@@ -601,9 +601,8 @@ public class TabToolbarView {
 				//voiceBrowserObj.closeBrowser();
 			}
 		});
-		menuButton.getItems().addAll(saveMenuItem, loadMenuItem,
-				showStatusBarMenuItem, showBookmarkMenuItem,
-				showHistoryMenuItem, speechModeEnable, userManualMenuItem,
+		menuButton.getItems().addAll(showBookmarkMenuItem,
+				userManualMenuItem,
 				aboutMenuItem, exitMenuItem);
 
 	}

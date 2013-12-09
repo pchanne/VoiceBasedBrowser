@@ -7,7 +7,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 import com.browser.controller.BrowserWindow;
-import com.browser.view.History;
+import com.browser.controller.History;
 
 /*
  * This test case is use to check the reflectUrlchange functionality

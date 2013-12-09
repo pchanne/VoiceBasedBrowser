@@ -9,7 +9,6 @@ import org.w3c.dom.DocumentFragment;
 import com.browser.helper.SmartNotes;
 import com.browser.reader.FileReader;
 import com.browser.speech.SpeechCommands;
-import com.browser.view.History;
 
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;

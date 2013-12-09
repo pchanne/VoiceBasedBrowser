@@ -1,9 +1,7 @@
-package com.browser.view;
+package com.browser.controller;
 
 
 import java.io.IOException;
-
-import com.browser.controller.BrowserWindow;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

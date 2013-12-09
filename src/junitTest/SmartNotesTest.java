@@ -1,14 +1,13 @@
 package junitTest;
 
 import static org.junit.Assert.*;
-
 import junit.framework.Assert;
 
 import org.junit.Test;
 
 import com.browser.controller.BrowserWindow;
+import com.browser.controller.History;
 import com.browser.helper.SmartNotes;
-import com.browser.view.History;
 
 
 /*

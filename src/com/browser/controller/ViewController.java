@@ -9,7 +9,6 @@ import com.browser.model.BookmarkModel;
 import com.browser.reader.FileReader;
 import com.browser.speech.SpeechRecognitionTask;
 import com.browser.view.BrowserTabBarView;
-import com.browser.view.History;
 import com.browser.view.SideBarView;
 import com.browser.view.TabToolbarView;
 import com.browser.view.TabView;

@@ -7,7 +7,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 import com.browser.controller.BrowserWindow;
-import com.browser.view.History;
+import com.browser.controller.History;
 //import com.browser.view.ToolbarView;
 /*
  * This test case is used to check the back functionality
