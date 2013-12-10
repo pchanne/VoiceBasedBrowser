@@ -1,28 +1,29 @@
+/**
+ * This class is responsible for dividing current view of web page into 2 further views 
+ * and retrieving text, link and header tags in current viewport of user
+ */
+
 package com.browser.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-
 import javafx.scene.web.WebEngine;
-
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
-
 import com.browser.helper.JSoupHelper;
-import com.browser.model.HeaderTagModel;
+import com.browser.main.VoiceBrowser;
 import com.browser.model.Tag;
 import com.browser.model.TagModel;
 
+
 public class TagHandler {
     
-    JSoupHelper jsoupHelper;
-    WebEngine webEngine;
+    private JSoupHelper jsoupHelper;
+    private WebEngine webEngine;
         
-    TagModel topViewTagModel;
-    TagModel bottomViewTagModel;
-    TagModel currentViewTagModel;
+    //model for storing tags in different subviews of current view
+    private TagModel topViewTagModel;
+    private TagModel bottomViewTagModel;
+    private TagModel currentViewTagModel;
     
+    //dimensions of current view
     double currentViewXOrigin;
     double currentViewYOrigin;
     double currentViewWidth;
@@ -106,29 +107,17 @@ public class TagHandler {
         return bottomViewTagModel.getViewHeight();
     }
     
+    /*
+     * initialises current view to the user and sets dimenstions of subviews 
+     * topview and bottomview in it.
+     */    
     public void initialiseViews(double xOrigin, double yOrigin, double viewWidth, double viewHeight)
     {
         currentViewXOrigin= xOrigin;
         currentViewYOrigin= yOrigin;
         currentViewWidth= viewWidth;
         currentViewHeight= viewHeight;
-        
-        /*if(topViewTagModel!=null)
-        {
-            
-            deselectAllHeadersinTopView();
-            deselectAllLinksinTopView();
-            deselectAllTextinTopView();
-            
-        }
-        
-        if(bottomViewTagModel!=null)
-        {
-            deselectAllHeadersinBottomView();
-            deselectAllLinksinBottomView();
-            deselectAllTextinBottomView();
-        }*/
-        
+                        
         if(currentViewTagModel!=null)
         {
             deselectAllLinksinCurrentView();
@@ -136,15 +125,15 @@ public class TagHandler {
         
         currentViewTagModel= new TagModel(viewWidth, viewHeight, xOrigin, yOrigin);
         topViewTagModel= new TagModel(viewWidth, viewHeight/2,xOrigin,yOrigin);
-        bottomViewTagModel= new TagModel(viewWidth, viewHeight/2, xOrigin,yOrigin+ viewHeight/2);
-        
+        bottomViewTagModel= new TagModel(viewWidth, viewHeight/2, xOrigin,yOrigin+ viewHeight/2);       
        
-        
-        //fillTopViewModel();
-        //fillBottomViewModel();
         fillCurrentViewModel();
     }
-                                      
+    
+    /*
+     * This function gets tagelements in viewport having origin at (xOrigin,yOrigin)
+     * and width = viewWidth and height= viewHeight
+     */
     private ArrayList<Tag> getTagElements(ArrayList<Tag> tagElementList,
             double xOrigin, double yOrigin,
             double viewWidth, double viewHeight)
@@ -179,6 +168,10 @@ public class TagHandler {
         return elementsInViewList;
     }
     
+    /*
+     * This function will fill tagModel with all tags which
+     * lie in area defined by its dimensions 
+     */
     private void fillViewModel(TagModel tagModel)
     {
         double viewWidth= tagModel.getViewWidth();
@@ -203,7 +196,9 @@ public class TagHandler {
                 viewWidth, viewHeight));                           
     }
            
-    
+    /*
+     * This function will highlight all tags in tagElementlist with particular color
+     */
     private void highlightParticularTagsinView(ArrayList<Tag> tagElementList, String color)
     {
         for(Tag tagElement: tagElementList)
@@ -212,23 +207,37 @@ public class TagHandler {
         }
     }
        
-    
+    /*
+     * this fucntion will highlight all links(a tag) in area defined by
+     * dimensions of selectedTagModel with particular color
+     */
     private void highlightAllLinksinView(TagModel selectedTagModel, String color)
     {
         highlightParticularTagsinView(selectedTagModel.getLinkTagList(), color);       
     }
     
+    /*
+     * this fucntion will highlight all links(h1 to h6 tags) in area defined by
+     * dimensions of selectedTagModel with particular color
+     */
     private void highlightAllHeadersinView(TagModel selectedTagModel, String color)
     {
         highlightParticularTagsinView(selectedTagModel.getHeaderTagList(),color);       
     }
     
+    /*
+     * this fucntion will highlight all links(p, pre tags) in area defined by
+     * dimensions of selectedTagModel with particular color
+     */
     private void highlightAllTextinView(TagModel selectedTagModel, String color)
     {
         highlightParticularTagsinView(selectedTagModel.getTextTagList(), color);       
     }
     
-    
+    /*
+     * this function highlights all links in area having dimensions of
+     * topViewTagModel
+     */
     public void highlightAllLinksinTopView()
     {
         deselectAllLinks();
@@ -236,6 +245,11 @@ public class TagHandler {
         String highlightAllLinksinTopViewColor="red";
         highlightAllLinksinView(topViewTagModel, highlightAllLinksinTopViewColor);                       
     }
+    
+    /*
+     * this function highlights all links in area having dimensions of
+     * bottomViewTagModel
+     */
     
     public void highlightAllLinksinBottomView()
     {
@@ -245,11 +259,21 @@ public class TagHandler {
         highlightAllLinksinView(bottomViewTagModel, highlightAllLinksinBottomViewColor);        
     }
     
+    /*
+     * this function highlights all links in area having dimensions of
+     * currentViewTagModel
+     */
+    
     public void highlightAllLinksinCurrentView()
     {                
         String highlightAllLinksinCurrentViewColor="red";
         highlightAllLinksinView(currentViewTagModel, highlightAllLinksinCurrentViewColor);
     }
+    
+    /*
+     * this function highlights all header(h1-h6) in area having dimensions of
+     * topViewTagModel
+     */
     
     public void highlightAllHeadersinTopView()
     {
@@ -259,6 +283,10 @@ public class TagHandler {
         highlightAllHeadersinView(topViewTagModel, highlightAllHeadersinTopViewColor);               
     }
     
+    /*
+     * this function highlights all headers (h1-h6 tags) in area having dimensions of
+     * bottomViewTagModel
+     */
     public void highlightAllHeadersinBottomView() 
     {        
         deselectAllHeaders();
@@ -267,23 +295,34 @@ public class TagHandler {
         highlightAllHeadersinView(bottomViewTagModel, highlightAllHeadersinBottomViewColor);
     }
     
+    /*
+     * this function highlights all headers (h1-h6 tags) in area having dimensions of
+     * currentViewTagModel
+     */
     public void highlightAllHeadersinCurrentView()
     {
                 
         String highlightAllHeadersinCurrentViewColor="red";
         highlightAllHeadersinView(currentViewTagModel, highlightAllHeadersinCurrentViewColor);
     }
-        
+    
+    /*
+     * this function highlights all text (p, pre) tags in area having dimensions of
+     * topViewTagModel
+     */        
     public void highlightAllTextinTopView()
     {
         //deselect all text elements
         deselectAllText();
         
         String highlightAllTextinTopViewColor="red";
-        highlightAllTextinView(topViewTagModel, highlightAllTextinTopViewColor);
-                
+        highlightAllTextinView(topViewTagModel, highlightAllTextinTopViewColor);                
     }
     
+    /*
+     * this function highlights all text (p, pre) tags in area having dimensions of
+     * bottomViewTagModel
+     */     
     public void highlightAllTextinBottomView()
     {
         //deselect all text elements
@@ -293,6 +332,10 @@ public class TagHandler {
                 
     }
     
+    /*
+     * this function highlights all text (p, pre) tags in area having dimensions of
+     * textViewTagModel
+     */ 
     public void highlightAllTextinCurrentView()
     {
         deselectAllTextinCurrentView();
@@ -301,18 +344,30 @@ public class TagHandler {
         highlightAllTextinView(currentViewTagModel, highlightAllTextinCurrentViewColor);
     }
     
+    /*
+     * this function will fill all tags having dimensions of currentViewModel in 
+     * currentViewModel
+     */
     public void fillCurrentViewModel()
     {
         currentViewTagModel.clearModel();
         fillViewModel(currentViewTagModel);
     }
     
+    /*
+     * this function will fill all tags having dimensions of topViewModel in 
+     * topViewModel
+     */
     public void fillTopViewModel()
     {                
         topViewTagModel.clearModel();                       
         fillViewModel(topViewTagModel);                                                  
     }
     
+    /*
+     * this function will fill all tags having dimensions of bottomViewModel in 
+     * bottomViewModel
+     */
     public void fillBottomViewModel()
     {       
         bottomViewTagModel.clearModel();        
@@ -320,17 +375,25 @@ public class TagHandler {
         
     }
     
+    /*
+     * this function will highlight tag at position relativePosition in 
+     * webpage with particular color
+     */
     private void highlightTagElement(String tagName, int relativePosition, String color)
     {
         String scriptToHighlightTag="var nextTag= " +
                 "document.getElementsByTagName('"+tagName+"')" +
                         "["+relativePosition+"];" +
                                 "nextTag.style.backgroundColor = '"+color+"';";
-        
-        //System.out.println(scriptToHighlightTag);
+                
+        VoiceBrowser.logger.info(scriptToHighlightTag);
         webEngine.executeScript(scriptToHighlightTag);
     }
     
+    
+    /*
+     * this function will highlight current link tag of selectedTagModel in webpage     
+     */
     private void selectLinkTagElement(TagModel selectedTagModel)
     {
         deselectAllLinksinCurrentView();
@@ -352,6 +415,9 @@ public class TagHandler {
         
     }
     
+    /*
+     * this function will highlight current header tag of selectedTagModel in webpage     
+     */
     private void selectHeaderTagElement(TagModel selectedTagModel)
     {
         deselectAllHeadersinCurrentView();
@@ -372,6 +438,9 @@ public class TagHandler {
                 get(selectedTagModel.getCurrentHeaderTagPosition()).getPosition(), "blue");   
     }
     
+    /*
+     * this function will highlight current text tag of selectedTagModel in webpage     
+     */
     private void selectTextElement(TagModel selectedTagModel)
     {
         deselectAllTextinCurrentView();
@@ -510,28 +579,47 @@ public class TagHandler {
         deselectAllTextinBottomView();
     }
     
+    /*
+     * this function will get url from current link in selectedModel
+     */
     private String getUrlContentFromCurrentTag(TagModel selectedModel)
     {
-        System.out.println(selectedModel.getCurrentLinkTagPosition());
+        
+        VoiceBrowser.logger.info(selectedModel.getCurrentLinkTagPosition());
         return selectedModel.getLinkTagList().get(selectedModel.getCurrentLinkTagPosition()).
                 getTagElement().attr("href").toString();
         
     }
     
+    /*
+     * this function will get url from current link in topViewModel
+     */
     public String getUrlFromCurrentLinkTaginTopView()
     {
         return getUrlContentFromCurrentTag(topViewTagModel);
     }
+    
+    /*
+     * this function will get url from current link in bottomViewModel
+     */
     
     public String getUrlFromCurrentLinkTaginBottomView()
     {
         return getUrlContentFromCurrentTag(bottomViewTagModel);
     }
     
+    /*
+     * this function will get url from current link in currentViewModel
+     */
+    
     public String getUrlFromCurrentLinkTaginCurrentView()
     {
         return getUrlContentFromCurrentTag(currentViewTagModel);
     }
+    
+    /*
+     * this function will get text from current header in selectedModel
+     */
     
     private String getTextFromCurrentHeaderTag(TagModel selectedModel)
     {
@@ -539,27 +627,43 @@ public class TagHandler {
                 getCurrentHeaderTagPosition()).getTagElement().ownText().toString();
     }
     
+    /*
+     * this function will get text from current header in topViewModel
+     */
+    
     public String getTextFromCurrentHeaderinTopView()
     {
         return getTextFromCurrentHeaderTag(topViewTagModel);
     }
 
+    /*
+     * this function will get text from current header in bottomViewModel
+     */
     public String getTextFromCurrentHeaderinBottomView()
     {
         return getTextFromCurrentHeaderTag(bottomViewTagModel);
     }
     
+    /*
+     * this function will get text from current header in currentViewModel
+     */
     public String getTextFromCurrentHeaderinCurrentView()
     {
         return getTextFromCurrentHeaderTag(currentViewTagModel);
     }
-        
+    
+    /*
+     * this function will get text from current Text tag(p or pre) in selectedModel
+     */
     private String getTextFromCurrentTextTag(TagModel selectedModel)
     {
         return selectedModel.getTextTagList().get(selectedModel.
                 getCurrentTextTagPosition()).getTagElement().ownText().toString();
     }
     
+    /*
+     * this function will get text from current Text tag(p or pre) in currentViewModel
+     */
     public String getTextFromCurrentTextinCurrentView()
     {
         return getTextFromCurrentTextTag(currentViewTagModel);
