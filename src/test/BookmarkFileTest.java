@@ -1,4 +1,7 @@
-package test.bookmarks;
+/**
+ * This test case is used to test the functionality of creating the Bookmark model
+ */
+package test;
 
 import static org.junit.Assert.*;
 
