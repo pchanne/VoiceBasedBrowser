@@ -9,11 +9,18 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.ContextMenu;
 
 public class History {
-	private static final int MAX_HISTORY_SIZE = 100; // max number of locations we will store in the history.
-	private final ObservableList<String> items = FXCollections.observableArrayList();
-	private int pointer = 0; // index into the history list for the currently displayed page from the history.
-	private Integer navPointer = null; // index into the history list for a new page to be displayed page in the history.
-	private final BrowserWindow browser; // browser window (contains WebView) managed by this history.
+	private static final int MAX_HISTORY_SIZE = 100; // max number of locations
+														// we will store in the
+														// history.
+	private final ObservableList<String> items = FXCollections
+			.observableArrayList();
+	private int pointer = 0; // index into the history list for the currently
+								// displayed page from the history.
+	private Integer navPointer = null; // index into the history list for a new
+										// page to be displayed page in the
+										// history.
+	private final BrowserWindow browser; // browser window (contains WebView)
+											// managed by this history.
 	private final ContextMenu historyMenu;
 
 	public ObservableList<String> getItems() {
@@ -36,7 +43,6 @@ public class History {
 	}
 
 	public boolean canNavBack() {
-		System.out.println("num : " + items.size());
 		return pointer > 0;
 	}
 
@@ -57,7 +63,6 @@ public class History {
 	}
 
 	public String requestNavBack() {
-		System.out.println("in nav back");
 		if (canNavBack()) {
 			navPointer = pointer - 1;
 		}
@@ -66,7 +71,8 @@ public class History {
 	}
 
 	/*
-	 * Performs navigation to appropriate website according to browser history on click of back and forward buttons
+	 * Performs navigation to appropriate website according to browser history
+	 * on click of back and forward buttons
 	 */
 	public void executeNav(String newLoc) {
 		historyMenu.hide();
@@ -93,7 +99,6 @@ public class History {
 	 */
 	public void executeNavigation(String newLoc) {
 
-		System.out.println("inside navigation");
 		if (navPointer == null) { // standard navPointer.
 			if (pointer < items.size() - 1) { // wipe any forward button
 												// history.
@@ -109,6 +114,5 @@ public class History {
 			navPointer = null;
 		}
 	}
-
 
 }
