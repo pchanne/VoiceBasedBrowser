@@ -11,6 +11,17 @@ import javafx.collections.ObservableList;
 
 import org.w3c.dom.DocumentFragment;
 
+import com.browser.command.AddBookMarkCommand;
+import com.browser.command.BackCommand;
+import com.browser.command.BookMarkCommand;
+import com.browser.command.ForwardCommand;
+import com.browser.command.GoCommand;
+import com.browser.command.HomeCommand;
+import com.browser.command.Invoker;
+import com.browser.command.ReadCommand;
+import com.browser.command.RefreshCommand;
+import com.browser.command.ScrollDownCommand;
+import com.browser.command.ScrollUpCommand;
 import com.browser.controller.BrowserWindow;
 import com.browser.controller.TabViewController;
 import com.browser.controller.ViewController;
@@ -24,16 +35,25 @@ public class SpeechHelper {
 
 	private String website;
 	private ViewController viewController;
-	private SpeechReaderTask speechReaderTask;
-	private int ReadCounter;
+	public static SpeechReaderTask speechReaderTask;
+	public static int readCounter;
+	public static int viewCounter;
+	private double currentX;
+	private double currentY;
+	private double currentWidth;
+	private double currentHeight;
 	private boolean bookmarkFlag;
+	private Invoker invokerObj;
 	
 	public SpeechHelper(){
-		ReadCounter = 0;
-		this.viewController = viewController;
-		speechReaderTask = new SpeechReaderTask(viewController);
+		readCounter = 0;
+		viewCounter = 0;
+		currentX =0;
+		currentY = 0;
+		speechReaderTask = new SpeechReaderTask();
 		website = null;
 		bookmarkFlag = false;
+		invokerObj = new Invoker();
 	}
 	
 	public void speechTest(final String Command) {
@@ -61,49 +81,33 @@ public class SpeechHelper {
 							viewController.getTabToolBar().getAddressBarField().setText(website);
 						}
 						if (Command.equalsIgnoreCase("go")) {
-							try {
-								viewController.getBrowserWindowView().navTo(viewController.getTabToolBar().getAddressBarField().getText());
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
+							invokerObj.setCommand(new GoCommand());
+							
 						}
 						if (Command.equalsIgnoreCase("back")) {
+							invokerObj.setCommand(new BackCommand());
 							
-							viewController.getTabToolBar().getBackButton().fire();
 						}
 						if (Command.equalsIgnoreCase("forward")) {
-							viewController.getTabToolBar().getForwardButton().fire();
+							invokerObj.setCommand(new ForwardCommand());
 						}
 						if (Command.equalsIgnoreCase("refresh")) {
-							try {
-								viewController.getBrowserWindowView().navTo(viewController.getTabToolBar().getAddressBarField().getText());
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
+							invokerObj.setCommand(new RefreshCommand());
+						}
+						if (Command.equalsIgnoreCase("home")) {
+							invokerObj.setCommand(new HomeCommand());
 						}
 						if (Command.equalsIgnoreCase("book mark")) {
 							bookmarkFlag = true;
-							viewController.getTabToolBar().getAddBookmarkButton().fire();
+							invokerObj.setCommand(new BookMarkCommand());
 							
 						}
 						if (Command.equalsIgnoreCase("Add") && bookmarkFlag) {
-							System.out.println("Adding bookmark..........");
-							viewController.getTabToolBar().getAddBookmarkToModelButton().fire();
+							invokerObj.setCommand(new AddBookMarkCommand());
 							bookmarkFlag = false;
 						}
 						if (Command.equalsIgnoreCase("read")) {
-						if(ReadCounter == 0)	
-							{	
-								ReadCounter++;
-								speechReaderTask.start();
-							}
-						else{
-							System.out.println("restarted");
-								speechReaderTask.restart();
-						}
-							
+							invokerObj.setCommand(new ReadCommand());
 						}
 						if(Command.equalsIgnoreCase("smart notes")&& !(viewController.getBrowserWindowView().getSelectedText().equalsIgnoreCase(""))){
 							
@@ -130,37 +134,60 @@ public class SpeechHelper {
 						        e.printStackTrace();
 						    }
 						}
-						if (Command.equalsIgnoreCase("Titles")) {
-							viewController.getTagHandler().clearSelectedTags();
-							viewController.getTagHandler()
-									.selectAllHeaderTags();
+						if (Command.equalsIgnoreCase("top")){
+							if(viewCounter == 0) {
+								currentWidth = viewController.getBrowserWindowView().browser.getWidth();
+								currentHeight = viewController.getBrowserWindowView().browser.getHeight();
+								viewCounter ++;
+							}
+							viewController.getTagHandler().initialiseViews(currentX, currentY, currentWidth, currentHeight);
+							//viewController.getTagHandler().highlightAllTextinTopView();
+						
+							viewController.getTagHandler().highlightAllLinksinTopView();
+							currentHeight = currentHeight/2;
 						}
-						if (Command.equalsIgnoreCase("Next Title")) {
-							viewController.getTagHandler().clearSelectedTags();
-							viewController.getTagHandler().selectNextHeader();
+						if (Command.equalsIgnoreCase("bottom")){
+							if(viewCounter == 0){
+								currentWidth = viewController.getBrowserWindowView().browser.getWidth();
+								currentHeight = viewController.getBrowserWindowView().browser.getHeight();
+								viewCounter ++;
+							}
+							currentY = currentY + currentHeight/2;
+							viewController.getTagHandler().initialiseViews(currentX, currentY, currentWidth, currentHeight);
+							//viewController.getTagHandler().highlightAllHeadersinBottomView();
+							viewController.getTagHandler().highlightAllLinksinBottomView();
+							currentHeight = currentHeight/2;
 						}
-						if (Command.equalsIgnoreCase("Links")) {
-							viewController.getTagHandler().clearSelectedTags();
-							viewController.getTagHandler().selectAllLinkTags();
-							;
-						}
-						if (Command.equalsIgnoreCase("Next Link")) {
-							viewController.getTagHandler().clearSelectedTags();
-							viewController.getTagHandler()
-									.selectNextLinkHeader();
-						}
-						if (Command.equalsIgnoreCase("navigate")) {
-							viewController.getTagHandler().navigateurl();
-						}
+//						if (Command.equalsIgnoreCase("Titles")) {
+//							viewController.getTagHandler().clearSelectedTags();
+//							viewController.getTagHandler()
+//									.selectAllHeaderTags();
+//						}
+//						if (Command.equalsIgnoreCase("Next Title")) {
+//							viewController.getTagHandler().clearSelectedTags();
+//							viewController.getTagHandler().selectNextHeader();
+//						}
+//						if (Command.equalsIgnoreCase("Links")) {
+//							viewController.getTagHandler().clearSelectedTags();
+//							viewController.getTagHandler().selectAllLinkTags();
+//							;
+//						}
+//						if (Command.equalsIgnoreCase("Next Link")) {
+//							viewController.getTagHandler().clearSelectedTags();
+//							viewController.getTagHandler()
+//									.selectNextLinkHeader();
+//						}
+//						if (Command.equalsIgnoreCase("navigate")) {
+//							viewController.getTagHandler().navigateurl();
+//						}
 						if (Command.equalsIgnoreCase("scroll down")) {
-							viewController.getBrowserWindowView().webEngine
-									.executeScript("window.scrollBy(0,500);");
+							invokerObj.setCommand(new ScrollDownCommand());
 						}
 						if (Command.equalsIgnoreCase("scroll up")) {
-							viewController.getBrowserWindowView().webEngine
-									.executeScript("window.scrollBy(0,-500);");
+							invokerObj.setCommand(new ScrollUpCommand());
 						}
-						
+						if(invokerObj.getCommand()!=null)
+							invokerObj.invoke();
 					}
 				}
 			}

@@ -63,7 +63,7 @@ public class TabToolbarView {
 	private static ImageView menuGraphic;
 	private static ColorAdjust menuColorAdjust;
     
-    private static Button homeButton;
+    private Button homeButton;
     private ImageView homeGraphic;
 	private ColorAdjust homeColorAdjust;
     
@@ -123,7 +123,15 @@ public class TabToolbarView {
 	private static CheckMenuItem speechModeEnable;
     
     
-    public  Button getSpeechButton() {
+    public Button getHomeButton() {
+		return homeButton;
+	}
+
+	public void setHomeButton(Button homeButton) {
+		this.homeButton = homeButton;
+	}
+
+	public  Button getSpeechButton() {
 		return speechButton;
 	}
 

@@ -36,12 +36,15 @@ public class BrowserWindow extends Region{
     public WebEngine webEngine;
     private History history;
     private final TextField locField = new TextField();    // the location the browser engine is currently pointing at (or where the user can type in where to go next).
-    public static String DEFAULT_HOME = "http://www.google.com"; 
+    public static String DEFAULT_HOME = "http://www.soic.indiana.edu/graduate/courses/index.php"; 
     private String speechCommandSpoken;
     public FileReader titleReader;
     private SmartNotes smartNoteObj;
     private String selectedText;
 
+
+    public static double currentWidth;
+	public static double currentHeight;
     
     public String getSelectedText() {
 		return selectedText;
@@ -83,6 +86,8 @@ public class BrowserWindow extends Region{
         
         //add the web view to the scene
         getChildren().add(browser);
+        
+        
         
        // browser.onMouseClickedProperty().addListener(new temo);
         

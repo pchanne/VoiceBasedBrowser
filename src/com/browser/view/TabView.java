@@ -6,6 +6,7 @@ import com.browser.controller.BrowserWindow;
 import com.browser.controller.TabViewController;
 import com.browser.controller.ViewController;
 import com.browser.helper.GetImagePath;
+import com.browser.main.VoiceBrowser;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -42,6 +43,9 @@ public class TabView extends Tab {
     private ColorAdjust speechColorAdjust;
     private static GetImagePath getImgObj;
     
+    
+
+    
 	public static ViewController getCurrentViewController() {
 		return currentViewController;
 	}
@@ -73,6 +77,7 @@ public class TabView extends Tab {
 		
 		final BorderPane tabLayout = new BorderPane();
 		
+		
 		tabLayout.setTop(myTabToolBarPane);
 		tabLayout.setCenter(viewController.getBrowserWindowView());
 		viewController.reflectURLChange();
@@ -89,8 +94,6 @@ public class TabView extends Tab {
 					}
 				});
 		
-		
-
 		
 		searchBar= new TextField();
 		findTagButton = new Button("Find Tag");
@@ -145,8 +148,7 @@ public class TabView extends Tab {
 
 		tabLayout.setLeft(sideBarContainer);
 		setContent(tabLayout);
-		
-		
+	
 	}
 
 }

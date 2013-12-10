@@ -3,190 +3,449 @@ package com.browser.controller;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javafx.scene.web.WebEngine;
+
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import javafx.scene.web.WebEngine;
 
 import com.browser.helper.JSoupHelper;
 import com.browser.model.HeaderTagModel;
-import com.sun.jndi.toolkit.ctx.HeadTail;
+import com.browser.model.Tag;
+import com.browser.model.TagModel;
 
 public class TagHandler {
-
-    ArrayList<HeaderTagModel> headerTagModelList;
-    Elements linkTagModelList;
-    HashMap tagCountHashMap;
+    
     JSoupHelper jsoupHelper;
     WebEngine webEngine;
-    int headerTagPosition;
-    int linkTagPosition;
-    Element currentLink;
-    HeaderTagModel currentHeader;
+        
+    TagModel topViewTagModel;
+    TagModel bottomViewTagModel;
     
-    public HeaderTagModel getCurrentHeader() {
-		return currentHeader;
-	}
-
-	public void setCurrentHeader(HeaderTagModel currentHeader) {
-		this.currentHeader = currentHeader;
-	}
-
-	public Element getCurrentLink() {
-		return currentLink;
-	}
-
-	public void setCurrentLink(Element currentLink) {
-		this.currentLink = currentLink;
-	}
-
-	public TagHandler(WebEngine webEngine)
-    {
-        headerTagModelList= new ArrayList<HeaderTagModel>();
-        tagCountHashMap= new HashMap();
+    double currentViewXOrigin;
+    double currentViewYOrigin;
+    double currentViewWidth;
+    double currentViewHeight;
+                         
+    public TagHandler(WebEngine webEngine)
+    {                     
         jsoupHelper= new JSoupHelper();
-        this.webEngine= webEngine;
-        headerTagPosition=0;
-        linkTagPosition = 0;
-        
+        this.webEngine= webEngine;                               
     }
+        
     
-    public void initialise()
+    /**
+     * @return the currentViewXOrigin
+     */
+    public double getCurrentViewXOrigin() {
+        return currentViewXOrigin;
+    }
+
+
+    /**
+     * @return the currentViewYOrigin
+     */
+    public double getCurrentViewYOrigin() {
+        return currentViewYOrigin;
+    }
+
+
+    /**
+     * @return the currentViewWidth
+     */
+    public double getCurrentViewWidth() {
+        return currentViewWidth;
+    }
+
+
+    /**
+     * @return the currentViewHeight
+     */
+    public double getCurrentViewHeight() {
+        return currentViewHeight;
+    }
+
+    public double getTopViewXOrigin()
     {
-        String url= webEngine.getLocation();
-        Elements headerTagList= jsoupHelper.getHeaderTags(url);     
-        linkTagModelList = jsoupHelper.getLinkTags(url);
-        headerTagModelList= new ArrayList<HeaderTagModel>();
-        tagCountHashMap= new HashMap();
-        
-        for(int i=0;i< headerTagList.size();i++)
-        {
-            Element currentHeaderElement= headerTagList.get(i);
-            int position_of_current_header_element;            
-            if(tagCountHashMap.containsKey(currentHeaderElement.tagName()))
-            {
-                int count_of_currentHeaderTag= (Integer) tagCountHashMap.get(
-                        currentHeaderElement.tagName());
-                position_of_current_header_element= count_of_currentHeaderTag+1;
-                
-                tagCountHashMap.remove(currentHeaderElement.tagName());
-                tagCountHashMap.put(currentHeaderElement.tagName(),
-                        count_of_currentHeaderTag+1);
-            }
-            else
-            {
-                tagCountHashMap.put(currentHeaderElement.tagName(), 0);
-                position_of_current_header_element=0;
-            }
-            
-            HeaderTagModel currentHeaderTag= new HeaderTagModel(currentHeaderElement
-                    , position_of_current_header_element);
-            headerTagModelList.add(currentHeaderTag);  
-        }
+        return topViewTagModel.getxOrigin();
     }
     
-      
-            
-    public void selectAllHeaderTags()
-        {  
-            String scriptToGetHeaderTag;
-            
-            for(int i=1;i<=6;i++)
-            {
-                scriptToGetHeaderTag="var headerTag = document.getElementsByTagName('h"+i+"');"+
-                        "for(var i=0;i< headerTag.length;i++)"+
-                        "{"+
-                            "headerTag[i].style.backgroundColor = 'lightblue';"+
-                        "}";
-                        
-                 webEngine.executeScript(scriptToGetHeaderTag);
-            }
-            
-        }
-    
-    public void selectNextHeader()
+    public double getTopViewYOrigin()
     {
-    	//selectAllHeaderTags();
-        if(headerTagPosition== headerTagModelList.size())
-        {
-            headerTagPosition=0;
-        }
-        currentHeader= headerTagModelList.get(headerTagPosition);
-              
-        
-        headerTagPosition++;
-        
-        String scriptToGetHeaderTag;
-        
-        System.out.println(currentHeader.toString());
-        scriptToGetHeaderTag="var headerTag = document.getElementsByTagName('"+currentHeader.
-                getHeaderTag().tagName()+"');"+
-                    "headerTag["+currentHeader.getPosition()+"].style.backgroundColor = 'lightgray';";
-                
-         webEngine.executeScript(scriptToGetHeaderTag);
+        return topViewTagModel.getyOrigin();
     }
-    public void selectAllLinkTags() {
-        String url = webEngine.getLocation();
-        //Elements headerTagList = jsoupHelper.getHeaderTags(url);
+    
+    public double getBottomViewXOrigin()
+    {
+        return bottomViewTagModel.getxOrigin();
+    }
+    
+    public double getBottomViewYOrigin()
+    {
+        return bottomViewTagModel.getyOrigin();
+    }
 
-        String scriptToGetHeaderTag;
-
-
-                       scriptToGetHeaderTag = "var headerTag = document.getElementsByTagName('a');" + "for(var i=0;i< headerTag.length;i++)" + "{"
-                                                     + "headerTag[i].style.backgroundColor = 'lightyellow';" + "}";
-
-                       webEngine.executeScript(scriptToGetHeaderTag);
+    public double getTopViewWidth()
+    {
+        return topViewTagModel.getViewWidth();
+    }
+    
+    public double getTopViewHeight()
+    {
+        return topViewTagModel.getViewHeight();
+    }
+    
+    public double getBottomViewWidth()
+    {
+        return bottomViewTagModel.getViewWidth();
+    }
+    
+    public double getBottomViewHeight()
+    {
+        return bottomViewTagModel.getViewHeight();
+    }
+    
+    public void initialiseViews(double xOrigin, double yOrigin, double viewWidth, double viewHeight)
+    {
+        currentViewXOrigin= xOrigin;
+        currentViewYOrigin= yOrigin;
+        currentViewWidth= viewWidth;
+        currentViewHeight= viewHeight;
+        
+        if(topViewTagModel!=null)
+        {
+            
+            deselectAllHeadersinTopView();
+            deselectAllLinksinTopView();
+            deselectAllTextinTopView();
+            
+        }
+        
+        if(bottomViewTagModel!=null)
+        {
+            deselectAllHeadersinBottomView();
+            deselectAllLinksinBottomView();
+            deselectAllTextinBottomView();
+        }
+        
+        
+        topViewTagModel= new TagModel(viewWidth, viewHeight/2,xOrigin,yOrigin);
+        bottomViewTagModel= new TagModel(viewWidth, viewHeight/2, xOrigin,yOrigin+ viewHeight/2);
+        
        
-
-}
-
-public void selectNextLinkHeader() {
-	//selectAllLinkTags();
-        if (linkTagPosition == linkTagModelList.size()) {
-                       System.out.println("when reset"+linkTagPosition);
-                       linkTagPosition = 0;
-}
-
-        currentLink=linkTagModelList.get(linkTagPosition);
-                                      String scriptToGetHeaderTag;
-        scriptToGetHeaderTag = "var headerTag = document.getElementsByTagName('" + currentLink.tagName()+ "');" + "headerTag["
-                                      + linkTagPosition + "].style.backgroundColor = 'lightgreen';";
-       
-//        System.out.println("link text "+currentLink.text());
-//        System.out.println("link url "+currentLink.attr("href"));
-//       
-//        System.out.println("script is "+scriptToGetHeaderTag);
-//        System.out.println("size of list "+linkTagModelList.size());
-//        System.out.println("linkTagPosition"+linkTagPosition);
-        linkTagPosition++;
-        webEngine.executeScript(scriptToGetHeaderTag);
-}
-
-public void navigateurl()
-{
-        //System.out.println("Currentlink url is "+currentLink.text());
-        //System.out.println("link url "+currentLink.attr("href"));
-        webEngine.load(currentLink.attr("href"));                             
-       
-}
-   public void clearSelectedTags(){
-	   System.out.println("Clearing all selected tags");
-	   String scriptToGetHeaderTag;
-       String scriptToGetLinkTag;
-       for(int i=1;i<=6;i++)
+        
+        fillTopViewModel();
+        fillBottomViewModel();
+    }
+                                      
+    private ArrayList<Tag> getTagElements(ArrayList<Tag> tagElementList,
+            double xOrigin, double yOrigin,
+            double viewWidth, double viewHeight)
+    {
+       ArrayList<Tag> elementsInViewList= new ArrayList<Tag>();
+        
+       for(Tag currentTagElement: tagElementList)
        {
-           scriptToGetHeaderTag="var headerTag = document.getElementsByTagName('h"+i+"');"+
-                   "for(var i=0;i< headerTag.length;i++)"+
-                   "{"+
-                       "headerTag[i].style.backgroundColor = '';"+
-                   "}";
-//           scriptToGetLinkTag = "var headerTag = document.getElementsByTagName('a');" + "for(var i=0;i< headerTag.length;i++)" + "{"
-//                   + "headerTag[i].style.backgroundColor = 'yellow';" + "}";        
-            webEngine.executeScript(scriptToGetHeaderTag);
+           
+           String executeScriptToGetTagElement;
+           executeScriptToGetTagElement="function isElementInViewport(el)" +
+                   " {var rect = el.getBoundingClientRect();" +
+                   "return rect.left >"+ xOrigin+" && rect.top > "+ yOrigin+" && " +
+                   "rect.right < " + (xOrigin+viewWidth)+
+                   " && rect.bottom < "+(yOrigin+viewHeight)+";} " +
+                   "var d = document.getElementsByTagName('"+currentTagElement.getTagElement()
+                   .tagName()+"')" +
+                   		"["+currentTagElement.getPosition()+"]; " +
+                   "isElementInViewport(d);";    
+           
+           System.out.println(executeScriptToGetTagElement);
+           
+           boolean isTagElementInView=(Boolean) webEngine.
+                   executeScript(executeScriptToGetTagElement);
+           
+           if(isTagElementInView)
+           {              
+               elementsInViewList.add(currentTagElement);
+           }
        }
-       scriptToGetLinkTag = "var headerTag = document.getElementsByTagName('a');" + "for(var i=0;i< headerTag.length;i++)" + "{"
-               + "headerTag[i].style.backgroundColor = '';" + "}";
+                
+        return elementsInViewList;
+    }
+    
+    private void fillViewModel(TagModel tagModel)
+    {
+        double viewWidth= tagModel.getViewWidth();
+        double viewHeight= tagModel.getViewHeight();
+        double xOrigin= tagModel.getxOrigin();
+        double yOrigin= tagModel.getyOrigin();
+        
+        
+        //get all link tags
+        ArrayList<Tag> linkElements= jsoupHelper.getLinkTags(webEngine.getLocation());
+        tagModel.addLinkTags(getTagElements(linkElements,xOrigin,yOrigin
+                ,viewWidth, viewHeight));
+        
+        //get all header Tags
+        ArrayList<Tag> headerElements= jsoupHelper.getHeaderTags(webEngine.getLocation());
+        tagModel.addHeaderTags(getTagElements(headerElements, xOrigin, yOrigin, 
+                viewWidth, viewHeight));
+        
+        //get all p, pre, span tags
+        ArrayList<Tag> textElements= jsoupHelper.getTextTags(webEngine.getLocation());
+        tagModel.addTextTags(getTagElements(textElements, xOrigin, yOrigin,
+                viewWidth, viewHeight));                           
+    }
+           
+    
+    private void highlightParticularTagsinView(ArrayList<Tag> tagElementList, String color)
+    {
+        for(Tag tagElement: tagElementList)
+        {
+            highlightTagElement(tagElement.getTagElement().tagName(), tagElement.getPosition(), color);
+        }
+    }
+       
+    
+    private void highlightAllLinksinView(TagModel selectedTagModel, String color)
+    {
+        highlightParticularTagsinView(selectedTagModel.getLinkTagList(), color);       
+    }
+    
+    private void highlightAllHeadersinView(TagModel selectedTagModel, String color)
+    {
+        highlightParticularTagsinView(selectedTagModel.getHeaderTagList(),color);       
+    }
+    
+    private void highlightAllTextinView(TagModel selectedTagModel, String color)
+    {
+        highlightParticularTagsinView(selectedTagModel.getTextTagList(), color);       
+    }
+    
+    
+    public void highlightAllLinksinTopView()
+    {
+        deselectAllLinks();
+        
+        String highlightAllLinksinTopViewColor="red";
+        highlightAllLinksinView(topViewTagModel, highlightAllLinksinTopViewColor);                       
+    }
+    
+    public void highlightAllLinksinBottomView()
+    {
+        deselectAllLinks();
+        
+        String highlightAllLinksinBottomViewColor="red";
+        highlightAllLinksinView(bottomViewTagModel, highlightAllLinksinBottomViewColor);        
+    }
+    
+    public void highlightAllHeadersinTopView()
+    {
+        deselectAllHeaders();
+        
+        String highlightAllHeadersinTopViewColor="red";
+        highlightAllHeadersinView(topViewTagModel, highlightAllHeadersinTopViewColor);               
+    }
+    
+    public void highlightAllHeadersinBottomView() 
+    {        
+        deselectAllHeaders();
+        
+        String highlightAllHeadersinBottomViewColor="red";
+        highlightAllHeadersinView(bottomViewTagModel, highlightAllHeadersinBottomViewColor);
+    }
+    
+        
+    public void highlightAllTextinTopView()
+    {
+        //deselect all text elements
+        deselectAllText();
+        String highlightAllTextinTopViewColor="red";
+        highlightAllTextinView(topViewTagModel, highlightAllTextinTopViewColor);
+                
+    }
+    
+    public void highlightAllTextinBottomView()
+    {
+        //deselect all text elements
+        deselectAllText();
+        String highlightAllHeadersinBottomViewColor="red";
+        highlightAllTextinView(bottomViewTagModel, highlightAllHeadersinBottomViewColor);
+                
+    }
+    
+    
+    
+    
+    public void fillTopViewModel()
+    {                
+        topViewTagModel.clearModel();                       
+        fillViewModel(topViewTagModel);                                                  
+    }
+    
+    public void fillBottomViewModel()
+    {       
+        bottomViewTagModel.clearModel();        
+        fillViewModel(bottomViewTagModel); 
+        
+    }
+    
+    private void highlightTagElement(String tagName, int relativePosition, String color)
+    {
+        String scriptToHighlightTag="var nextTag= " +
+                "document.getElementsByTagName('"+tagName+"')" +
+                        "["+relativePosition+"];" +
+                                "nextTag.style.backgroundColor = '"+color+"';";
+        
+        System.out.println(scriptToHighlightTag);
+        webEngine.executeScript(scriptToHighlightTag);
+    }
+    
+    private void selectLinkTagElement(TagModel selectedTagModel)
+    {
+        deselectAllLinks();
+        
+        if(selectedTagModel.getCurrentLinkTagPosition()<selectedTagModel.getLinkTagList().size()-1)
+        {
+            selectedTagModel.setCurrentLinkTagPosition(
+                    selectedTagModel.getCurrentLinkTagPosition()+1);
+        }
+        else
+        {
+            selectedTagModel.setCurrentLinkTagPosition(0);
+        }
+        
+        highlightTagElement(selectedTagModel.getLinkTagList().
+                get(selectedTagModel.getCurrentLinkTagPosition()).getTagElement().tagName(),
+                selectedTagModel.getLinkTagList().
+                get(selectedTagModel.getCurrentLinkTagPosition()).getPosition(), "blue");                
+        
+    }
+    
+    private void selectHeaderTagElement(TagModel selectedTagModel)
+    {
+        deselectAllHeaders();
+        
+        if(selectedTagModel.getCurrentHeaderTagPosition()<selectedTagModel.getHeaderTagList().size()-1)
+        {
+            selectedTagModel.setCurrentHeaderTagPosition(
+                    selectedTagModel.getCurrentHeaderTagPosition()+1);
+        }
+        else
+        {
+            selectedTagModel.setCurrentHeaderTagPosition(0);
+        }
+        
+        highlightTagElement(selectedTagModel.getHeaderTagList().
+                get(selectedTagModel.getCurrentHeaderTagPosition()).getTagElement().tagName(),
+                selectedTagModel.getHeaderTagList().
+                get(selectedTagModel.getCurrentHeaderTagPosition()).getPosition(), "blue");   
+    }
+    
+    private void selectTextElement(TagModel selectedTagModel)
+    {
+        deselectAllText();
+        
+        if(selectedTagModel.getCurrentTextTagPosition()<selectedTagModel.getTextTagList().size()-1)
+        {
+            selectedTagModel.setCurrentTextTagPosition(
+                    selectedTagModel.getCurrentTextTagPosition()+1);
+        }
+        else
+        {
+            selectedTagModel.setCurrentTextTagPosition(0);
+        }
+        
+        highlightTagElement(selectedTagModel.getTextTagList().
+                get(selectedTagModel.getCurrentTextTagPosition()).getTagElement().tagName(),
+                selectedTagModel.getTextTagList().
+                get(selectedTagModel.getCurrentTextTagPosition()).getPosition(), "blue");
+    }
+      
+    public void selectNextLinkElementinTopView()
+    {
+        selectLinkTagElement(topViewTagModel);               
+    }
+    
+    public void selectNextLinkElementinBottomView()
+    {
+        selectLinkTagElement(bottomViewTagModel);
+    }
+    
+    public void selectNextHeaderElementinTopView()
+    {
+        selectHeaderTagElement(topViewTagModel);               
+    }
+    
+    public void selectNextHeaderElementinBottomView()
+    {
+        selectHeaderTagElement(bottomViewTagModel);
+    }
+    
+    public void selectNextTextElementinTopView()
+    {
+        selectTextElement(topViewTagModel);
+    }
+    
+    public void selectNextTextElementinBottomView()
+    {
+        selectTextElement(bottomViewTagModel);
+    }
+    
+    
+    public void deselectAllLinksinTopView()
+    {
+        String deselectColor="";
+        highlightAllLinksinView(topViewTagModel, deselectColor);
+        
+    }
+    
+    public void deselectAllLinksinBottomView()
+    {
+        String deselectColor="";
+        highlightAllLinksinView(bottomViewTagModel, deselectColor);
+    }
+    
+    public void deselectAllHeadersinTopView()
+    {
+        String deselectColor="";
+        highlightAllHeadersinView(topViewTagModel, deselectColor);
+    }
+    
+    public void deselectAllHeadersinBottomView()
+    {
+        String deselectColor="";
+        highlightAllHeadersinView(bottomViewTagModel, deselectColor);
+    }
+    
+    public void deselectAllLinks()
+    {
+        deselectAllLinksinTopView();
+        deselectAllLinksinBottomView();
+    }
+    
+    public void deselectAllHeaders()
+    {
+        deselectAllHeadersinTopView();
+        deselectAllHeadersinBottomView();
+    }
+    
+    private void deselectAllTextinTopView()
+    {
+        String deselectColor="";
+        highlightAllTextinView(topViewTagModel, deselectColor);
+    }
+    
+    private void deselectAllTextinBottomView()
+    {
+        String deselectColor="";
+        highlightAllTextinView(bottomViewTagModel, deselectColor);
+    }
+    
+    private void deselectAllText()
+    {
+        deselectAllTextinTopView();
+        deselectAllTextinBottomView();
+    }
 
-webEngine.executeScript(scriptToGetLinkTag);
-   }
+           
 }

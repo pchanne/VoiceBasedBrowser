@@ -34,6 +34,9 @@ public class ViewController {
 	private FileReader textReader;
 	private SmartNotes smartNoteObj;
 	private TagHandler tagHandler;
+//	public static double currentWidth;
+//	public static double currentHeight;
+
 	
 	
 	public TagHandler getTagHandler() {
@@ -100,9 +103,11 @@ public class ViewController {
 		textReader = new FileReader();
 		smartNoteObj = new SmartNotes();
 		
-		
 		this.tabToolBar = new TabToolbarView(backActionEvent, goActionEvent, goActionEventOnEnter,forwardActionEvent, refreshActionEvent, bookmarkActionEvent,bookmarkToModelActionEvent,speechActionEvent, exitActionEvent, addTabActionEvent, homeActionEvent);
 		this.browserWindowView = new BrowserWindow();
+
+//		currentWidth = this.browserWindowView.getWidth();
+//		currentHeight = this.browserWindowView.getHeight();
 		tagHandler = new TagHandler(browserWindowView.webEngine);
 		
 	}
@@ -122,7 +127,6 @@ public class ViewController {
 							//System.out.println("Curr :"+browserWindowView.getView().getEngine().getLocation());
 							browserWindowView.getHistory().executeNav(browserWindowView.getView().getEngine().getLocation());
 							//System.out.println("items list:"+browserWindowView.getHistory().getItems());
-							tagHandler.initialise();
 						}
 					}
 				});
@@ -167,7 +171,7 @@ public class ViewController {
 		public void handle(ActionEvent actionEvent) {
 			System.out.println("forward Clicked!");
 			if(browserWindowView.getHistory().canNavForward()){
-				
+				System.out.println("history "+browserWindowView.getHistory());
 				try {
 					browserWindowView.navTo(browserWindowView.getHistory().requestNavForward());
 				} catch (IOException e) {

@@ -17,9 +17,7 @@ public class SpeechReaderTask extends Service<Void>{
 	boolean ReadEnabled = true;
 	
 	public VoiceBrowser voiceBrowserObj;
-	private ViewController viewController;
-	public SpeechReaderTask(ViewController viewController){
-		this.viewController = viewController;
+	public SpeechReaderTask(){
 	}
 	@Override
 	protected Task<Void> createTask() {
@@ -28,12 +26,12 @@ public class SpeechReaderTask extends Service<Void>{
             
             protected Void call() throws Exception {
 		    			System.out.println("Reading the selected text in the page ");
-		    			try {
-		    				
-		    				TabView.getCurrentViewController().getTextReader().ReadSelectedText(TabView.getCurrentViewController().getTagHandler().getCurrentHeader().getHeaderTag().text());
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
+//		    			try {
+//		    				
+//		    				TabView.getCurrentViewController().getTextReader().ReadSelectedText(TabView.getCurrentViewController().getTagHandler().getCurrentHeader().getHeaderTag().text());
+//						} catch (IOException e) {
+//							e.printStackTrace();
+//						}
                 return null;
             }
         };
