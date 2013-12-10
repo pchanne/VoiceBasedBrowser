@@ -1,3 +1,8 @@
+
+/**
+ * This command class represents the bottom view of the selected area or the webview.
+ */
+
 package com.browser.command;
 
 import com.browser.view.TabView;

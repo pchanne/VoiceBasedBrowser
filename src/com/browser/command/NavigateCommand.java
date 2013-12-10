@@ -1,3 +1,8 @@
+
+/**
+ * This command class represents the functionality to navigate to the link specified within the selected view.
+ */
+
 package com.browser.command;
 
 import java.io.IOException;
@@ -11,7 +16,6 @@ public class NavigateCommand implements Command{
 		TabView.getCurrentViewController().getTagHandler().deselectAllLinks();
 		TabView.getCurrentViewController().getTagHandler().deselectAllHeaders();
 		TabView.getCurrentViewController().getTagHandler().deselectAllText();
-		System.out.println("current link "+TabView.getCurrentViewController().getTagHandler().getUrlFromCurrentLinkTaginCurrentView());
 		try {
 			TabView.getCurrentViewController().getBrowserWindowView().navTo(TabView.getCurrentViewController().getTagHandler().getUrlFromCurrentLinkTaginCurrentView());
 		} catch (IOException e) {

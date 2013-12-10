@@ -1,3 +1,8 @@
+
+/**
+ * This command class represents the functionality to refresh the web page currently opened.
+ */
+
 package com.browser.command;
 
 import java.io.IOException;

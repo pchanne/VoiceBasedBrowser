@@ -1,3 +1,8 @@
+
+/**
+ * This command class represents the functionality to scroll down the current webpage.
+ */
+
 package com.browser.command;
 
 import com.browser.view.TabView;

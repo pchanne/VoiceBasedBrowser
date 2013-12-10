@@ -1,3 +1,8 @@
+
+/**
+ * This command class represents the functionality to navigate to the URL specified in the browser's address field.
+ */
+
 package com.browser.command;
 
 import java.io.IOException;
