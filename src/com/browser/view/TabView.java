@@ -1,5 +1,8 @@
 /**
  * This class represents single tab in a browser.
+ * this class extends the tab class from javafx
+ * using the tab class we build each individual tab that would be added
+ * to the tab pane in the browser window
  */
 package com.browser.view;
 
@@ -35,6 +38,7 @@ public class TabView extends Tab {
 	private static ViewController currentViewController;
 
 	private TextField searchBar;
+
 	private Button findTagButton;
 	private Button selectButton;
 	private Pane myTabToolBarPane;
@@ -67,9 +71,14 @@ public class TabView extends Tab {
 		this.viewController = viewController;
 	}
 
-	//Constructor
+	// Constructor
+	/*
+	 * initializes a new tab, it sets the layout of the tab as borderpane the
+	 * top part contains the toolbar the left will contain the sidebar and the
+	 * center contains the browser window
+	 */
 	public TabView() {
-		
+
 		viewController = new ViewController();
 		myTabToolBarPane = viewController.getTabToolBar().CreateNavToolbar();
 
@@ -116,6 +125,7 @@ public class TabView extends Tab {
 						.getSelectedItem().isSelected()) {
 					TabView.setCurrentViewController(TabView.this.viewController);
 					speechButtonHandler();
+
 				}
 				reflectBookmarks();
 			}
@@ -178,7 +188,8 @@ public class TabView extends Tab {
 
 				public void handle(ActionEvent arg0) {
 					try {
-						viewController.getBrowserWindowView().navTo(bookmark.getBookmarkURL());
+						viewController.getBrowserWindowView().navTo(
+								bookmark.getBookmarkURL());
 					} catch (IOException e) {
 						e.printStackTrace();
 					}

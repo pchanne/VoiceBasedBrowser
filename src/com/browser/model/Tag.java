@@ -1,4 +1,4 @@
-/*
+/**
  * This class is used to set and retrieve the position of tagElement
  */
 package com.browser.model;
@@ -27,3 +27,4 @@ public class Tag {
     }
     
 }
+

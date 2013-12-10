@@ -28,6 +28,7 @@ public class BrowserTabBarView {
 		return browserTabHolder;
 	}
 	
+	// creates the tab view, adds the tab pane to a horizontal layout for display
 	public Parent createTabBarView(){
 		
 		HBox tabBarLayout = new HBox();

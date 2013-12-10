@@ -127,7 +127,7 @@ public class BookmarkManager {
 	 */
 	public void writeToFile(String jsonString) {
 		try {
-			File jsonFile = new File("breakout.json");
+			File jsonFile = new File("bookmark.json");
 			FileWriter filewriter = new FileWriter(jsonFile.getAbsoluteFile());
 			BufferedWriter bufferwriter = new BufferedWriter(filewriter);
 			bufferwriter.write(jsonString);
@@ -144,7 +144,7 @@ public class BookmarkManager {
 	public String readFromFile() {
 		String jsonString = null;
 		try {
-			FileReader fileReader = new FileReader("breakout.json");
+			FileReader fileReader = new FileReader("bookmark.json");
 			BufferedReader bufferReader = new BufferedReader(fileReader);
 			jsonString = bufferReader.readLine();
 			bufferReader.close();
@@ -169,3 +169,4 @@ public class BookmarkManager {
 	}
 
 }
+

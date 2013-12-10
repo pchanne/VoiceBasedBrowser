@@ -1,3 +1,4 @@
+
 /**
  * This class is responsible for dividing current view of web page into 2 further views 
  * and retrieving text, link and header tags in current viewport of user

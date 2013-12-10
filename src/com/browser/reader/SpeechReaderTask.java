@@ -5,6 +5,8 @@ package com.browser.reader;
 
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
+
+import com.browser.main.VoiceBrowser;
 import com.browser.view.TabView;
 
 public class SpeechReaderTask extends Service<Void>{
@@ -20,7 +22,7 @@ public class SpeechReaderTask extends Service<Void>{
             @Override
             
             protected Void call() throws Exception {
-		    			System.out.println("Reading the selected text in the page ");			
+            			VoiceBrowser.logger.info("Reading the selected text in the page");		
 		    			TabView.getCurrentViewController().getTextReader().ReadSelectedText(TabView.getCurrentViewController().getTagHandler().getTextFromCurrentHeaderinCurrentView());
 
                 return null;

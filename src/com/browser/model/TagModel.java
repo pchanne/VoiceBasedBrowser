@@ -1,6 +1,7 @@
-/*
+/**
  * This is a array list of TagModel used to retrieve headerTag and current textTag position
  */
+
 package com.browser.model;
 
 import java.util.ArrayList;
@@ -198,3 +199,4 @@ public class TagModel {
         this.currentTextTagPosition = currentTextTagPosition;
     }
 }
+
