@@ -1,5 +1,5 @@
 /**
- * 
+ * This class is basically used to parse DOM tree of html page using Jsoup library
  */
 package com.browser.helper;
 
@@ -16,8 +16,8 @@ import com.browser.model.Tag;
 
 public class JSoupHelper {
 
-	Elements allElements;
-	Element currentHTag;
+	private Elements allElements;
+	private Element currentHTag;
 
 	public JSoupHelper() {
 
@@ -29,8 +29,9 @@ public class JSoupHelper {
 	}
 
 	/*
-	 * This method will select all the header tags within the received area
-	 */
+     * This method will select all the header tags (h1-h6) tags and store postion 
+     * in webpage with respect to its tag name
+     */
 	public ArrayList<Tag> getHeaderTags(String url) {
 
 		ArrayList<Tag> headerTagList;
@@ -77,7 +78,9 @@ public class JSoupHelper {
 	}
 
 	/*
-	 * This method will select all the hyperlinks within the received area
+	 * 
+     * This method will select all the link tags (a) tags and store postion 
+     * in webpage with respect to its tag name     
 	 */
 	public ArrayList<Tag> getLinkTags(String url) {
 		Document doc;
@@ -115,6 +118,10 @@ public class JSoupHelper {
 		}
 	}
 
+	/*
+     * This method will select all the text tags (p,pre) tags and store postion 
+     * in webpage with respect to its tag name
+     */
 	public ArrayList<Tag> getTextTags(String url) {
 
 		Document doc;
