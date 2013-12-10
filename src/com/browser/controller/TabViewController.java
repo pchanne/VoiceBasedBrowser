@@ -15,30 +15,36 @@ public class TabViewController {
 	private TabView tab;
 	private static BookmarkModel bookmarkModel;
 	public static SpeechRecognitionTask sTask;
-	
-	
+
 	public static BookmarkModel getBookmarkModel() {
 		return bookmarkModel;
 	}
+
 	public static void setBookmarkModel(BookmarkModel bookmarkModel) {
 		TabViewController.bookmarkModel = bookmarkModel;
 	}
+
 	public BrowserTabBarView getBrowserTabBarView() {
 		return browserTabBarView;
 	}
+
 	public void setBrowserTabBarView(BrowserTabBarView browserTabBarView) {
 		this.browserTabBarView = browserTabBarView;
 	}
-	
-	public TabViewController(){
-		
+
+	public TabViewController() {
+
 		bookmarkModel = new BookmarkModel();
 		sTask = new SpeechRecognitionTask();
 		tab = new TabView(); // creating first tab when browser opens.
-		System.out.println("first tab: "+tab);
-		browserTabBarView = new BrowserTabBarView(); // container for holding all the tabs.
-		SideBarView.initSideBar(); // static sidebar that is shared among all the tabs
-		browserTabBarView.getBrowserTabHolder().getTabs().add(tab); // adding first tab to container
-		
+		browserTabBarView = new BrowserTabBarView(); // container for holding
+														// all the tabs.
+		SideBarView.initSideBar(); // static sidebar that is shared among all
+									// the tabs
+		browserTabBarView.getBrowserTabHolder().getTabs().add(tab); // adding
+																	// first tab
+																	// to
+																	// container
+
 	}
 }

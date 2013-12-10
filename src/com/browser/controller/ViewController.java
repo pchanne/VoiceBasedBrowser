@@ -41,6 +41,7 @@ public class ViewController {
 	private FileReader textReader;
 	private SmartNotes smartNoteObj;
 	private TagHandler tagHandler;
+
 	public TagHandler getTagHandler() {
 		return tagHandler;
 	}
@@ -73,8 +74,6 @@ public class ViewController {
 		this.textReader = textReader;
 	}
 
-
-
 	public BrowserWindow getBrowserWindowView() {
 		return browserWindowView;
 	}
@@ -83,12 +82,8 @@ public class ViewController {
 		this.browserWindowView = browserWindowView;
 	}
 
-
-	
-	
-
 	public ViewController() {
-		//sTask = new SpeechRecognitionTask();
+		// sTask = new SpeechRecognitionTask();
 		EventHandler<ActionEvent> backActionEvent = new BackActionEvent();
 		EventHandler<ActionEvent> goActionEvent = new GoActionEvent();
 		EventHandler<KeyEvent> goActionEventOnEnter = new GoActionEventOnEnter();
@@ -96,43 +91,53 @@ public class ViewController {
 		EventHandler<ActionEvent> refreshActionEvent = new RefreshActionEvent();
 		EventHandler<ActionEvent> bookmarkActionEvent = new BookmarkActionEvent();
 		EventHandler<ActionEvent> bookmarkToModelActionEvent = new BookmarkToModelActionEvent();
-		EventHandler<ActionEvent> speechActionEvent = new SpeechActionEvent(); 
+		EventHandler<ActionEvent> speechActionEvent = new SpeechActionEvent();
 		EventHandler<ActionEvent> exitActionEvent = new ExitActionEvent();
 		EventHandler<ActionEvent> addTabActionEvent = new AddTabActionEvent();
 		EventHandler<ActionEvent> homeActionEvent = new HomeActionEvent();
-		
+
 		textReader = new FileReader();
 		smartNoteObj = new SmartNotes();
-		
-		this.tabToolBar = new TabToolbarView(backActionEvent, goActionEvent, goActionEventOnEnter,forwardActionEvent, refreshActionEvent, bookmarkActionEvent,bookmarkToModelActionEvent,speechActionEvent, exitActionEvent, addTabActionEvent, homeActionEvent);
+
+		this.tabToolBar = new TabToolbarView(backActionEvent, goActionEvent,
+				goActionEventOnEnter, forwardActionEvent, refreshActionEvent,
+				bookmarkActionEvent, bookmarkToModelActionEvent,
+				speechActionEvent, exitActionEvent, addTabActionEvent,
+				homeActionEvent);
 		this.browserWindowView = new BrowserWindow();
 
 		tagHandler = new TagHandler(browserWindowView.webEngine);
-		
+
 	}
-	
-	//Reflects url of a webpage in address bar of currently opened browser when web page is loaded
+
+	// Reflects url of a webpage in address bar of currently opened browser when
+	// web page is loaded
 	public void reflectURLChange() {
 
 		browserWindowView.getView().getEngine().getLoadWorker().stateProperty()
 				.addListener(new ChangeListener<State>() {
 					public void changed(ObservableValue ov, State oldState,
 							State newState) {
-						
+
 						if (newState == State.RUNNING) {
-							tabToolBar.getAddressBarField().setText(browserWindowView.getView().getEngine().getLocation());
+							tabToolBar.getAddressBarField().setText(
+									browserWindowView.getView().getEngine()
+											.getLocation());
 						}
 						if (newState == State.SUCCEEDED) {
-							//System.out.println("Page "+ browserWindowView.getView().getEngine().getLocation() + " loaded");
-							browserWindowView.getHistory().executeNav(browserWindowView.getView().getEngine().getLocation());
-							//System.out.println("items list:"+browserWindowView.getHistory().getItems());
+							// System.out.println("Page "+
+							// browserWindowView.getView().getEngine().getLocation()
+							// + " loaded");
+							browserWindowView.getHistory().executeNav(
+									browserWindowView.getView().getEngine()
+											.getLocation());
+							// System.out.println("items list:"+browserWindowView.getHistory().getItems());
 						}
 					}
 				});
 
 	}
 
-	
 	public void perfomGoAction() {
 
 		tabToolBar.getNavButton().onActionProperty()
@@ -148,110 +153,109 @@ public class ViewController {
 				});
 	}
 
-	//Event handler for back button
+	// Event handler for back button
 	public class BackActionEvent implements EventHandler<ActionEvent> {
 
 		@Override
 		public void handle(ActionEvent actionEvent) {
-			System.out.println("Back Clicked!");
-			if(browserWindowView.getHistory().canNavBack()){
+			if (browserWindowView.getHistory().canNavBack()) {
 				try {
 					System.out.println("navigating back......");
-					browserWindowView.navTo(browserWindowView.getHistory().requestNavBack());
+					browserWindowView.navTo(browserWindowView.getHistory()
+							.requestNavBack());
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			}
 		}
 	}
-	
-	//Event handler for back button
+
+	// Event handler for back button
 	public class ForwardActionEvent implements EventHandler<ActionEvent> {
 
 		@Override
 		public void handle(ActionEvent actionEvent) {
-			System.out.println("forward Clicked!");
-			if(browserWindowView.getHistory().canNavForward()){
-				System.out.println("history "+browserWindowView.getHistory());
+			if (browserWindowView.getHistory().canNavForward()) {
 				try {
-					browserWindowView.navTo(browserWindowView.getHistory().requestNavForward());
+					browserWindowView.navTo(browserWindowView.getHistory()
+							.requestNavForward());
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				
+
 			}
-		
 
 		}
 	}
-	
-	//Event handler for Go button
+
+	// Event handler for Go button
 	public class GoActionEvent implements EventHandler<ActionEvent> {
 
 		@Override
 		public void handle(ActionEvent actionEvent) {
-			System.out.println("Go Clicked!");
 			try {
-				browserWindowView.navTo(tabToolBar.getAddressBarField().getText());
+				browserWindowView.navTo(tabToolBar.getAddressBarField()
+						.getText());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 
 		}
 	}
-	
-	//Event handler for refresh button
+
+	// Event handler for refresh button
 	public class RefreshActionEvent implements EventHandler<ActionEvent> {
 
 		@Override
 		public void handle(ActionEvent actionEvent) {
-			System.out.println("Refresh Clicked!");
 			try {
-				browserWindowView.navTo(tabToolBar.getAddressBarField().getText());
+				browserWindowView.navTo(tabToolBar.getAddressBarField()
+						.getText());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 
 		}
 	}
-	
-	//Event handler for enter pressed for navigation
+
+	// Event handler for enter pressed for navigation
 	public class GoActionEventOnEnter implements EventHandler<KeyEvent> {
 
 		@Override
 		public void handle(KeyEvent keyEvent) {
 			if (keyEvent.getCode().equals(KeyCode.ENTER)) {
-			try {
-				browserWindowView.navTo(tabToolBar.getAddressBarField().getText());
-			} catch (IOException e) {
-				e.printStackTrace();
+				try {
+					browserWindowView.navTo(tabToolBar.getAddressBarField()
+							.getText());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
-		}
 
 		}
 	}
-	
-	//Event handler for bookmark button
+
+	// Event handler for bookmark button
 	public class BookmarkActionEvent implements EventHandler<ActionEvent> {
 
 		@Override
 		public void handle(ActionEvent actionEvent) {
-			System.out.println("bookmark clicked");
 			tabToolBar.getBookmarkStage().show();
 
-			tabToolBar.setBookmarkTitleText(browserWindowView.getView().getEngine().getTitle());
-			tabToolBar.setBookmarkUrlText(tabToolBar.getAddressBarField().getText());
-
-		
+			tabToolBar.setBookmarkTitleText(browserWindowView.getView()
+					.getEngine().getTitle());
+			tabToolBar.setBookmarkUrlText(tabToolBar.getAddressBarField()
+					.getText());
 
 		}
 	}
-	//Event handler for add button on bookmark dialog
-	public class BookmarkToModelActionEvent implements EventHandler<ActionEvent> {
+
+	// Event handler for add button on bookmark dialog
+	public class BookmarkToModelActionEvent implements
+			EventHandler<ActionEvent> {
 
 		@Override
 		public void handle(ActionEvent actionEvent) {
-			System.out.println("bm in action");
 			Bookmark bookmark = new Bookmark();
 			bookmark.setBookmarkName(tabToolBar.getBookmarkTitle());
 			bookmark.setBookmarkURL(tabToolBar.getBookmarkURL());
@@ -260,20 +264,21 @@ public class ViewController {
 			setBookmarkItems();
 			tabToolBar.getBookmarkStage().close();
 
-
 		}
 	}
-	
-	//reflects bookmarked website on menu button of currently openend browser whenever bookmark is added
+
+	// reflects bookmarked website on menu button of currently openend browser
+	// whenever bookmark is added
 	public void setBookmarkItems() {
-		System.out.println("setbookmark");
-		((MenuButton)tabToolBar.getNavPane().getChildren().get(10)).getItems().remove(0);
+		((MenuButton) tabToolBar.getNavPane().getChildren().get(10)).getItems()
+				.remove(0);
 		Menu menu = new Menu("Bookmarks");
-		for (final Bookmark bookmark : TabViewController.getBookmarkModel().getBookmarkList()) {
-   		 	
-         	 MenuItem bookmarkMenuItem = new MenuItem(bookmark.getBookmarkName());
-         	 bookmarkMenuItem.setOnAction(new EventHandler<ActionEvent>() {
-         		 
+		for (final Bookmark bookmark : TabViewController.getBookmarkModel()
+				.getBookmarkList()) {
+
+			MenuItem bookmarkMenuItem = new MenuItem(bookmark.getBookmarkName());
+			bookmarkMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+
 				public void handle(ActionEvent arg0) {
 					// page should load url
 					try {
@@ -282,31 +287,32 @@ public class ViewController {
 						e.printStackTrace();
 					}
 				}
-			});		
-         	 menu.getItems().add(bookmarkMenuItem);
-            }
-		((MenuButton)tabToolBar.getNavPane().getChildren().get(10)).getItems().add(0, menu);
+			});
+			menu.getItems().add(bookmarkMenuItem);
+		}
+		((MenuButton) tabToolBar.getNavPane().getChildren().get(10)).getItems()
+				.add(0, menu);
 
 	}
-	
-	
-	//Event handler for speech button
+
+	// Event handler for speech button
 	public class SpeechActionEvent implements EventHandler<ActionEvent> {
-		int SpeechCounter = 0 ;
+		int SpeechCounter = 0;
+
 		@Override
 		public void handle(ActionEvent actionEvent) {
-			
+
 			if (TabView.isSpeechMode()) {
-				System.out.println("disabling");
 				tabToolBar.setSpeechMode(false);
 				TabView.setSpeechMode(false);
-				tabToolBar.createSpeechButtonHelper("Micro-off-icon","Enable speech mode");
+				tabToolBar.createSpeechButtonHelper("Micro-off-icon",
+						"Enable speech mode");
 				TabViewController.sTask.cancel();
 			} else {
-				System.out.println("enabling");
 				tabToolBar.setSpeechMode(true);
 				TabView.setSpeechMode(true);
-				tabToolBar.createSpeechButtonHelper("Micro-icon","Disable speech mode");
+				tabToolBar.createSpeechButtonHelper("Micro-icon",
+						"Disable speech mode");
 				if (SpeechCounter == 0) {
 					SpeechCounter++;
 					TabViewController.sTask.start();
@@ -315,27 +321,27 @@ public class ViewController {
 				}
 			}
 		}
-		
 
-		}
-	
-	//Event handler for exit
+	}
+
+	// Event handler for exit
 	public class ExitActionEvent implements EventHandler<ActionEvent> {
 		@Override
 		public void handle(ActionEvent actionEvent) {
 			System.exit(0);
 		}
 	}
-	
-	//Event handler for adding new tab
+
+	// Event handler for adding new tab
 	public class AddTabActionEvent implements EventHandler<ActionEvent> {
 		@Override
 		public void handle(ActionEvent actionEvent) {
 			TabView addTab = new TabView();
-            BrowserTabBarView.getBrowserTabHolder().getTabs().add(addTab);
+			BrowserTabBarView.getBrowserTabHolder().getTabs().add(addTab);
 		}
 	}
-	//Event handler for home button
+
+	// Event handler for home button
 	public class HomeActionEvent implements EventHandler<ActionEvent> {
 		@Override
 		public void handle(ActionEvent actionEvent) {
@@ -346,19 +352,19 @@ public class ViewController {
 			}
 		}
 	}
-	//adds block around selected view on a web page
-	public void drawLine(int startPointX, int startPointY, int endPointX, int endPointY)
-	{
-	      Path path = new Path();
-	      path.getElements().add(new MoveTo(startPointX, startPointY));
-	      path.getElements().add(new LineTo(endPointX, endPointY));
-	      path.setStrokeWidth(10);
-	      path.setStroke(Color.BLACK);
-	      
-	      if(browserWindowView.getChildren().contains(path))
-	      {
-	    	  browserWindowView.getChildren().remove(path);
-	      }
-	      browserWindowView.getChildren().add(path);
+
+	// adds block around selected view on a web page
+	public void drawLine(int startPointX, int startPointY, int endPointX,
+			int endPointY) {
+		Path path = new Path();
+		path.getElements().add(new MoveTo(startPointX, startPointY));
+		path.getElements().add(new LineTo(endPointX, endPointY));
+		path.setStrokeWidth(10);
+		path.setStroke(Color.BLACK);
+
+		if (browserWindowView.getChildren().contains(path)) {
+			browserWindowView.getChildren().remove(path);
+		}
+		browserWindowView.getChildren().add(path);
 	}
 }
