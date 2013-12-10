@@ -11,6 +11,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import com.browser.main.VoiceBrowser;
 import com.browser.model.Tag;
 
 public class JSoupHelper {
@@ -160,7 +161,8 @@ public class JSoupHelper {
             Element currentElement= linkList.get(linkList.size()-1);
             
             allElements= doc.select(currentElement.tagName());
-            
+            VoiceBrowser.logger.info("Inside JsoupHelper get Tag method");
+            VoiceBrowser.logger.debug("Index is:"+ allElements.indexOf(currentElement));
                         
         } catch (IOException e) {
             e.printStackTrace();

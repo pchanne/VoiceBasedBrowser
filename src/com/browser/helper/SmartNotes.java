@@ -5,6 +5,7 @@ package com.browser.helper;
 
 import java.util.ArrayList;
 
+import com.browser.main.VoiceBrowser;
 import com.browser.view.SideBarView;
 
 public class SmartNotes {
@@ -21,6 +22,9 @@ public class SmartNotes {
 	 */
 	public void copySelectedText(String textForNotes) {
 		copyNotes.add(textForNotes);
+		for (int i = 0; i < copyNotes.size(); i++) {
+			VoiceBrowser.logger.info(copyNotes.get(i) + "\t");
+		}
 		SideBarView.setTextAreaText(copyNotes);
 	}
 	

@@ -28,6 +28,7 @@ import com.browser.command.TextCommand;
 import com.browser.command.TitlesCommand;
 import com.browser.command.TopCommand;
 import com.browser.controller.ViewController;
+import com.browser.main.VoiceBrowser;
 import com.browser.reader.SpeechReaderTask;
 import com.browser.view.SideBarView;
 import com.browser.view.TabView;
@@ -73,6 +74,7 @@ public class SpeechHelper {
 								".in", ".us", ".gov", ".mil", ".info", ".jobs" };
 						for (String str : list) {
 							if (website.contains(str)) {
+								VoiceBrowser.logger.info("Website requested: "+website);
 								viewController.getTabToolBar()
 										.getAddressBarField().setText(website);
 
