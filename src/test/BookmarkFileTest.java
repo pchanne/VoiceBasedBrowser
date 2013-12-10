@@ -1,4 +1,4 @@
-package test.bookmarks;
+package test;
 
 import static org.junit.Assert.*;
 
