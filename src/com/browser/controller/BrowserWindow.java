@@ -1,19 +1,12 @@
+/**
+ * This class is a controller class responsible for instantiating BrowserEngine(webView) for selected tab.  
+ */
+
 package com.browser.controller;
 
 import java.io.IOException;
 
-import netscape.javascript.JSObject;
-
-import org.w3c.dom.DocumentFragment;
-
-import com.browser.helper.SmartNotes;
-import com.browser.reader.FileReader;
-import com.browser.speech.SpeechCommands;
-
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.concurrent.Worker.State;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
@@ -27,9 +20,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
-import javafx.scene.shape.Path;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
+
+import org.w3c.dom.DocumentFragment;
+
+import com.browser.main.VoiceBrowser;
+import com.browser.reader.FileReader;
 
 public class BrowserWindow extends Pane {
 
@@ -37,11 +34,7 @@ public class BrowserWindow extends Pane {
 
 	public WebEngine webEngine;
 	private History history;
-	private final TextField locField = new TextField(); // the location the
-														// browser engine is
-														// currently pointing at
-														// (or where the user
-														// can type in where to
+	private final TextField locField = new TextField(); // the location the browser engine is currently pointing at (or where the user can type in where to
 														// go next).
 	public static String DEFAULT_HOME = "http://www.google.com";
 	public FileReader titleReader;
@@ -90,21 +83,12 @@ public class BrowserWindow extends Pane {
 
 			@Override
 			public void handle(MouseEvent arg0) {
-
-				System.out
-						.println("Some text is selected by mouse event ---------------------");
-				selectedText = (String) webEngine
-						.executeScript("window.getSelection().toString()");
-				System.out
-						.println("selected text is :  -----------------------------------------------   "
-								+ selectedText);
-
-				webEngine
-						.executeScript("var d = document.getElementsByTagName('h4'); for (var i = 0; i < d.length; i++) {d[i].style.backgroundColor = 'blue';};");
+				
+				VoiceBrowser.logger.debug("Some text is selected by mouse event ---------------------");
+				selectedText = (String) webEngine.executeScript("window.getSelection().toString()");
+				webEngine.executeScript("var d = document.getElementsByTagName('h4'); for (var i = 0; i < d.length; i++) {d[i].style.backgroundColor = 'blue';};");
 				{
-					DocumentFragment s1 = (DocumentFragment) webEngine
-							.executeScript("window.getSelection().getRangeAt().cloneContents()");
-
+					DocumentFragment s1 = (DocumentFragment) webEngine.executeScript("window.getSelection().getRangeAt().cloneContents()");
 				}
 			}
 
@@ -153,32 +137,21 @@ public class BrowserWindow extends Pane {
 		return 500;
 	}
 
+	//This function is navigates browser to requested url
 	public void navTo(String loc) throws IOException {
 		if (loc == null)
 			loc = "";
 		if (loc.startsWith("google")) { // search google
-			loc = "http://www.google.com/search?q="
-					+ loc.substring("google".length()).trim()
-							.replaceAll(" ", "+");
+			loc = "http://www.google.com/search?q="	+ loc.substring("google".length()).trim().replaceAll(" ", "+");
 		} else if (loc.startsWith("wiki")) {
-			loc = "http://en.wikipedia.org/w/index.php?search="
-					+ loc.substring("wiki".length()).trim()
-							.replaceAll(" ", "+");
-		} else if (loc.startsWith("find")) { // search default (google) due to
-												// keyword
-			loc = "http://www.google.com/search?q="
-					+ loc.substring("find".length()).trim()
-							.replaceAll(" ", "+");
-		} else if (loc.startsWith("search")) { // search default (google) due to
-												// keyword
-			loc = "http://www.google.com/search?q="
-					+ loc.substring("search".length()).trim()
-							.replaceAll(" ", "+");
+			loc = "http://en.wikipedia.org/w/index.php?search="+ loc.substring("wiki".length()).trim().replaceAll(" ", "+");
+		} else if (loc.startsWith("find")) { // search default (google) due to// keyword
+			loc = "http://www.google.com/search?q="+ loc.substring("find".length()).trim().replaceAll(" ", "+");
+		} else if (loc.startsWith("search")) { // search default (google) due to keyword
+			loc = "http://www.google.com/search?q="+ loc.substring("search".length()).trim().replaceAll(" ", "+");
 		} else if (loc.contains(" ")) { // search default (google) due to space
-			loc = "http://www.google.com/search?q="
-					+ loc.trim().replaceAll(" ", "+");
-		} else if (!(loc.startsWith("http://") || loc.startsWith("https://"))
-				&& !loc.isEmpty()) {
+			loc = "http://www.google.com/search?q="+ loc.trim().replaceAll(" ", "+");
+		} else if (!(loc.startsWith("http://") || loc.startsWith("https://"))&& !loc.isEmpty()) {
 			loc = "http://" + loc; // default to http
 		}
 

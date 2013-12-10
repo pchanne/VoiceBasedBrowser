@@ -37,8 +37,7 @@ public class VoiceBrowser extends Application {
 		stage.setTitle("Voice Based Browser");
 		tabViewController = new TabViewController();
 
-		scene = new Scene(tabViewController.getBrowserTabBarView()
-				.getBrowserTabHolder(), 1020, 650);
+		scene = new Scene(tabViewController.getBrowserTabBarView().getBrowserTabHolder(), 1020, 650);
 		stage.setScene(scene);
 		stage.show();
 	}
