@@ -1,3 +1,8 @@
+
+/**
+ * This command class represents the functionality to display the next title within the selected view.
+ */
+
 package com.browser.command;
 
 import com.browser.view.TabView;

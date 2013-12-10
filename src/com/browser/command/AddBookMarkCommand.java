@@ -1,3 +1,8 @@
+
+/**
+ *  This command class represents the functionality to add bookmarks to the browser.
+ */
+
 package com.browser.command;
 
 import com.browser.view.TabView;

@@ -4,6 +4,7 @@
  */
 package com.browser.speech;
 import com.browser.controller.BrowserWindow;
+import com.browser.main.VoiceBrowser;
 
 import edu.cmu.sphinx.frontend.util.Microphone;
 import edu.cmu.sphinx.recognizer.Recognizer;
@@ -25,23 +26,19 @@ public class SpeechCommands {
         Recognizer recognizer = (Recognizer) cm.lookup("recognizer");
         recognizer.allocate();
 
-        // start the microphone or exit if the programm if this is not possible
+        // start the microphone or deallocate the resources and log the message if this is not possible
         Microphone microphone = (Microphone) cm.lookup("microphone");
         if (!microphone.startRecording()) {
-            System.out.println("Cannot start microphone.");
+            VoiceBrowser.logger.error("Cannot start microphone.");
             recognizer.deallocate();
         }
-
-        System.out.println("Say: (Good morning | Hello | Go | Back | Refresh | Forward | Close | Yahoo .Dot Com | Smart Notes | Read | Bing .Dot Com | Save | Cnn .Dot com | Book Mark) ");
-
-            System.out.println("Start speaking.\n");
-            Result result = recognizer.recognize();
+                    Result result = recognizer.recognize();
 
             if (result != null) {
                 resultText = result.getBestFinalResultNoFiller();
-                System.out.println("You said: " + resultText + '\n');
+                VoiceBrowser.logger.info("Yout said:"+resultText);
             } else {
-                System.out.println("I can't hear what you said.\n");
+                VoiceBrowser.logger.info("I can't hear what you said.\n");
             }
             return resultText;
         
