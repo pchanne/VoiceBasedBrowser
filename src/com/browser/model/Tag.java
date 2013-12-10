@@ -6,8 +6,11 @@ package com.browser.model;
 import org.jsoup.nodes.Element;
 
 public class Tag {
-	Element tagElement;
-	int position;
+
+	private Element tagElement;
+
+	// relative positon of tagElement in webpage with respect to its tagName
+	private int position;
 
 	public Tag(Element tagElement, int position) {
 		super();
