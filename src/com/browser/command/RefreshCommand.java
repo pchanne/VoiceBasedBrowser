@@ -16,7 +16,6 @@ public class RefreshCommand implements Command{
 		try {
 			TabView.getCurrentViewController().getBrowserWindowView().navTo(TabView.getCurrentViewController().getTabToolBar().getAddressBarField().getText());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

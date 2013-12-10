@@ -19,7 +19,6 @@ public class NavigateCommand implements Command{
 		try {
 			TabView.getCurrentViewController().getBrowserWindowView().navTo(TabView.getCurrentViewController().getTagHandler().getUrlFromCurrentLinkTaginCurrentView());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
