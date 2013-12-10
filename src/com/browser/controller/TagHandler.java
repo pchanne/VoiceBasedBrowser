@@ -565,3 +565,4 @@ public class TagHandler {
         return getTextFromCurrentTextTag(currentViewTagModel);
     }
 }
+

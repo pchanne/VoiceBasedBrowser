@@ -12,8 +12,7 @@ public class HeaderTagModel {
     private Element headerTag;
     private int position;
     
-    public HeaderTagModel(Element headerTag, int position) {
-        super();
+    public HeaderTagModel(Element headerTag, int position) {        
         this.headerTag = headerTag;
         this.position = position;
     }

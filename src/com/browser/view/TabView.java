@@ -35,6 +35,7 @@ public class TabView extends Tab {
 	private static ViewController currentViewController;
 
 	private TextField searchBar;
+
 	private Button findTagButton;
 	private Button selectButton;
 	private Pane myTabToolBarPane;
@@ -67,11 +68,14 @@ public class TabView extends Tab {
 		this.viewController = viewController;
 	}
 
+
 	//Constructor
 	public TabView() {
 		
 		viewController = new ViewController();
 		myTabToolBarPane = viewController.getTabToolBar().CreateNavToolbar();
+
+
 
 		final BorderPane tabLayout = new BorderPane();
 
@@ -90,6 +94,7 @@ public class TabView extends Tab {
 						}
 					}
 				});
+
 
 		searchBar = new TextField();
 		findTagButton = new Button("Find Tag");
@@ -116,6 +121,7 @@ public class TabView extends Tab {
 						.getSelectedItem().isSelected()) {
 					TabView.setCurrentViewController(TabView.this.viewController);
 					speechButtonHandler();
+
 				}
 				reflectBookmarks();
 			}
