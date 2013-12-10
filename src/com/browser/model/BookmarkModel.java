@@ -1,4 +1,4 @@
-/*
+/**
  * This class is used to store and retrieve all the bookmarks throughout the browser
  */
 package com.browser.model;
@@ -20,16 +20,10 @@ public class BookmarkModel {
         bookmarkList= new ArrayList<Bookmark>();
     }
 
-    /**
-     * @return the bookmarkList
-     */
     public ArrayList<Bookmark> getBookmarkList() {
         return bookmarkList;
     }
 
-    /**
-     * @param bookmarkList the bookmarkList to set
-     */
     public void setBookmarkList(ArrayList<Bookmark> bookmarkList) {
         this.bookmarkList = bookmarkList;
     }
