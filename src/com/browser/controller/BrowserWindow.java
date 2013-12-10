@@ -38,7 +38,7 @@ public class BrowserWindow extends Pane{
     public WebEngine webEngine;
     private History history;
     private final TextField locField = new TextField();    // the location the browser engine is currently pointing at (or where the user can type in where to go next).
-    public static String DEFAULT_HOME = "http://www.soic.indiana.edu/graduate/courses/index.php"; 
+    public static String DEFAULT_HOME = "http://www.google.com"; 
     private String speechCommandSpoken;
     public FileReader titleReader;
     private SmartNotes smartNoteObj;
