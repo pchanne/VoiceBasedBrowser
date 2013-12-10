@@ -1,16 +1,9 @@
+/**
+ * This class performs mapping between voice commands and the corresponding actions.
+ */
 package com.browser.helper;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Iterator;
-
 import javafx.application.Platform;
-import javafx.collections.ObservableList;
-
-import org.w3c.dom.DocumentFragment;
-
 import com.browser.command.AddBookMarkCommand;
 import com.browser.command.BackCommand;
 import com.browser.command.BookMarkCommand;
@@ -34,11 +27,7 @@ import com.browser.command.SmartNotesCommand;
 import com.browser.command.TextCommand;
 import com.browser.command.TitlesCommand;
 import com.browser.command.TopCommand;
-import com.browser.controller.BrowserWindow;
-import com.browser.controller.TabViewController;
 import com.browser.controller.ViewController;
-import com.browser.main.VoiceBrowser;
-import com.browser.reader.FileReader;
 import com.browser.reader.SpeechReaderTask;
 import com.browser.view.SideBarView;
 import com.browser.view.TabView;
@@ -50,54 +39,54 @@ public class SpeechHelper {
 	public static SpeechReaderTask speechReaderTask;
 	public static int readCounter;
 	public static int viewCounter;
-	private double currentX;
-	private double currentY;
-	private double currentWidth;
-	private double currentHeight;
 	private boolean bookmarkFlag;
 	private Invoker invokerObj;
-	
-	public SpeechHelper(){
+
+	public SpeechHelper() {
 		readCounter = 0;
 		viewCounter = 0;
-		currentX =0;
-		currentY = 0;
+
 		speechReaderTask = new SpeechReaderTask();
 		website = null;
 		bookmarkFlag = false;
-		
+
 		invokerObj = new Invoker();
 	}
-	
+
+	/*
+	 * This method will check if the received command is for website navigation
+	 * or action commands and perform relevant action.
+	 */
 	public void speechTest(final String Command) {
-		
-		System.out.println("command received is:" + Command);
+
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-				SpeechHelper.this.viewController = TabView.getCurrentViewController();
-								if (Command != null) {
+				SpeechHelper.this.viewController = TabView
+						.getCurrentViewController();
+				if (Command != null) {
 					website = Command.replace(".dot", ".");
 					website = website.replace(" ", "");
-					System.out.println("Website said : " + website);
+
 					if (website != null) {
-						String list[] = {".com",".edu",".org",".net",".in",".us",".gov",".mil",".info",".jobs"};
-						for(String str: list){
-                            if(website.contains(str))
-                            {
-                                viewController.getTabToolBar().getAddressBarField().setText(website);
-                                System.out.println("website");
-                                return;
-                            }
+						String list[] = { ".com", ".edu", ".org", ".net",
+								".in", ".us", ".gov", ".mil", ".info", ".jobs" };
+						for (String str : list) {
+							if (website.contains(str)) {
+								viewController.getTabToolBar()
+										.getAddressBarField().setText(website);
+
+								return;
+							}
 						}
-						
+
 						if (Command.equalsIgnoreCase("go")) {
 							invokerObj.setCommand(new GoCommand());
-							
+
 						}
 						if (Command.equalsIgnoreCase("back")) {
 							invokerObj.setCommand(new BackCommand());
-							
+
 						}
 						if (Command.equalsIgnoreCase("forward")) {
 							invokerObj.setCommand(new ForwardCommand());
@@ -111,7 +100,7 @@ public class SpeechHelper {
 						if (Command.equalsIgnoreCase("book mark")) {
 							bookmarkFlag = true;
 							invokerObj.setCommand(new BookMarkCommand());
-							
+
 						}
 						if (Command.equalsIgnoreCase("Add") && bookmarkFlag) {
 							invokerObj.setCommand(new AddBookMarkCommand());
@@ -120,47 +109,42 @@ public class SpeechHelper {
 						if (Command.equalsIgnoreCase("read")) {
 							invokerObj.setCommand(new ReadCommand());
 						}
-						if(Command.equalsIgnoreCase("smart notes")){
+						if (Command.equalsIgnoreCase("smart notes")) {
 							invokerObj.setCommand(new SmartNotesCommand());
 						}
-						if(Command.equalsIgnoreCase("save") && !(SideBarView.getTextArea().getText().equalsIgnoreCase(""))){
+						if (Command.equalsIgnoreCase("save")
+								&& !(SideBarView.getTextArea().getText()
+										.equalsIgnoreCase(""))) {
 							invokerObj.setCommand(new SaveCommand());
 						}
-						
-						if(Command.equalsIgnoreCase("Screen"))
-						{
+
+						if (Command.equalsIgnoreCase("Screen")) {
 							invokerObj.setCommand(new ScreenCommand());
 						}
-						
-						if (Command.equalsIgnoreCase("top")){
+
+						if (Command.equalsIgnoreCase("top")) {
 							invokerObj.setCommand(new TopCommand());
 						}
-						if (Command.equalsIgnoreCase("bottom")){		
+						if (Command.equalsIgnoreCase("bottom")) {
 							invokerObj.setCommand(new BottomCommand());
-							
+
 						}
-						if(Command.equalsIgnoreCase("Links"))
-						{
+						if (Command.equalsIgnoreCase("Links")) {
 							invokerObj.setCommand(new LinksCommand());
 						}
-						if(Command.equalsIgnoreCase("Titles"))
-						{
+						if (Command.equalsIgnoreCase("Titles")) {
 							invokerObj.setCommand(new TitlesCommand());
 						}
-						if(Command.equalsIgnoreCase("Text"))
-						{
+						if (Command.equalsIgnoreCase("Text")) {
 							invokerObj.setCommand(new TextCommand());
 						}
-						if(Command.equalsIgnoreCase("Next Link"))
-						{
+						if (Command.equalsIgnoreCase("Next Link")) {
 							invokerObj.setCommand(new NextLinkCommand());
 						}
-						if(Command.equalsIgnoreCase("Next Title"))
-						{
+						if (Command.equalsIgnoreCase("Next Title")) {
 							invokerObj.setCommand(new NextTitleCommand());
 						}
-						if(Command.equalsIgnoreCase("Next Text"))
-						{
+						if (Command.equalsIgnoreCase("Next Text")) {
 							invokerObj.setCommand(new NextTextCommand());
 						}
 
@@ -173,7 +157,7 @@ public class SpeechHelper {
 						if (Command.equalsIgnoreCase("scroll up")) {
 							invokerObj.setCommand(new ScrollUpCommand());
 						}
-						if(invokerObj.getCommand()!=null)
+						if (invokerObj.getCommand() != null)
 							invokerObj.invoke();
 					}
 				}

@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 package com.browser.helper;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,9 +15,7 @@ import com.browser.model.Tag;
 
 public class JSoupHelper {
     
-    
-
-    private Document documentUrl;
+      //private Document documentUrl;
     
     public JSoupHelper() {
        
@@ -22,14 +23,15 @@ public class JSoupHelper {
     
     public JSoupHelper(Document documentUrl) {
         super();
-        this.documentUrl = documentUrl;
+       // this.documentUrl = documentUrl;
     }
     
-    
+    /*
+     * This method will select all the header tags within the received area
+     */
     public ArrayList<Tag> getHeaderTags(String url)
     {
-        //String html="<h1>H1:1</h1><h2>H2:1</h2><h2>H2:2</h2><h1>H1:2</h1>";
-        
+         
         ArrayList<Tag> headerTagList;
         Document doc;
         try {
@@ -74,12 +76,15 @@ public class JSoupHelper {
             
             return headerTagList;
         } catch (IOException e) {
-            // TODO Auto-generated catch block
+           
             e.printStackTrace();
         }
         return null;                                 
     }
     
+    /*
+     * This method will select all the hyperlinks within the received area
+     */
     public ArrayList<Tag> getLinkTags(String url)
     {
         Document doc;
@@ -97,12 +102,15 @@ public class JSoupHelper {
             
             return linkTags;
         } catch (IOException e) {
-            // TODO Auto-generated catch block
+            
             e.printStackTrace();
         }
         return null; 
     }
     
+    /*
+     * This method will select all the <p> tags 
+     */
     public void getPTags()
     {
         String html="<p>Para1</p><pre>Pre1</pre><p>Para2</p><pre>Pre2</pre>";
@@ -113,7 +121,7 @@ public class JSoupHelper {
         for(int i=0; i< pTags.size(); i++)
         {
             Element currentHTag= pTags.get(i);
-            System.out.println(currentHTag.tagName());
+            
         }                       
     }
     
@@ -147,61 +155,56 @@ public class JSoupHelper {
             return textTagList;
             
         } catch (IOException e) {
-            // TODO Auto-generated catch block
+            
             e.printStackTrace();
         }
         
         return null;
     }
     
+    /*
+     * This method will select all the requested tags within the received area
+     */
     public String getTag(String url, String textToFind)
     {
         Document doc;
         try {
             doc = Jsoup.connect(url).get();
-            Elements allElements;//= doc.select("p");
-            
-            //String textToFind="Para3";        
+            Elements allElements;        
             Elements linkList= doc.select(":contains("+textToFind+")");
             
             Element currentElement= linkList.get(linkList.size()-1);
             
             allElements= doc.select(currentElement.tagName());
             
-            System.out.println("Index is:"+ allElements.indexOf(currentElement));
                         
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            System.out.println(e.getMessage());
-            //e.printStackTrace();
+            e.printStackTrace();
         }
         
         
         return null;
     }
 
+    /*
+     * This method will give the position of requested text in the selected area
+     */
     public int getPosition(String url, String textToFind)
     {
         
         Document doc;
         try {
             doc = Jsoup.connect(url).get();
-            Elements allElements;//= doc.select("p");
-            
-            //String textToFind="Para3";        
+            Elements allElements;      
             Elements linkList= doc.select(":contains("+textToFind+")");
             
             Element currentElement= linkList.get(linkList.size()-1);
             
             allElements= doc.select(currentElement.tagName());
             
-            System.out.println("Index is:"+ allElements.indexOf(currentElement));
-            
             return allElements.indexOf(currentElement);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            System.out.println(e.getMessage());
-            //e.printStackTrace();
+        	 e.printStackTrace();
         }
         
         return -1;
