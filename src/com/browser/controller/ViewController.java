@@ -316,14 +316,15 @@ public class ViewController {
 
 		}
 	
-	
+	//Event handler for exit
 	public class ExitActionEvent implements EventHandler<ActionEvent> {
 		@Override
 		public void handle(ActionEvent actionEvent) {
 			System.exit(0);
 		}
-		}
+	}
 	
+	//Event handler for adding new tab
 	public class AddTabActionEvent implements EventHandler<ActionEvent> {
 		@Override
 		public void handle(ActionEvent actionEvent) {
@@ -331,7 +332,7 @@ public class ViewController {
             BrowserTabBarView.getBrowserTabHolder().getTabs().add(addTab);
 		}
 	}
-	
+	//Event handler for home button
 	public class HomeActionEvent implements EventHandler<ActionEvent> {
 		@Override
 		public void handle(ActionEvent actionEvent) {
@@ -342,7 +343,7 @@ public class ViewController {
 			}
 		}
 	}
-	
+	//adds block around selected view on a web page
 	public void drawLine(int startPointX, int startPointY, int endPointX, int endPointY)
 	{
 	      Path path = new Path();
