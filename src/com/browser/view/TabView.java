@@ -1,70 +1,90 @@
+/**
+ * This class represents single tab in a browser.
+ */
 package com.browser.view;
 
 import java.io.IOException;
 
-import org.jsoup.select.Elements;
-
-import com.browser.controller.BrowserWindow;
-import com.browser.controller.TagHandler;
-import com.browser.helper.JSoupHelper;
-import com.browser.main.VoiceBrowser;
-import com.browser.view.ToolbarView;
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.concurrent.Worker.State;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
+import com.browser.controller.TabViewController;
+import com.browser.controller.ViewController;
+import com.browser.helper.GetImagePath;
+import com.browser.model.Bookmark;
+
 public class TabView extends Tab {
 
-	private TabToolbarView tabToolbarViewObj;
-	private BrowserWindow browserWindow;
-	
-	//testing
-	private TextField searchBar;
-    private Button findPositionButton;
-    private Button selectButton;       
-	private int headerIndex=0;
-	private Button allHeadersButton;
-	private Button nextButton;
-	private Button clearButton;
-	private Elements allHeaderTags;
-	private JSoupHelper jsoupHelperTest;
-	private TagHandler tagHandler;
-	
-	private double currentWidth;
-	private double currentHeight;
+	private ViewController viewController;
+	private static ViewController currentViewController;
 
+	private TextField searchBar;
+
+	private Button findTagButton;
+	private Button selectButton;
+	private Pane myTabToolBarPane;
+	private static boolean speechMode = false;
+	private ImageView speechGraphic;
+	private static GetImagePath getImgObj;
+
+	public static ViewController getCurrentViewController() {
+		return currentViewController;
+	}
+
+	public static void setCurrentViewController(
+			ViewController currentViewController) {
+		TabView.currentViewController = currentViewController;
+	}
+
+	public static boolean isSpeechMode() {
+		return speechMode;
+	}
+
+	public static void setSpeechMode(boolean speechMode) {
+		TabView.speechMode = speechMode;
+	}
+
+	public ViewController getViewController() {
+		return viewController;
+	}
+
+	public void setViewController(ViewController viewController) {
+		this.viewController = viewController;
+	}
+
+
+	//Constructor
 	public TabView() {
 		
-		tabToolbarViewObj = new TabToolbarView();
+		viewController = new ViewController();
+		myTabToolBarPane = viewController.getTabToolBar().CreateNavToolbar();
 
-		browserWindow = new BrowserWindow();
-		
-		tagHandler= new TagHandler(browserWindow.webEngine);
-		
-		//sideBarViewObj = new SideBarView();
-		//sideBarViewObj=SideBarView.getInstance();
-		
-		
-		//final BorderPane tabLayout = new BorderPane();
-				 
+
+
 		final BorderPane tabLayout = new BorderPane();
-		
-		tabLayout.setTop(tabToolbarViewObj.CreateNavToolbar());
-		tabLayout.setCenter(browserWindow);
 
-		browserWindow.getView().getEngine().titleProperty()
-				.addListener(new ChangeListener<String>() {
+		tabLayout.setTop(myTabToolBarPane);
+		tabLayout.setCenter(viewController.getBrowserWindowView());
+		viewController.reflectURLChange();
+
+		viewController.getBrowserWindowView().getView().getEngine()
+				.titleProperty().addListener(new ChangeListener<String>() {
 					@Override
 					public void changed(
 							ObservableValue<? extends String> observableValue,
@@ -75,148 +95,106 @@ public class TabView extends Tab {
 					}
 				});
 
-		browserWindow.getView().getEngine().getLoadWorker().stateProperty()
-				.addListener(new ChangeListener<State>() {
-					public void changed(ObservableValue ov, State oldState,
-							State newState) {
-						if (newState == State.RUNNING) {
 
-							tabToolbarViewObj.getAddressBarField().setText(
-									browserWindow.getView().getEngine()
-											.getLocation());
-						}
+		searchBar = new TextField();
+		findTagButton = new Button("Find Tag");
+		selectButton = new Button("Select");
 
-						if (newState == State.SUCCEEDED) {
-							System.out.println("in tab: " + getText());
-							System.out.println("Page "
-									+ browserWindow.getView().getEngine()
-											.getLocation() + " loaded");
-							//headerTagHandler.initialise();
-						}
+		HBox selectTagLayout = new HBox();
 
-					}
-				});
-
-		/*tabLayout.getChildren().addAll(tabToolbarViewObj.CreateNavToolbar(),
-				browserWindow);*/
-		
-		
-		
-		searchBar= new TextField();
-		findPositionButton = new Button("Find Position");
-		selectButton= new Button("Select");
-		
-		HBox selectTagLayout= new HBox();
-		
-		selectTagLayout.getChildren().addAll(searchBar, findPositionButton, selectButton);
-		
-		findPositionButton.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent actionEvent) {
-                
-                String url= browserWindow.webEngine.getLocation();
-                String textToFind= searchBar.getText();
-                
-                System.out.println(url+" "+textToFind);
-                
-                JSoupHelper jsoupHelperInstance= new JSoupHelper();
-                headerIndex=jsoupHelperInstance.getPosition(url, textToFind)-1;
-                
-                browserWindow.webEngine.executeScript("var d = document.getElementsByTagName('p'); " +                		
-                		" d["+headerIndex+"].style.backgroundColor = 'blue';");
-                
-                
-            }
-        });
-		
-		
+		selectTagLayout.getChildren().addAll(searchBar, findTagButton,
+				selectButton);
 		HBox.setHgrow(searchBar, Priority.ALWAYS);
-		
-		jsoupHelperTest= new JSoupHelper();		
-		
-				
-		Button viewButton = new Button("Get Width/Height");
-		viewButton.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent actionEvent) {
-                System.out.println("Height: "+ browserWindow.getHeight()+"\n"+
-            "Width: "+browserWindow.getWidth());               
-            }
-        });
-			
-		
-		Button goToViewButton = new Button("Go to View");
-		goToViewButton.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent actionEvent) {
-                 
-                 currentWidth= browserWindow.getWidth();
-                 currentHeight= browserWindow.getHeight();
-                 
-                 tagHandler.initialiseViews(0, 0, currentWidth, currentHeight);              
-            }
-        });	
-		
-		Button highlightTopTagButton= new Button("Highlight all top tags");
-		highlightTopTagButton.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent actionEvent) {
-                tagHandler.highlightAllLinksinTopView();                              
-           }
-       });
-		
-		Button highlightBottomTagButton= new Button("Highlight all bottom tags");
-        highlightBottomTagButton.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent actionEvent) {
-                tagHandler.highlightAllLinksinBottomView();                             
-           }
-       });
-		
-		HBox headerTagLayout= new HBox();
-		
-		headerTagLayout.getChildren().addAll(viewButton, goToViewButton, highlightTopTagButton, highlightBottomTagButton);
-					
-		VBox testLayout= new VBox();
-		
-		testLayout.getChildren().addAll(tabToolbarViewObj.CreateNavToolbar(),selectTagLayout, headerTagLayout);
-		tabLayout.setTop(testLayout);
-		
-		//tabLayout.setTop(tabToolbarViewObj.CreateNavToolbar());
-		tabLayout.setCenter(browserWindow);
-		
-		//tabLayout.setLeft(sideBarViewObj.getInstance().getSideBar());
 
-		tabToolbarViewObj.getNavButton().setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent actionEvent) {
-				try {
-					browserWindow.navTo(tabToolbarViewObj.getAddressBarField().getText());
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+		final VBox sideBarContainer = new VBox();
+
+		setOnSelectionChanged(new EventHandler<Event>() {
+			@Override
+			public void handle(Event arg0) {
+				// Changing speech icon on tab change based on global speechMode
+				// status
+				getImgObj = new GetImagePath();
+				reflectSiderBar(sideBarContainer);
+
+				// set up currently selected tab as global tab
+				if (BrowserTabBarView.getBrowserTabHolder().getSelectionModel()
+						.getSelectedItem().isSelected()) {
+					TabView.setCurrentViewController(TabView.this.viewController);
+					speechButtonHandler();
+
 				}
+				reflectBookmarks();
 			}
 		});
-		
-		final VBox sideBarContainer= new VBox();
-		
-		setOnSelectionChanged(new EventHandler<Event>(){
-
-            @Override
-            public void handle(Event arg0) {
-                // TODO Auto-generated method stub
-                
-                if(sideBarContainer.getChildren().contains(SideBarView.getBarDisplay()))
-                {
-                    sideBarContainer.getChildren().remove(SideBarView.getBarDisplay());
-                }
-                
-                sideBarContainer.getChildren().add(SideBarView.getBarDisplay());
-                
-                
-                System.out.println(SideBarView.getBarDisplay().toString());
-            }
-            
-        });
 
 		tabLayout.setLeft(sideBarContainer);
 		setContent(tabLayout);
 	}
-	
-	
+
+	/*
+	 * Changes speechButton status across all the tabs when speech mode is
+	 * changed in one of the tabs.
+	 */
+	public void speechButtonHandler() {
+
+		String iconPath = null;
+		if (TabView.speechMode) {
+			iconPath = getImgObj.jarScan("icons.jar", "Micro-icon");
+			speechGraphic = new ImageView(new Image(iconPath));
+			((Button) viewController.getTabToolBar().getNavPane().getChildren()
+					.get(8)).setGraphic(speechGraphic);
+
+		} else if (!TabView.speechMode) {
+			iconPath = getImgObj.jarScan("icons.jar", "Micro-off-icon");
+			speechGraphic = new ImageView(new Image(iconPath));
+			((Button) viewController.getTabToolBar().getNavPane().getChildren()
+					.get(8)).setGraphic(speechGraphic);
+		}
+
+	}
+
+	/*
+	 * Reflects side bar changes made by on tab on all the tabs on tabswitch
+	 */
+	public void reflectSiderBar(VBox sideBarContainer) {
+
+		if (sideBarContainer.getChildren()
+				.contains(SideBarView.getBarDisplay())) {
+			sideBarContainer.getChildren().remove(SideBarView.getBarDisplay());
+		}
+		sideBarContainer.getChildren().add(SideBarView.getBarDisplay());
+
+	}
+
+	/*
+	 * Reflect bookmarks added by on one of the tab into menuButton of all the
+	 * tabs.
+	 */
+	public void reflectBookmarks() {
+
+		((MenuButton) viewController.getTabToolBar().getNavPane().getChildren()
+				.get(10)).getItems().remove(0);
+
+		Menu menu = new Menu("Bookmarks");
+		for (final Bookmark bookmark : TabViewController.getBookmarkModel()
+				.getBookmarkList()) {
+
+			MenuItem bookmarkMenuItem = new MenuItem(bookmark.getBookmarkName());
+			bookmarkMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+
+				public void handle(ActionEvent arg0) {
+					try {
+						viewController.getBrowserWindowView().navTo(bookmark.getBookmarkURL());
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			});
+			menu.getItems().add(bookmarkMenuItem);
+		}
+		((MenuButton) viewController.getTabToolBar().getNavPane().getChildren()
+				.get(10)).getItems().add(0, menu);
+
+	}
+
 }

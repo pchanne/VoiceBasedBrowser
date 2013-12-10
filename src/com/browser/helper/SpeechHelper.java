@@ -1,136 +1,166 @@
+/**
+ * This class performs mapping between voice commands and the corresponding actions.
+ */
 package com.browser.helper;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Iterator;
-
 import javafx.application.Platform;
-import javafx.collections.ObservableList;
-
-import org.w3c.dom.DocumentFragment;
-
-import com.browser.controller.BrowserWindow;
+import com.browser.command.AddBookMarkCommand;
+import com.browser.command.BackCommand;
+import com.browser.command.BookMarkCommand;
+import com.browser.command.BottomCommand;
+import com.browser.command.ForwardCommand;
+import com.browser.command.GoCommand;
+import com.browser.command.HomeCommand;
+import com.browser.command.Invoker;
+import com.browser.command.LinksCommand;
+import com.browser.command.NavigateCommand;
+import com.browser.command.NextLinkCommand;
+import com.browser.command.NextTextCommand;
+import com.browser.command.NextTitleCommand;
+import com.browser.command.ReadCommand;
+import com.browser.command.RefreshCommand;
+import com.browser.command.SaveCommand;
+import com.browser.command.ScreenCommand;
+import com.browser.command.ScrollDownCommand;
+import com.browser.command.ScrollUpCommand;
+import com.browser.command.SmartNotesCommand;
+import com.browser.command.TextCommand;
+import com.browser.command.TitlesCommand;
+import com.browser.command.TopCommand;
 import com.browser.controller.ViewController;
 import com.browser.main.VoiceBrowser;
-import com.browser.reader.FileReader;
 import com.browser.reader.SpeechReaderTask;
 import com.browser.view.SideBarView;
+import com.browser.view.TabView;
 
 public class SpeechHelper {
 
 	private String website;
 	private ViewController viewController;
-	private SpeechReaderTask speechReaderTask;
-	private int ReadCounter;
+	public static SpeechReaderTask speechReaderTask;
+	public static int readCounter;
+	public static int viewCounter;
 	private boolean bookmarkFlag;
-	
-	public SpeechHelper(ViewController viewController){
-		ReadCounter = 0;
-		this.viewController = viewController;
-		speechReaderTask = new SpeechReaderTask(viewController);
+	private Invoker invokerObj;
+
+	public SpeechHelper() {
+		readCounter = 0;
+		viewCounter = 0;
+
+		speechReaderTask = new SpeechReaderTask();
 		website = null;
 		bookmarkFlag = false;
+
+		invokerObj = new Invoker();
 	}
-	
+
+	/*
+	 * This method will check if the received command is for website navigation
+	 * or action commands and perform relevant action.
+	 */
 	public void speechTest(final String Command) {
-		
-		System.out.println("command received is:" + Command);
+
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-								if (Command != null) {
+				SpeechHelper.this.viewController = TabView
+						.getCurrentViewController();
+				if (Command != null) {
 					website = Command.replace(".dot", ".");
 					website = website.replace(" ", "");
-					System.out.println("Website said : " + website);
+
 					if (website != null) {
-						if (website.equalsIgnoreCase("yahoo.com")) {
-							System.out
-									.println("Website identified and set as the addressbar field ");
-							viewController.getToolBar()
-									.getAddressBarField().setText(website);
-						}
-						if (website.equalsIgnoreCase("bing.com")) {
-							viewController.getToolBar().getAddressBarField().setText(website);
-						}
-						if(website.equalsIgnoreCase("cnn.com")){
-							viewController.getToolBar().getAddressBarField().setText(website);
-						}
-						if (Command.equalsIgnoreCase("go")) {
-							try {
-								viewController.getBrowserWindowView().navTo(viewController.getToolBar().getAddressBarField().getText());
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
+						String list[] = { ".com", ".edu", ".org", ".net",
+								".in", ".us", ".gov", ".mil", ".info", ".jobs" };
+						for (String str : list) {
+							if (website.contains(str)) {
+								VoiceBrowser.logger.info("Website requested: "+website);
+								viewController.getTabToolBar()
+										.getAddressBarField().setText(website);
+
+								return;
 							}
+						}
+
+						if (Command.equalsIgnoreCase("go")) {
+							invokerObj.setCommand(new GoCommand());
+
 						}
 						if (Command.equalsIgnoreCase("back")) {
-							
-							viewController.getToolBar().getBackButton().fire();
+							invokerObj.setCommand(new BackCommand());
+
 						}
 						if (Command.equalsIgnoreCase("forward")) {
-							viewController.getToolBar().getForwardButton().fire();
+							invokerObj.setCommand(new ForwardCommand());
 						}
 						if (Command.equalsIgnoreCase("refresh")) {
-							try {
-								viewController.getBrowserWindowView().navTo(viewController.getToolBar()
-										.getAddressBarField().getText());
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
+							invokerObj.setCommand(new RefreshCommand());
+						}
+						if (Command.equalsIgnoreCase("home")) {
+							invokerObj.setCommand(new HomeCommand());
 						}
 						if (Command.equalsIgnoreCase("book mark")) {
 							bookmarkFlag = true;
-							viewController.getToolBar().getAddBookmarkButton().fire();
-							
+							invokerObj.setCommand(new BookMarkCommand());
+
 						}
 						if (Command.equalsIgnoreCase("Add") && bookmarkFlag) {
-							System.out.println("Adding bookmark..........");
-							viewController.getToolBar().getAddBookmarkToModelButton().fire();
+							invokerObj.setCommand(new AddBookMarkCommand());
 							bookmarkFlag = false;
 						}
-//						if (Command.equalsIgnoreCase("exit")) {
-//							System.exit(0);
-//						}
 						if (Command.equalsIgnoreCase("read")) {
-						if(ReadCounter == 0)	
-							{	
-								ReadCounter++;
-								speechReaderTask.start();
-							}
-						else{
-							System.out.println("restarted");
-								speechReaderTask.restart();
+							invokerObj.setCommand(new ReadCommand());
 						}
-							
+						if (Command.equalsIgnoreCase("smart notes")) {
+							invokerObj.setCommand(new SmartNotesCommand());
 						}
-						if(Command.equalsIgnoreCase("smart notes")&& !(viewController.getBrowserWindowView().getSelectedText().equalsIgnoreCase(""))){
-							
-							viewController.getSmartNoteObj().copySelectedText(viewController.getBrowserWindowView().getSelectedText());
+						if (Command.equalsIgnoreCase("save")
+								&& !(SideBarView.getTextArea().getText()
+										.equalsIgnoreCase(""))) {
+							invokerObj.setCommand(new SaveCommand());
 						}
-						if(Command.equalsIgnoreCase("save") && !(SideBarView.getTextArea().getText().equalsIgnoreCase(""))){
-							System.out.println("Saving smart notes: ");
-							ObservableList<CharSequence> paragraph = SideBarView.getTextArea().getParagraphs();
-						    Iterator<CharSequence>  iter = paragraph.iterator();
-						    try
-						    {
-						        BufferedWriter bf = new BufferedWriter(new FileWriter(new File("smartnotes.txt")));
-						        while(iter.hasNext())
-						        {
-						            CharSequence seq = iter.next();
-						            bf.append(seq);
-						            bf.newLine();
-						        }
-						        bf.flush();
-						        bf.close();
-						    }
-						    catch (IOException e)
-						    {
-						        e.printStackTrace();
-						    }
+
+						if (Command.equalsIgnoreCase("Screen")) {
+							invokerObj.setCommand(new ScreenCommand());
 						}
+
+						if (Command.equalsIgnoreCase("top")) {
+							invokerObj.setCommand(new TopCommand());
+						}
+						if (Command.equalsIgnoreCase("bottom")) {
+							invokerObj.setCommand(new BottomCommand());
+
+						}
+						if (Command.equalsIgnoreCase("Links")) {
+							invokerObj.setCommand(new LinksCommand());
+						}
+						if (Command.equalsIgnoreCase("Titles")) {
+							invokerObj.setCommand(new TitlesCommand());
+						}
+						if (Command.equalsIgnoreCase("Text")) {
+							invokerObj.setCommand(new TextCommand());
+						}
+						if (Command.equalsIgnoreCase("Next Link")) {
+							invokerObj.setCommand(new NextLinkCommand());
+						}
+						if (Command.equalsIgnoreCase("Next Title")) {
+							invokerObj.setCommand(new NextTitleCommand());
+						}
+						if (Command.equalsIgnoreCase("Next Text")) {
+							invokerObj.setCommand(new NextTextCommand());
+						}
+
+						if (Command.equalsIgnoreCase("navigate")) {
+							invokerObj.setCommand(new NavigateCommand());
+						}
+						if (Command.equalsIgnoreCase("scroll down")) {
+							invokerObj.setCommand(new ScrollDownCommand());
+						}
+						if (Command.equalsIgnoreCase("scroll up")) {
+							invokerObj.setCommand(new ScrollUpCommand());
+						}
+						if (invokerObj.getCommand() != null)
+							invokerObj.invoke();
 					}
 				}
 			}
