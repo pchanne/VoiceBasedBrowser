@@ -8,23 +8,27 @@ import java.util.ArrayList;
 
 public class TagModel {
     
-    ArrayList<Tag> linkTagList;
-    ArrayList<Tag> headerTagList;
-    ArrayList<Tag> textTagList;
+    //list having all link tags(a)
+    private ArrayList<Tag> linkTagList;
     
-    double xOrigin;
-    double yOrigin;
+    //list having all header tags(h1-h6)
+    private ArrayList<Tag> headerTagList;
     
-    double viewWidth;
-    double viewHeight;
+    //list having all text tags (p,pre)
+    private ArrayList<Tag> textTagList;
     
-    int currentLinkTagPosition;
-    int currentHeaderTagPosition;
-    int currentTextTagPosition;
+    //dimensions of TagModel
+    private double xOrigin;
+    private double yOrigin;    
+    private double viewWidth;
+    private double viewHeight;
+    
+    //current selected position of tag element
+    private int currentLinkTagPosition;
+    private int currentHeaderTagPosition;
+    private int currentTextTagPosition;
   
-    /**
-     * @return the linkTagList
-     */
+    
     public ArrayList<Tag> getLinkTagList() {
         return linkTagList;
     }
@@ -49,44 +53,32 @@ public class TagModel {
         this.yOrigin= yOrigin;
     }
 
-    /**
-     * @return the viewWidth
-     */
+    
     public double getViewWidth() {
         return viewWidth;
     }
 
-    /**
-     * @param viewWidth the viewWidth to set
-     */
+    
     public void setViewWidth(double viewWidth) {
         this.viewWidth = viewWidth;
     }
 
-    /**
-     * @return the viewHeight
-     */
+    
     public double getViewHeight() {
         return viewHeight;
     }
 
-    /**
-     * @param viewHeight the viewHeight to set
-     */
+    
     public void setViewHeight(double viewHeight) {
         this.viewHeight = viewHeight;
     }
 
-    /**
-     * @return the xOrigin
-     */
+    
     public double getxOrigin() {
         return xOrigin;
     }
 
-    /**
-     * @return the yOrigin
-     */
+    
     public double getyOrigin() {
         return yOrigin;
     }
@@ -121,21 +113,33 @@ public class TagModel {
         textTagList.add(textTag);
     }
     
+    /*
+     * removes all link tags (a) in Model
+     */
     public  void clearLinkTags()
     {
      linkTagList.removeAll(linkTagList);   
     }
     
+    /*
+     * removes all header tags (h1-h6) in Model
+     */
     public void clearHeaderTags()
     {
         headerTagList.removeAll(headerTagList);
     }
     
+    /*
+     * removes all text tags (p,pre) in Model
+     */
     public void clearTextTags()
     {
         textTagList.removeAll(textTagList);
     }
     
+    /*
+     * removes all tags in Model
+     */
     public void clearModel()
     {
         clearLinkTags();
@@ -143,58 +147,42 @@ public class TagModel {
         clearTextTags();
     }
 
-    /**
-     * @return the headerTagList
-     */
+    
     public ArrayList<Tag> getHeaderTagList() {
         return headerTagList;
     }
 
-    /**
-     * @return the textTagList
-     */
+    
     public ArrayList<Tag> getTextTagList() {
         return textTagList;
     }
 
-    /**
-     * @return the currentLinkTagPosition
-     */
+    
     public int getCurrentLinkTagPosition() {
         return currentLinkTagPosition;
     }
 
-    /**
-     * @param currentLinkTagPosition the currentLinkTagPosition to set
-     */
+    
     public void setCurrentLinkTagPosition(int currentLinkTagPosition) {
         this.currentLinkTagPosition = currentLinkTagPosition;
     }
 
-    /**
-     * @return the currentHeaderTagPosition
-     */
+    
     public int getCurrentHeaderTagPosition() {
         return currentHeaderTagPosition;
     }
 
-    /**
-     * @param currentHeaderTagPosition the currentHeaderTagPosition to set
-     */
+    
     public void setCurrentHeaderTagPosition(int currentHeaderTagPosition) {
         this.currentHeaderTagPosition = currentHeaderTagPosition;
     }
 
-    /**
-     * @return the currentTextTagPosition
-     */
+    
     public int getCurrentTextTagPosition() {
         return currentTextTagPosition;
     }
 
-    /**
-     * @param currentTextTagPosition the currentTextTagPosition to set
-     */
+    
     public void setCurrentTextTagPosition(int currentTextTagPosition) {
         this.currentTextTagPosition = currentTextTagPosition;
     }
