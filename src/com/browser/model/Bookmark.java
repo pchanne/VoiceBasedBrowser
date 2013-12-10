@@ -1,7 +1,10 @@
+/*
+ * This class is used to create the bookmark as a combination of name and url
+ */
 package com.browser.model;
 
 public class Bookmark {
-//private Bookmark bookmark;
+
 private String bookmarkName;
 private String bookmarkURL;
 
@@ -46,8 +49,4 @@ public String toString() {
     return "Bookmark [bookmarkName=" + bookmarkName + ", bookmarkURL="
             + bookmarkURL + "]";
 }
-
-
-
-
 }

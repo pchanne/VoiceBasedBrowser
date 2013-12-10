@@ -1,3 +1,6 @@
+/*
+ * This is a array list of TagModel used to retrieve headerTag and current textTag position
+ */
 package com.browser.model;
 
 import java.util.ArrayList;
@@ -5,13 +8,6 @@ import java.util.ArrayList;
 public class TagModel {
     
     ArrayList<Tag> linkTagList;
-    /**
-     * @return the linkTagList
-     */
-    public ArrayList<Tag> getLinkTagList() {
-        return linkTagList;
-    }
-
     ArrayList<Tag> headerTagList;
     ArrayList<Tag> textTagList;
     
@@ -24,7 +20,14 @@ public class TagModel {
     int currentLinkTagPosition;
     int currentHeaderTagPosition;
     int currentTextTagPosition;
-    
+  
+    /**
+     * @return the linkTagList
+     */
+    public ArrayList<Tag> getLinkTagList() {
+        return linkTagList;
+    }
+
     private TagModel()
     {
         linkTagList= new ArrayList<Tag>();
@@ -34,11 +37,10 @@ public class TagModel {
         currentLinkTagPosition=-1;
         currentHeaderTagPosition=-1;
         currentTextTagPosition=-1;
-                
     }
     
     public TagModel(double viewWidth, double viewHeight, double xOrigin, double yOrigin) {
-        
+
         this();
         this.viewWidth = viewWidth;
         this.viewHeight = viewHeight;
@@ -195,7 +197,4 @@ public class TagModel {
     public void setCurrentTextTagPosition(int currentTextTagPosition) {
         this.currentTextTagPosition = currentTextTagPosition;
     }
-
-   
-
 }
