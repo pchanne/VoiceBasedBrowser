@@ -1,3 +1,6 @@
+/**
+ * This is a controller class which controls all the browsers tabs.
+ */
 package com.browser.controller;
 
 import com.browser.model.BookmarkModel;
@@ -27,18 +30,15 @@ public class TabViewController {
 		this.browserTabBarView = browserTabBarView;
 	}
 	
-	
 	public TabViewController(){
+		
 		bookmarkModel = new BookmarkModel();
 		sTask = new SpeechRecognitionTask();
 		tab = new TabView(); // creating first tab when browser opens.
-		//TabView.setSpeechMode(false);
 		System.out.println("first tab: "+tab);
 		browserTabBarView = new BrowserTabBarView(); // container for holding all the tabs.
 		SideBarView.initSideBar(); // static sidebar that is shared among all the tabs
-		
 		browserTabBarView.getBrowserTabHolder().getTabs().add(tab); // adding first tab to container
 		
-		//sTask = new SpeechRecognitionTask();
 	}
 }

@@ -1,10 +1,10 @@
+/**
+ * This class represents toolbar of a tab. It is responsible for creating all the buttons and add them to toolbar whenever new browser is created.
+ */
+
 package com.browser.view;
 
-import java.io.IOException;
 import java.net.URL;
-
-import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 
 import javafx.animation.Animation;
 import javafx.animation.Transition;
@@ -18,7 +18,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckMenuItem;
-import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuButton;
@@ -26,24 +25,22 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.effect.ColorAdjust;
-import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
+import org.apache.log4j.Logger;
+
 import com.browser.helper.GetImagePath;
 import com.browser.main.VoiceBrowser;
-import com.browser.speech.SpeechRecognitionTask;
 
 public class TabToolbarView {
 
@@ -52,12 +49,8 @@ public class TabToolbarView {
 	private ColorAdjust backColorAdjust;
 
 	private MenuButton menuButton;
-	private static MenuItem saveMenuItem;
-	private static MenuItem loadMenuItem;
 	private static MenuItem exitMenuItem;
-	private static MenuItem showStatusBarMenuItem;
 	private static Menu showBookmarkMenuItem;
-	private static MenuItem showHistoryMenuItem;
 	private static MenuItem userManualMenuItem;
 	private static MenuItem aboutMenuItem;
 	private static ImageView menuGraphic;
@@ -168,37 +161,22 @@ public class TabToolbarView {
 		this.forwardButton = forwardButton;
 	}
 
-	/**
-	 * @return the addTabButton
-	 */
 	public Button getAddTabButton() {
 		return addTabButton;
 	}
 
-	/**
-	 * @return the navButton
-	 */
 	public Button getNavButton() {
 		return navButton;
 	}
 
-	/**
-	 * @return the addressBarField
-	 */
 	public TextField getAddressBarField() {
 		return addressBarField;
 	}
 
-	/**
-	 * @return the addBookmarkButton
-	 */
 	public Button getAddBookmarkButton() {
 		return addBookmarkButton;
 	}
 
-	/**
-	 * @return the addBookmarkToModelButton
-	 */
 	public Button getAddBookmarkToModelButton() {
 		return addBookmarkToModelButton;
 	}
@@ -220,9 +198,6 @@ public class TabToolbarView {
 		return bookmarkURLTextField.getText();
 	}
 
-	/**
-	 * @return the showBookmarkMenuItem
-	 */
 	public Menu getShowBookmarkMenuItem() {
 		return showBookmarkMenuItem;
 	}
@@ -327,10 +302,9 @@ public class TabToolbarView {
 		return navPane;
 	}
 
-	/**
+	/*
 	 * Create addressBar
 	 */
-
 	public void createAddressBarField() {
 
 		setAddressBarFieldText(DEFAULT_HOME);
@@ -342,10 +316,9 @@ public class TabToolbarView {
 		HBox.setHgrow(addressBarField, Priority.ALWAYS);
 	}
 
-	/**
+	/*
 	 * creates the forward button
-	 * */
-
+	 */
 	private void createForwardButton() {
 		iconPath = getImgObj.jarScan("icons.jar", "Arrows-Forward-icon");
 		forwardButton = new Button(null);
@@ -366,15 +339,9 @@ public class TabToolbarView {
 	}
 
 	/*
-	 * 
 	 * create the back button to be added into the tabToolbarView
 	 */
-
 	private void createBackButton() {
-
-		/*
-		 * Back button
-		 */
 
 		backButton = new Button(null);
 		backButton.setTooltip(new Tooltip("Go back"));
@@ -398,16 +365,10 @@ public class TabToolbarView {
 
 	private void createNavigateButton() {
 
-		/*
-		 * create navigate button
-		 */
-
 		iconPath = getImgObj.jarScan("icons.jar", "Go-icon");
 		navButton = new Button(null);
 		navButton.setTooltip(new Tooltip("Hit it"));
-		navButton
-				.setStyle("-fx-background-color: WHITE; -fx-border-color: WHITE; -fx-border-width: 0;");
-		// navButton.setStyle("-fx-border-color: RED");
+		navButton.setStyle("-fx-background-color: WHITE; -fx-border-color: WHITE; -fx-border-width: 0;");
 		navGraphic = new ImageView(new Image(iconPath));
 		navColorAdjust = new ColorAdjust();
 		navColorAdjust.setContrast(-0.1);
@@ -422,13 +383,11 @@ public class TabToolbarView {
 	 * create the add tab button on clickign this a new tab would be create; ie.
 	 * a new instance of the browser window would be created
 	 */
-
 	private void createAddTabButton() {
 		iconPath = getImgObj.jarScan("icons.jar", "Plus-icon");
 		addTabButton = new Button(null);
 		addTabButton.setTranslateX(-2);
-		addTabButton
-				.setStyle("-fx-background-color: WHITE; -fx-border-color: WHITE; -fx-border-width: 0;");
+		addTabButton.setStyle("-fx-background-color: WHITE; -fx-border-color: WHITE; -fx-border-width: 0;");
 		addTabGraphic = new ImageView(new Image(iconPath));
 		addTabColorAdjust = new ColorAdjust();
 		addTabColorAdjust.setBrightness(-0.1);
@@ -445,12 +404,8 @@ public class TabToolbarView {
 	 * creates the refresh button - used to reload the current page in the same
 	 * tab
 	 */
-
 	private void createRefreshButton() {
 
-		/**
-		 * Refresh page button
-		 */
 		iconPath = getImgObj.jarScan("icons.jar", "Basic-Reload-icon");
 		refreshButton = new Button(null);
 		refreshButton.setTranslateX(-2);
@@ -468,15 +423,10 @@ public class TabToolbarView {
 		refreshButton.setOnAction(refreshAction);
 	}
 
-	/**
+	/*
 	 * creates the bookmark button using which the user can bookmark pages
-	 * */
-
+	 */
 	private void createBookmarkButton() {
-
-		/**
-		 * Bookmark page button
-		 */
 
 		bookmarkStage = new Stage();
 		bookmarkStage.initStyle(StageStyle.DECORATED);
@@ -507,23 +457,21 @@ public class TabToolbarView {
 		addBookmarkButton.setOnAction(bookmarkAction);
 	}
 
-	/**
+	/*
 	 * speech button helper method
-	 **/
-
+	 */
 	public void createSpeechButtonHelper(String imgName, String toolTipValue) {
 		iconPath = getImgObj.jarScan("icons.jar", imgName);
 		speechGraphic = new ImageView(new Image(iconPath));
 		speechButton.setGraphic(speechGraphic);
 		speechButton.setTooltip(new Tooltip(toolTipValue));
 	}
-
-	/**
+	
+	/*
 	 * creates the speech toggle button to allow the user to switch between
 	 * normal usage fo a browser and to use speech to control most of its
 	 * functionalities
-	 * */
-
+	 */
 	private void createSpeechButton() {
 		iconPath = getImgObj.jarScan("icons.jar", "Micro-off-icon");
 		speechButton = new Button(null);
@@ -543,16 +491,10 @@ public class TabToolbarView {
 		speechButton.onActionProperty().set(speechAction);
 	}
 
-	/**
-	 * create the home button
-	 * */
-
+	/*
+	 * creates the home button
+	 */
 	private void createHomeButton() {
-
-		/**
-		 * Home button
-		 */
-
 		iconPath = getImgObj.jarScan("icons.jar", "Basic-Home-icon");
 		homeButton = new Button(null);
 		homeButton.setTranslateX(-2);
@@ -570,15 +512,12 @@ public class TabToolbarView {
 		homeButton.setOnAction(homeAction);
 	}
 
-	/**
+	/*
 	 * create the menu button with all children menu items
-	 * */
+	 */
 
 	private void createMenuButton() {
 
-		/**
-		 * Menu button
-		 */
 		iconPath = getImgObj.jarScan("icons.jar", "Menu-icon");
 		menuButton = new MenuButton(null);
 		menuButton.setTranslateX(-2);
@@ -599,13 +538,8 @@ public class TabToolbarView {
 		 * creating menu items save load exit help about show status bar
 		 * bookmarks history enable/disable speech
 		 */
-		// saveMenuItem = new MenuItem("Save");
-		// loadMenuItem = new MenuItem("Load");
 		exitMenuItem = new MenuItem("Close");
-		// showStatusBarMenuItem = new MenuItem("Show Status Bar");
 		showBookmarkMenuItem = new Menu("BookMarks");
-		// showHistoryMenuItem = new MenuItem("History");
-		// speechModeEnable = new CheckMenuItem("Enable/Disable Speech Mode");
 		userManualMenuItem = new MenuItem("Help");
 		aboutMenuItem = new MenuItem("About");
 
@@ -641,7 +575,7 @@ public class TabToolbarView {
 
 		exitMenuItem.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent e) {
-				// voiceBrowserObj.closeBrowser();
+				System.exit(0);
 			}
 		});
 
@@ -674,23 +608,14 @@ public class TabToolbarView {
 		sidebarButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent actionEvent) {
-				// hide sidebar.
-				// System.out.println("sidebar button pressed!!!");
 				final double startWidth = getSidebarDisplay().getWidth();
-				// System.out.println("startwidth ----------------------------------------------------------------- "
-				// + startWidth);
 				final Animation hideSidebar = new Transition() {
 					{
 						setCycleDuration(Duration.millis(250));
 					}
 
 					protected void interpolate(double frac) {
-						/*
-						 * System.out.println("start width: = " + startWidth);
-						 * System.out.println("frac = " + frac);
-						 */
 						final double curWidth = startWidth * (1.0 - frac);
-						// System.out.println("current width is: " + curWidth);
 						getSidebarDisplay().setPrefWidth(curWidth);
 						getSidebarDisplay().setTranslateX(
 								-startWidth + curWidth);
@@ -749,8 +674,6 @@ public class TabToolbarView {
 
 		addBookmarkToModelButton = new Button("Add");
 
-		// Text text = new Text("Welcome");
-
 		Label titleLabel = new Label();
 		bookmarkTitleTextField = new TextField();
 
@@ -759,12 +682,10 @@ public class TabToolbarView {
 		Label urlLabel = new Label("URL");
 		bookmarkURLTextField = new TextField();
 
-		// grid.add(text, 0, 0, 2, 1);
 		grid.add(titleLabel, 1, 0);
 		grid.add(bookmarkTitleTextField, 2, 0);
 		grid.add(urlLabel, 1, 1);
 		grid.add(bookmarkURLTextField, 2, 1);
-		// grid.add(button, 0, 2);
 		addBookmarkToModelButton.setOnAction(bookmarkToModelAction);
 		HBox hbox = new HBox(10);
 		hbox.getChildren().add(addBookmarkToModelButton);

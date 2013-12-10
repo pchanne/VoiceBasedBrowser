@@ -35,15 +35,9 @@ public class ViewController {
 
 	private TabToolbarView tabToolBar;
 	private BrowserWindow browserWindowView;
-	//private SpeechRecognitionTask sTask;
 	private FileReader textReader;
 	private SmartNotes smartNoteObj;
 	private TagHandler tagHandler;
-//	public static double currentWidth;
-//	public static double currentHeight;
-
-	
-	
 	public TagHandler getTagHandler() {
 		return tagHandler;
 	}
@@ -110,12 +104,11 @@ public class ViewController {
 		this.tabToolBar = new TabToolbarView(backActionEvent, goActionEvent, goActionEventOnEnter,forwardActionEvent, refreshActionEvent, bookmarkActionEvent,bookmarkToModelActionEvent,speechActionEvent, exitActionEvent, addTabActionEvent, homeActionEvent);
 		this.browserWindowView = new BrowserWindow();
 
-//		currentWidth = this.browserWindowView.getWidth();
-//		currentHeight = this.browserWindowView.getHeight();
 		tagHandler = new TagHandler(browserWindowView.webEngine);
 		
 	}
-
+	
+	//Reflects url of a webpage in address bar of currently opened browser when web page is loaded
 	public void reflectURLChange() {
 
 		browserWindowView.getView().getEngine().getLoadWorker().stateProperty()
@@ -128,7 +121,6 @@ public class ViewController {
 						}
 						if (newState == State.SUCCEEDED) {
 							//System.out.println("Page "+ browserWindowView.getView().getEngine().getLocation() + " loaded");
-							//System.out.println("Curr :"+browserWindowView.getView().getEngine().getLocation());
 							browserWindowView.getHistory().executeNav(browserWindowView.getView().getEngine().getLocation());
 							//System.out.println("items list:"+browserWindowView.getHistory().getItems());
 						}
@@ -137,6 +129,7 @@ public class ViewController {
 
 	}
 
+	
 	public void perfomGoAction() {
 
 		tabToolBar.getNavButton().onActionProperty()
@@ -152,7 +145,7 @@ public class ViewController {
 				});
 	}
 
-	
+	//Event handler for back button
 	public class BackActionEvent implements EventHandler<ActionEvent> {
 
 		@Override
@@ -169,6 +162,7 @@ public class ViewController {
 		}
 	}
 	
+	//Event handler for back button
 	public class ForwardActionEvent implements EventHandler<ActionEvent> {
 
 		@Override
@@ -188,48 +182,45 @@ public class ViewController {
 		}
 	}
 	
+	//Event handler for Go button
 	public class GoActionEvent implements EventHandler<ActionEvent> {
 
 		@Override
 		public void handle(ActionEvent actionEvent) {
-			// TODO Auto-generated method stub
 			System.out.println("Go Clicked!");
 			try {
 				browserWindowView.navTo(tabToolBar.getAddressBarField().getText());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
 		}
 	}
 	
+	//Event handler for refresh button
 	public class RefreshActionEvent implements EventHandler<ActionEvent> {
 
 		@Override
 		public void handle(ActionEvent actionEvent) {
-			// TODO Auto-generated method stub
 			System.out.println("Refresh Clicked!");
 			try {
 				browserWindowView.navTo(tabToolBar.getAddressBarField().getText());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
 		}
 	}
 	
+	//Event handler for enter pressed for navigation
 	public class GoActionEventOnEnter implements EventHandler<KeyEvent> {
 
 		@Override
 		public void handle(KeyEvent keyEvent) {
-			// TODO Auto-generated method stub
 			if (keyEvent.getCode().equals(KeyCode.ENTER)) {
 			try {
 				browserWindowView.navTo(tabToolBar.getAddressBarField().getText());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -237,11 +228,11 @@ public class ViewController {
 		}
 	}
 	
+	//Event handler for bookmark button
 	public class BookmarkActionEvent implements EventHandler<ActionEvent> {
 
 		@Override
 		public void handle(ActionEvent actionEvent) {
-			// TODO Auto-generated method stub
 			System.out.println("bookmark clicked");
 			tabToolBar.getBookmarkStage().show();
 
@@ -252,11 +243,11 @@ public class ViewController {
 
 		}
 	}
+	//Event handler for add button on bookmark dialog
 	public class BookmarkToModelActionEvent implements EventHandler<ActionEvent> {
 
 		@Override
 		public void handle(ActionEvent actionEvent) {
-			// TODO Auto-generated method stub
 			System.out.println("bm in action");
 			Bookmark bookmark = new Bookmark();
 			bookmark.setBookmarkName(tabToolBar.getBookmarkTitle());
@@ -270,6 +261,7 @@ public class ViewController {
 		}
 	}
 	
+	//reflects bookmarked website on menu button of currently openend browser whenever bookmark is added
 	public void setBookmarkItems() {
 		System.out.println("setbookmark");
 		((MenuButton)tabToolBar.getNavPane().getChildren().get(10)).getItems().remove(0);
@@ -295,20 +287,20 @@ public class ViewController {
 	}
 	
 	
-	
+	//Event handler for speech button
 	public class SpeechActionEvent implements EventHandler<ActionEvent> {
 		int SpeechCounter = 0 ;
 		@Override
 		public void handle(ActionEvent actionEvent) {
 			
 			if (TabView.isSpeechMode()) {
-				//System.out.println("disabling");
+				System.out.println("disabling");
 				tabToolBar.setSpeechMode(false);
 				TabView.setSpeechMode(false);
 				tabToolBar.createSpeechButtonHelper("Micro-off-icon","Enable speech mode");
 				TabViewController.sTask.cancel();
 			} else {
-				//System.out.println("enabling");
+				System.out.println("enabling");
 				tabToolBar.setSpeechMode(true);
 				TabView.setSpeechMode(true);
 				tabToolBar.createSpeechButtonHelper("Micro-icon","Disable speech mode");
