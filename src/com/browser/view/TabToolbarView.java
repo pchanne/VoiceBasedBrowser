@@ -1,7 +1,7 @@
 package com.browser.view;
 
-
 import java.io.IOException;
+import java.net.URL;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
@@ -46,13 +46,13 @@ import com.browser.main.VoiceBrowser;
 import com.browser.speech.SpeechRecognitionTask;
 
 public class TabToolbarView {
-	
-    private  Button backButton;
-    private ImageView backGraphic;
+
+	private Button backButton;
+	private ImageView backGraphic;
 	private ColorAdjust backColorAdjust;
-	
-    private  MenuButton menuButton;
-    private static MenuItem saveMenuItem;
+
+	private MenuButton menuButton;
+	private static MenuItem saveMenuItem;
 	private static MenuItem loadMenuItem;
 	private static MenuItem exitMenuItem;
 	private static MenuItem showStatusBarMenuItem;
@@ -62,43 +62,43 @@ public class TabToolbarView {
 	private static MenuItem aboutMenuItem;
 	private static ImageView menuGraphic;
 	private static ColorAdjust menuColorAdjust;
-    
-    private Button homeButton;
-    private ImageView homeGraphic;
+
+	private Button homeButton;
+	private ImageView homeGraphic;
 	private ColorAdjust homeColorAdjust;
-    
-    private Button refreshButton;
-    private ImageView refreshGraphic;
+
+	private Button refreshButton;
+	private ImageView refreshGraphic;
 	private ColorAdjust refreshColorAdjust;
-    
-    private Button forwardButton;
+
+	private Button forwardButton;
 
 	private ImageView forwardGraphic;
 	private ColorAdjust forwardColorAdjust;
-	
-    private TextField addressBarField;
-    
-    public Button navButton;
-    private ImageView navGraphic;
+
+	private TextField addressBarField;
+
+	public Button navButton;
+	private ImageView navGraphic;
 	private ColorAdjust navColorAdjust;
-	
-    private static GetImagePath getImgObj;
-    private static String iconPath;
-    
-    private Button addTabButton;
-    private ImageView addTabGraphic;
+
+	private static GetImagePath getImgObj;
+	private static String iconPath;
+
+	private Button addTabButton;
+	private ImageView addTabGraphic;
 	private ColorAdjust addTabColorAdjust;
-	
+
 	private static Button sidebarButton;
 	private static ImageView sidebarGraphic;
 	private static ColorAdjust sidebarColorAdjust;
 	private static SideBarView sidebarView;
-	
+
 	private Button speechButton;
 	private ColorAdjust speechColorAdjust;
 	private ImageView speechGraphic;
 	private boolean isSpeechMode;
-	
+
 	private Button addBookmarkButton;
 	private Button addBookmarkToModelButton;
 	private TextField bookmarkURLTextField;
@@ -106,13 +106,15 @@ public class TabToolbarView {
 	private TextField bookmarkTitleTextField;
 	private ImageView bookmarkGraphic;
 	private ColorAdjust bookmarkColorAdjust;
-    
+	
+	private ImageView logoGraphic;
+
 	public static String DEFAULT_HOME = "http://www.google.com";
-    public static final Logger logger = Logger.getLogger(Application.class);
-    
-    private HBox navPane;
-        
-    public HBox getNavPane() {
+	public static final Logger logger = Logger.getLogger(Application.class);
+
+	private HBox navPane;
+
+	public HBox getNavPane() {
 		return navPane;
 	}
 
@@ -121,9 +123,8 @@ public class TabToolbarView {
 	}
 
 	private static CheckMenuItem speechModeEnable;
-    
-    
-    public Button getHomeButton() {
+
+	public Button getHomeButton() {
 		return homeButton;
 	}
 
@@ -131,7 +132,7 @@ public class TabToolbarView {
 		this.homeButton = homeButton;
 	}
 
-	public  Button getSpeechButton() {
+	public Button getSpeechButton() {
 		return speechButton;
 	}
 
@@ -150,8 +151,8 @@ public class TabToolbarView {
 	public void setSpeechMode(boolean isSpeechMode) {
 		this.isSpeechMode = isSpeechMode;
 	}
-	
-    public Button getBackButton() {
+
+	public Button getBackButton() {
 		return backButton;
 	}
 
@@ -166,74 +167,72 @@ public class TabToolbarView {
 	public void setForwardButton(Button forwardButton) {
 		this.forwardButton = forwardButton;
 	}
-    
-	  /**
-     * @return the addTabButton
-     */
-    public Button getAddTabButton() {
-        return addTabButton;
-    }
-    /**
-     * @return the navButton
-     */
-    public Button getNavButton() {
-        return navButton;
-    }
-    /**
-     * @return the addressBarField
-     */
-    public TextField getAddressBarField() {
-        return addressBarField;
-    }
-    
-    /**
-     * @return the addBookmarkButton
-     */
-    public Button getAddBookmarkButton() {
-        return addBookmarkButton;
-    }
 
-    /**
-     * @return the addBookmarkToModelButton
-     */
-    public Button getAddBookmarkToModelButton() {
-        return addBookmarkToModelButton;
-    }
-    
-    public void setBookmarkUrlText(String bookmarkURl)
-    {
-        
-        bookmarkURLTextField.setText(bookmarkURl);
-    }
-    
-    public void setBookmarkTitleText(String bookmarkTitle)
-    {
-        bookmarkTitleTextField.setText(bookmarkTitle);
-    }
-    
-    public String getBookmarkTitle()
-    {
-        return bookmarkTitleTextField.getText();
-    }
-    
-    public String getBookmarkURL()
-    {
-        return bookmarkURLTextField.getText();
-    }
+	/**
+	 * @return the addTabButton
+	 */
+	public Button getAddTabButton() {
+		return addTabButton;
+	}
 
-    /**
-     * @return the showBookmarkMenuItem
-     */
-    public Menu getShowBookmarkMenuItem() {
-        return showBookmarkMenuItem;
-    }
-    
-    public Stage getBookmarkStage() {
+	/**
+	 * @return the navButton
+	 */
+	public Button getNavButton() {
+		return navButton;
+	}
+
+	/**
+	 * @return the addressBarField
+	 */
+	public TextField getAddressBarField() {
+		return addressBarField;
+	}
+
+	/**
+	 * @return the addBookmarkButton
+	 */
+	public Button getAddBookmarkButton() {
+		return addBookmarkButton;
+	}
+
+	/**
+	 * @return the addBookmarkToModelButton
+	 */
+	public Button getAddBookmarkToModelButton() {
+		return addBookmarkToModelButton;
+	}
+
+	public void setBookmarkUrlText(String bookmarkURl) {
+
+		bookmarkURLTextField.setText(bookmarkURl);
+	}
+
+	public void setBookmarkTitleText(String bookmarkTitle) {
+		bookmarkTitleTextField.setText(bookmarkTitle);
+	}
+
+	public String getBookmarkTitle() {
+		return bookmarkTitleTextField.getText();
+	}
+
+	public String getBookmarkURL() {
+		return bookmarkURLTextField.getText();
+	}
+
+	/**
+	 * @return the showBookmarkMenuItem
+	 */
+	public Menu getShowBookmarkMenuItem() {
+		return showBookmarkMenuItem;
+	}
+
+	public Stage getBookmarkStage() {
 		return bookmarkStage;
 	}
 
-    //Event Handler's
-    public EventHandler<ActionEvent> backAction;
+	// Event Handler's
+	public EventHandler<ActionEvent> backAction;
 	public EventHandler<ActionEvent> goAction;
 	public EventHandler<KeyEvent> goActionOnEnter;
 	public EventHandler<ActionEvent> forwardAction;
@@ -244,12 +243,19 @@ public class TabToolbarView {
 	public EventHandler<ActionEvent> exitAction;
 	public EventHandler<ActionEvent> addTabAction;
 	public EventHandler<ActionEvent> homeAction;
-	
-	//Constructor
+
+	// Constructor
 	public TabToolbarView(EventHandler<ActionEvent> backAction,
-			EventHandler<ActionEvent> goAction,EventHandler<KeyEvent> goActionOnEnter, EventHandler<ActionEvent> forwardAction,
-			EventHandler<ActionEvent> refreshAction, EventHandler<ActionEvent> bookmarkAction, EventHandler<ActionEvent> bookmarkToModelAction,EventHandler<ActionEvent> speechAction,
-			EventHandler<ActionEvent> exitAction, EventHandler<ActionEvent> addTabAction,EventHandler<ActionEvent> homeAction 
+			EventHandler<ActionEvent> goAction,
+			EventHandler<KeyEvent> goActionOnEnter,
+			EventHandler<ActionEvent> forwardAction,
+			EventHandler<ActionEvent> refreshAction,
+			EventHandler<ActionEvent> bookmarkAction,
+			EventHandler<ActionEvent> bookmarkToModelAction,
+			EventHandler<ActionEvent> speechAction,
+			EventHandler<ActionEvent> exitAction,
+			EventHandler<ActionEvent> addTabAction,
+			EventHandler<ActionEvent> homeAction
 
 	) {
 		this.backAction = backAction;
@@ -264,45 +270,52 @@ public class TabToolbarView {
 		this.addTabAction = addTabAction;
 		this.homeAction = homeAction;
 	}
-    
-    public Pane CreateNavToolbar()
-    {
-        getImgObj = new GetImagePath();
-        addressBarField = new TextField();
-        sidebarView = new SideBarView();
-        isSpeechMode = false;
-		
+
+	public Pane CreateNavToolbar() {
+		getImgObj = new GetImagePath();
+		addressBarField = new TextField();
+		sidebarView = new SideBarView();
+		isSpeechMode = false;
+
 		createAddressBarField();
-        //call createBackButton() to create the back button in the tabToolbarview
-        createBackButton();
-        //call createForwardButton() to create the forward button in the tabToolbarview
-        createForwardButton();
-        //call createNavigateButton() to create the navigate button in the tabToolbarview
-        createNavigateButton();
-        //call createAddTabButton() to create a new tab for the user to use for browsing purposes
-        createAddTabButton();
-        // call createRefreshButton() to reload the current page
-        createRefreshButton();
-        // call createBookmarkButton() to create the bookmark button
-        createBookmarkButton();
-        // call createSpeechButton() to create to toggle button for the speech mdoe
-        createSpeechButton();
-        // call createHomeButton(), by clicking on this button the user will be directed to the homepage
-        createHomeButton();
-        // call createMenuButton() to create the menu
-        createMenuButton();
-        //creates the sidebar button, createSideBarButton() -- this houses the smart notes tab and the speech mode tab
-        createSideBarButton();           
-       
-        
-     // align all of the navigation widgets in a horizontal toolbar.
-       
-        navPane = new HBox();
+		// call createBackButton() to create the back button in the
+		// tabToolbarview
+		createBackButton();
+		// call createForwardButton() to create the forward button in the
+		// tabToolbarview
+		createForwardButton();
+		// call createNavigateButton() to create the navigate button in the
+		// tabToolbarview
+		createNavigateButton();
+		// call createAddTabButton() to create a new tab for the user to use for
+		// browsing purposes
+		createAddTabButton();
+		// call createRefreshButton() to reload the current page
+		createRefreshButton();
+		// call createBookmarkButton() to create the bookmark button
+		createBookmarkButton();
+		// call createSpeechButton() to create to toggle button for the speech
+		// mdoe
+		createSpeechButton();
+		// call createHomeButton(), by clicking on this button the user will be
+		// directed to the homepage
+		createHomeButton();
+		// call createMenuButton() to create the menu
+		createMenuButton();
+		// creates the sidebar button, createSideBarButton() -- this houses the
+		// smart notes tab and the speech mode tab
+		createSideBarButton();
+
+		// align all of the navigation widgets in a horizontal toolbar.
+
+		navPane = new HBox();
 		navPane.setPadding(new Insets(5, 0, 5, 0));
 		navPane.setAlignment(Pos.CENTER);
 		navPane.getStyleClass().add("toolbar");
 		navPane.setSpacing(6);
-		navPane.getChildren().addAll(sidebarButton, backButton, forwardButton, refreshButton, addressBarField, navButton, addBookmarkButton, homeButton, speechButton, addTabButton, menuButton);
+		navPane.getChildren().addAll(sidebarButton, backButton, forwardButton,
+				refreshButton, addressBarField, navButton, addBookmarkButton,
+				homeButton, speechButton, addTabButton, menuButton);
 
 		navPane.setFillHeight(false);
 		Platform.runLater(new Runnable() {
@@ -310,16 +323,16 @@ public class TabToolbarView {
 				navPane.setMinHeight(navPane.getHeight());
 			}
 		});
-                        
-        return navPane;
-    }
-    
-    /**
-     * Create addressBar
-     */
-    
-	public void createAddressBarField(){
-		
+
+		return navPane;
+	}
+
+	/**
+	 * Create addressBar
+	 */
+
+	public void createAddressBarField() {
+
 		setAddressBarFieldText(DEFAULT_HOME);
 		addressBarField.setStyle("-fx-font-size: 20;");
 		addressBarField.setPromptText("Where do you want to go today?");
@@ -328,13 +341,12 @@ public class TabToolbarView {
 
 		HBox.setHgrow(addressBarField, Priority.ALWAYS);
 	}
-    
-    
-     /** 
-     *  creates the forward button
-     * */
-     
-    private void createForwardButton() {
+
+	/**
+	 * creates the forward button
+	 * */
+
+	private void createForwardButton() {
 		iconPath = getImgObj.jarScan("icons.jar", "Arrows-Forward-icon");
 		forwardButton = new Button(null);
 		forwardButton.setTranslateX(-2);
@@ -350,24 +362,24 @@ public class TabToolbarView {
 		forwardButton.setGraphic(forwardGraphic);
 		forwardButton.setTooltip(new Tooltip("Go forward"));
 		forwardButton.onActionProperty().set(forwardAction);
-		 
 
 	}
-    
-    /*
-     * 
-     *  create the back button to be added into the tabToolbarView
-     * */
-     
-    private void createBackButton() {
-		
-		/*  
+
+	/*
+	 * 
+	 * create the back button to be added into the tabToolbarView
+	 */
+
+	private void createBackButton() {
+
+		/*
 		 * Back button
 		 */
-		 
+
 		backButton = new Button(null);
 		backButton.setTooltip(new Tooltip("Go back"));
-		backButton.setStyle("-fx-background-color: WHITE; -fx-border-color: WHITE; -fx-border-width: 0;");
+		backButton
+				.setStyle("-fx-background-color: WHITE; -fx-border-color: WHITE; -fx-border-width: 0;");
 		iconPath = getImgObj.jarScan("icons.jar", "Arrows-Back-icon");
 		backGraphic = new ImageView(new Image(iconPath));
 		backColorAdjust = new ColorAdjust();
@@ -379,18 +391,17 @@ public class TabToolbarView {
 		backGraphic.setFitHeight(24);
 		backButton.onActionProperty().set(backAction);
 	}
-    
-    
-     /* 
-     *  createNavigateButton() - create the navigate/Go button in the toolbar
-     */ 
-     
-    private void createNavigateButton() {
-		
-		/* 
+
+	/*
+	 * createNavigateButton() - create the navigate/Go button in the toolbar
+	 */
+
+	private void createNavigateButton() {
+
+		/*
 		 * create navigate button
 		 */
-		 
+
 		iconPath = getImgObj.jarScan("icons.jar", "Go-icon");
 		navButton = new Button(null);
 		navButton.setTooltip(new Tooltip("Hit it"));
@@ -406,15 +417,13 @@ public class TabToolbarView {
 		navButton.setGraphic(navGraphic);
 		navButton.onActionProperty().set(goAction);
 	}
-    
-    
-	 /* 
-	 *  create the add tab button
-	 *  on clickign this a new tab would be create; ie. a new instance of 
-	 *  the browser window would be created
-	 */ 
-	 
-	private void createAddTabButton(){
+
+	/*
+	 * create the add tab button on clickign this a new tab would be create; ie.
+	 * a new instance of the browser window would be created
+	 */
+
+	private void createAddTabButton() {
 		iconPath = getImgObj.jarScan("icons.jar", "Plus-icon");
 		addTabButton = new Button(null);
 		addTabButton.setTranslateX(-2);
@@ -431,16 +440,15 @@ public class TabToolbarView {
 		addTabButton.setTooltip(new Tooltip("Open a new tab"));
 		addTabButton.setOnAction(addTabAction);
 	}
-	
-	
-	 /* 
-	 *  creates the refresh button - used to reload the current page in the same 
-	 *  tab
-	 */ 
-	 
+
+	/*
+	 * creates the refresh button - used to reload the current page in the same
+	 * tab
+	 */
+
 	private void createRefreshButton() {
-		
-		 /** 
+
+		/**
 		 * Refresh page button
 		 */
 		iconPath = getImgObj.jarScan("icons.jar", "Basic-Reload-icon");
@@ -459,15 +467,14 @@ public class TabToolbarView {
 		refreshButton.setTooltip(new Tooltip("Refresh"));
 		refreshButton.setOnAction(refreshAction);
 	}
-	
-	
-	 /** 
+
+	/**
 	 * creates the bookmark button using which the user can bookmark pages
 	 * */
-	 
+
 	private void createBookmarkButton() {
-		
-		 /** 
+
+		/**
 		 * Bookmark page button
 		 */
 
@@ -499,31 +506,30 @@ public class TabToolbarView {
 
 		addBookmarkButton.setOnAction(bookmarkAction);
 	}
-	
-	
-	 /** 
-	 *  speech button helper method
-	 **/ 
-	 
+
+	/**
+	 * speech button helper method
+	 **/
+
 	public void createSpeechButtonHelper(String imgName, String toolTipValue) {
 		iconPath = getImgObj.jarScan("icons.jar", imgName);
 		speechGraphic = new ImageView(new Image(iconPath));
 		speechButton.setGraphic(speechGraphic);
 		speechButton.setTooltip(new Tooltip(toolTipValue));
 	}
-	
-	
-	 /** 
-	 *  creates the speech toggle button to allow the user to switch
-	 *  between normal usage fo a browser and to use speech to control
-	 *  most of its functionalities
+
+	/**
+	 * creates the speech toggle button to allow the user to switch between
+	 * normal usage fo a browser and to use speech to control most of its
+	 * functionalities
 	 * */
-	 
+
 	private void createSpeechButton() {
 		iconPath = getImgObj.jarScan("icons.jar", "Micro-off-icon");
 		speechButton = new Button(null);
 		speechButton.setTranslateX(-2);
-		speechButton.setStyle("-fx-background-color: WHITE; -fx-border-color: WHITE; -fx-border-width: 0;");
+		speechButton
+				.setStyle("-fx-background-color: WHITE; -fx-border-color: WHITE; -fx-border-width: 0;");
 		speechGraphic = new ImageView(new Image(iconPath));
 		speechColorAdjust = new ColorAdjust();
 		speechColorAdjust.setBrightness(-0.1);
@@ -536,17 +542,17 @@ public class TabToolbarView {
 		// speechButton.set
 		speechButton.onActionProperty().set(speechAction);
 	}
-	
-	
-	 /** 
-	 *  create the home button
+
+	/**
+	 * create the home button
 	 * */
-	 
+
 	private void createHomeButton() {
-		
-		 /** 
-		 * Home button*/
-		 
+
+		/**
+		 * Home button
+		 */
+
 		iconPath = getImgObj.jarScan("icons.jar", "Basic-Home-icon");
 		homeButton = new Button(null);
 		homeButton.setTranslateX(-2);
@@ -563,15 +569,14 @@ public class TabToolbarView {
 		homeButton.setTooltip(new Tooltip("Take me home"));
 		homeButton.setOnAction(homeAction);
 	}
-	
-	
-	 /** 
-	 *  create the menu button with all children menu items
+
+	/**
+	 * create the menu button with all children menu items
 	 * */
-	 
+
 	private void createMenuButton() {
-		
-		 /** 
+
+		/**
 		 * Menu button
 		 */
 		iconPath = getImgObj.jarScan("icons.jar", "Menu-icon");
@@ -587,40 +592,70 @@ public class TabToolbarView {
 		menuGraphic.setPreserveRatio(true);
 		menuGraphic.setFitHeight(24);
 		menuButton.setGraphic(menuGraphic);
-		
+
 		menuButton.setTooltip(new Tooltip("Explore more"));
-		
-		 /** 
+
+		/**
 		 * creating menu items save load exit help about show status bar
 		 * bookmarks history enable/disable speech
 		 */
-		//saveMenuItem = new MenuItem("Save");
-		//loadMenuItem = new MenuItem("Load");
+		// saveMenuItem = new MenuItem("Save");
+		// loadMenuItem = new MenuItem("Load");
 		exitMenuItem = new MenuItem("Close");
-		//showStatusBarMenuItem = new MenuItem("Show Status Bar");
+		// showStatusBarMenuItem = new MenuItem("Show Status Bar");
 		showBookmarkMenuItem = new Menu("BookMarks");
-		//showHistoryMenuItem = new MenuItem("History");
-		//speechModeEnable = new CheckMenuItem("Enable/Disable Speech Mode");
+		// showHistoryMenuItem = new MenuItem("History");
+		// speechModeEnable = new CheckMenuItem("Enable/Disable Speech Mode");
 		userManualMenuItem = new MenuItem("Help");
 		aboutMenuItem = new MenuItem("About");
 
-		exitMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+		userManualMenuItem.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent e) {
-				//voiceBrowserObj.closeBrowser();
+
+				TabView tab = new TabView();
+				BrowserTabBarView.getBrowserTabHolder().getTabs().add(tab);
+				tab.setText("Help Manual");
+
+				URL urlString = VoiceBrowser.class.getClassLoader()
+						.getResource("Help.html");
+				System.out.println("urlstring: " + urlString);
+
+				tab.getViewController().getBrowserWindowView().browser
+						.getEngine().load(urlString.toString());
 			}
 		});
-		menuButton.getItems().addAll(showBookmarkMenuItem,
-				userManualMenuItem,
+		
+		aboutMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent e) {
+
+				Stage stage = new Stage();
+				Scene dialog = new Scene(getAboutDialog(), 650, 350);
+				stage.setScene(dialog);
+				stage.setTitle("About Voice Based Browser");
+				stage.setResizable(false);
+				stage.show();
+			}
+
+			
+		});
+
+		exitMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent e) {
+				// voiceBrowserObj.closeBrowser();
+			}
+		});
+
+		menuButton.getItems().addAll(showBookmarkMenuItem, userManualMenuItem,
 				aboutMenuItem, exitMenuItem);
 
 	}
-	
-	
-	/* * 
-	 *  create a button to open the sidebar, the smart notes will be displayed here
-	 **/ 
-	 
-	private static void createSideBarButton(){
+
+	/* *
+	 * create a button to open the sidebar, the smart notes will be displayed
+	 * here
+	 */
+
+	private static void createSideBarButton() {
 		iconPath = getImgObj.jarScan("icons.jar", "Down-Arrow-icon");
 		sidebarButton = new Button(null);
 		sidebarButton.setTranslateX(-2);
@@ -635,60 +670,77 @@ public class TabToolbarView {
 		sidebarGraphic.setFitHeight(24);
 		sidebarButton.setGraphic(sidebarGraphic);
 		sidebarButton.setTooltip(new Tooltip("Show me the cool stuff"));
-	   
-	    sidebarButton.setOnAction(new EventHandler<ActionEvent>() {
-	      @Override public void handle(ActionEvent actionEvent) {
-	        // hide sidebar.
-	    	  //System.out.println("sidebar button pressed!!!");
-	        final double startWidth = getSidebarDisplay().getWidth();
-	        //System.out.println("startwidth ----------------------------------------------------------------- " + startWidth);
-	        final Animation hideSidebar = new Transition() {
-	          { setCycleDuration(Duration.millis(250)); }
-	          protected void interpolate(double frac) {
-	        	  /*System.out.println("start width: = " + startWidth);
-	        	  System.out.println("frac = " + frac);*/
-	            final double curWidth = startWidth * (1.0 - frac);
-	            //System.out.println("current width is: " + curWidth);
-	            getSidebarDisplay().setPrefWidth(curWidth);
-	            getSidebarDisplay().setTranslateX(-startWidth + curWidth);
-	          }
-	        };
-	        hideSidebar.onFinishedProperty().set(new EventHandler<ActionEvent>() {
-	          @Override public void handle(ActionEvent actionEvent) {
-	        	  System.out.println("in on finished property");
-	        	  getSidebarDisplay().setVisible(false);
-	          }
-	        });
 
-	        // show sidebar.
-	        final Animation showSidebar = new Transition() {
-	          { setCycleDuration(Duration.millis(250)); }
-	          protected void interpolate(double frac) {
-	        	  getSidebarDisplay().setVisible(true);
-	            final double curWidth = startWidth * frac;
-	            System.out.println("show sidebar current width: " + curWidth);
-	            getSidebarDisplay().setPrefWidth(350.00);
-	            getSidebarDisplay().setTranslateX(-startWidth + curWidth);
-	          }
-	        };
+		sidebarButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent actionEvent) {
+				// hide sidebar.
+				// System.out.println("sidebar button pressed!!!");
+				final double startWidth = getSidebarDisplay().getWidth();
+				// System.out.println("startwidth ----------------------------------------------------------------- "
+				// + startWidth);
+				final Animation hideSidebar = new Transition() {
+					{
+						setCycleDuration(Duration.millis(250));
+					}
 
-	        if (showSidebar.statusProperty().get().equals(Animation.Status.STOPPED) && hideSidebar.statusProperty().get().equals(Animation.Status.STOPPED)) {
-	          if (getSidebarDisplay().isVisible()) {
-	            hideSidebar.play();
-	          } else {
-	            showSidebar.play();
-	          }
-	        }
-	      }
-	    });
-	
+					protected void interpolate(double frac) {
+						/*
+						 * System.out.println("start width: = " + startWidth);
+						 * System.out.println("frac = " + frac);
+						 */
+						final double curWidth = startWidth * (1.0 - frac);
+						// System.out.println("current width is: " + curWidth);
+						getSidebarDisplay().setPrefWidth(curWidth);
+						getSidebarDisplay().setTranslateX(
+								-startWidth + curWidth);
+					}
+				};
+				hideSidebar.onFinishedProperty().set(
+						new EventHandler<ActionEvent>() {
+							@Override
+							public void handle(ActionEvent actionEvent) {
+								System.out.println("in on finished property");
+								getSidebarDisplay().setVisible(false);
+							}
+						});
+
+				// show sidebar.
+				final Animation showSidebar = new Transition() {
+					{
+						setCycleDuration(Duration.millis(250));
+					}
+
+					protected void interpolate(double frac) {
+						getSidebarDisplay().setVisible(true);
+						final double curWidth = startWidth * frac;
+						System.out.println("show sidebar current width: "
+								+ curWidth);
+						getSidebarDisplay().setPrefWidth(350.00);
+						getSidebarDisplay().setTranslateX(
+								-startWidth + curWidth);
+					}
+				};
+
+				if (showSidebar.statusProperty().get()
+						.equals(Animation.Status.STOPPED)
+						&& hideSidebar.statusProperty().get()
+								.equals(Animation.Status.STOPPED)) {
+					if (getSidebarDisplay().isVisible()) {
+						hideSidebar.play();
+					} else {
+						showSidebar.play();
+					}
+				}
+			}
+		});
+
 	}
-	
+
 	public static VBox getSidebarDisplay() {
-	    return sidebarView.getBarDisplay();
-	  }
-	
-	
+		return sidebarView.getBarDisplay();
+	}
+
 	public Parent getAddBookmarkPopupScene() {
 		GridPane grid = new GridPane();
 		grid.setAlignment(Pos.CENTER);
@@ -723,11 +775,67 @@ public class TabToolbarView {
 
 	}
 	
-	
-	
-    
-    
-      
+	private Parent getAboutDialog() {
 
-    
+		
+		URL urlString = TabToolbarView.class.getClassLoader().getResource("browser-logo.png");
+		
+		System.out.println("icon: " + urlString);
+		logoGraphic = new ImageView(new Image(urlString.toString()));
+		logoGraphic.setFitWidth(200);
+		logoGraphic.setFitHeight(200);
+		Label titleLabel = new Label("  " + "Voice Based Browser");
+		titleLabel.setStyle("-fx-font-size: 20pt;");
+		titleLabel.setAlignment(Pos.BASELINE_CENTER);
+		Label version = new Label("Version: ");
+		Label authors = new Label("Developers: ");
+		authors.setPrefWidth(60);
+		Label versionNo = new Label("1.0");
+		Label authorNames = new Label(
+				"Akshay Pawaskar, Gaurav Pandey, Pankaj Channe, Shailaja Kapoor, Sneha Shekatkar, Tarun Gulati");
+		authorNames.setWrapText(true);
+		Label text = new Label(
+				"Voice Based Browser is an attempt to make browsing easier by using voice to operate the browser commands.");
+		text.setWrapText(true);
+
+		GridPane grid = new GridPane();
+		grid.setAlignment(Pos.BASELINE_CENTER);
+		grid.setHgap(25);
+		grid.setVgap(15);
+
+		GridPane innerGrid = new GridPane();
+		innerGrid.setHgap(5);
+		innerGrid.setVgap(5);
+
+		HBox hbox1 = new HBox(10);
+		hbox1.getChildren().addAll(version, versionNo);
+		hbox1.setAlignment(Pos.BASELINE_LEFT);
+
+		HBox hbox2 = new HBox(10);
+		hbox2.getChildren().addAll(authors, authorNames);
+		hbox2.setAlignment(Pos.BASELINE_LEFT);
+
+		HBox hbox3 = new HBox(10);
+		hbox3.getChildren().add(text);
+		hbox3.setAlignment(Pos.BASELINE_LEFT);
+
+		innerGrid.add(version, 1, 0);
+		innerGrid.add(versionNo, 2, 0);
+		innerGrid.add(authors, 1, 1);
+		innerGrid.add(authorNames, 2, 1);
+
+		innerGrid.setAlignment(Pos.BASELINE_LEFT);
+
+		VBox vbox = new VBox(20);
+		vbox.setAlignment(Pos.BASELINE_CENTER);
+		vbox.getChildren().addAll(logoGraphic, titleLabel);
+
+		grid.add(vbox, 1, 0);
+		grid.add(innerGrid, 1, 1);
+		grid.add(hbox3, 1, 2);
+
+		return grid;
+		
+	}
+
 }
