@@ -19,17 +19,22 @@ import javafx.concurrent.Worker.State;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 import javafx.stage.Stage;
 
 public class ViewController {
 
 	private TabToolbarView tabToolBar;
 	private BrowserWindow browserWindowView;
-	private BookmarkModel bookmarkModel;
 	//private SpeechRecognitionTask sTask;
 	private FileReader textReader;
 	private SmartNotes smartNoteObj;
@@ -99,7 +104,6 @@ public class ViewController {
 		EventHandler<ActionEvent> addTabActionEvent = new AddTabActionEvent();
 		EventHandler<ActionEvent> homeActionEvent = new HomeActionEvent();
 		
-		bookmarkModel = new BookmarkModel();
 		textReader = new FileReader();
 		smartNoteObj = new SmartNotes();
 		
@@ -258,7 +262,7 @@ public class ViewController {
 			bookmark.setBookmarkName(tabToolBar.getBookmarkTitle());
 			bookmark.setBookmarkURL(tabToolBar.getBookmarkURL());
 
-			bookmarkModel.addBookmark(bookmark);
+			TabViewController.getBookmarkModel().addBookmark(bookmark);
 			setBookmarkItems();
 			tabToolBar.getBookmarkStage().close();
 
@@ -267,28 +271,26 @@ public class ViewController {
 	}
 	
 	public void setBookmarkItems() {
-		
-		tabToolBar.getShowBookmarkMenuItem().getItems().removeAll(tabToolBar.getShowBookmarkMenuItem().getItems());
-		ArrayList<Bookmark> bookmarkList = bookmarkModel.getBookmarkList();
-		for (final Bookmark bookmark : bookmarkList) {
-			MenuItem bookmarkMenuItem = new MenuItem(bookmark.getBookmarkName());
-
-			bookmarkMenuItem.setOnAction(new EventHandler<ActionEvent>() {
-
+		System.out.println("setbookmark");
+		((MenuButton)tabToolBar.getNavPane().getChildren().get(10)).getItems().remove(0);
+		Menu menu = new Menu("Bookmarks");
+		for (final Bookmark bookmark : TabViewController.getBookmarkModel().getBookmarkList()) {
+   		 	
+         	 MenuItem bookmarkMenuItem = new MenuItem(bookmark.getBookmarkName());
+         	 bookmarkMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+         		 
 				public void handle(ActionEvent arg0) {
-					// TODO Auto-generated method stub
 					// page should load url
 					try {
 						browserWindowView.navTo(bookmark.getBookmarkURL());
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
-
 			});		
-			tabToolBar.getShowBookmarkMenuItem().getItems().add(bookmarkMenuItem);
-		}
+         	 menu.getItems().add(bookmarkMenuItem);
+            }
+		((MenuButton)tabToolBar.getNavPane().getChildren().get(10)).getItems().add(0, menu);
 
 	}
 	
@@ -347,5 +349,20 @@ public class ViewController {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public void drawLine(int startPointX, int startPointY, int endPointX, int endPointY)
+	{
+	      Path path = new Path();
+	      path.getElements().add(new MoveTo(startPointX, startPointY));
+	      path.getElements().add(new LineTo(endPointX, endPointY));
+	      path.setStrokeWidth(10);
+	      path.setStroke(Color.BLACK);
+	      
+	      if(browserWindowView.getChildren().contains(path))
+	      {
+	    	  browserWindowView.getChildren().remove(path);
+	      }
+	      browserWindowView.getChildren().add(path);
 	}
 }

@@ -46,10 +46,11 @@ public class SideBarView {
 	public static void setTextAreaText(ArrayList<String> noteText)
 	{
 		textArea.clear();
-		System.out.println("List size "+noteText.size());
+		System.out.println("List size "+noteText);
 		for(int i = 0;i<noteText.size();i++)
 		{
-			textArea.appendText(noteText.get(i));
+			//textArea.clear();
+			textArea.appendText(noteText.get(i) + "\n");
 		}
 		
 	}
@@ -75,7 +76,7 @@ public class SideBarView {
         sideBar.setPrefWidth(350.00);
         // sideBar.setPadding(new Insets(0, 20, 10, 20));
         TabPane tabs = new TabPane();
-        TextArea textArea = TextAreaBuilder.create().prefWidth(400)
+        textArea = TextAreaBuilder.create().prefWidth(400)
                 .prefHeight(1600).wrapText(true).build();
         TabPane sideBarTabPane = new TabPane();
         Tab smartNotesTab = new Tab("Smart Notes");

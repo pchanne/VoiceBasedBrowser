@@ -14,14 +14,26 @@ import org.w3c.dom.DocumentFragment;
 import com.browser.command.AddBookMarkCommand;
 import com.browser.command.BackCommand;
 import com.browser.command.BookMarkCommand;
+import com.browser.command.BottomCommand;
 import com.browser.command.ForwardCommand;
 import com.browser.command.GoCommand;
 import com.browser.command.HomeCommand;
 import com.browser.command.Invoker;
+import com.browser.command.LinksCommand;
+import com.browser.command.NavigateCommand;
+import com.browser.command.NextLinkCommand;
+import com.browser.command.NextTextCommand;
+import com.browser.command.NextTitleCommand;
 import com.browser.command.ReadCommand;
 import com.browser.command.RefreshCommand;
+import com.browser.command.SaveCommand;
+import com.browser.command.ScreenCommand;
 import com.browser.command.ScrollDownCommand;
 import com.browser.command.ScrollUpCommand;
+import com.browser.command.SmartNotesCommand;
+import com.browser.command.TextCommand;
+import com.browser.command.TitlesCommand;
+import com.browser.command.TopCommand;
 import com.browser.controller.BrowserWindow;
 import com.browser.controller.TabViewController;
 import com.browser.controller.ViewController;
@@ -53,6 +65,7 @@ public class SpeechHelper {
 		speechReaderTask = new SpeechReaderTask();
 		website = null;
 		bookmarkFlag = false;
+		
 		invokerObj = new Invoker();
 	}
 	
@@ -68,18 +81,16 @@ public class SpeechHelper {
 					website = website.replace(" ", "");
 					System.out.println("Website said : " + website);
 					if (website != null) {
-						if (website.equalsIgnoreCase("yahoo.com")) {
-							System.out
-									.println("Website identified and set as the addressbar field ");
-							viewController.getTabToolBar()
-									.getAddressBarField().setText(website);
+						String list[] = {".com",".edu",".org",".net",".in",".us",".gov",".mil",".info",".jobs"};
+						for(String str: list){
+                            if(website.contains(str))
+                            {
+                                viewController.getTabToolBar().getAddressBarField().setText(website);
+                                System.out.println("website");
+                                return;
+                            }
 						}
-						if (website.equalsIgnoreCase("bing.com")) {
-							viewController.getTabToolBar().getAddressBarField().setText(website);
-						}
-						if(website.equalsIgnoreCase("cnn.com")){
-							viewController.getTabToolBar().getAddressBarField().setText(website);
-						}
+						
 						if (Command.equalsIgnoreCase("go")) {
 							invokerObj.setCommand(new GoCommand());
 							
@@ -109,77 +120,53 @@ public class SpeechHelper {
 						if (Command.equalsIgnoreCase("read")) {
 							invokerObj.setCommand(new ReadCommand());
 						}
-						if(Command.equalsIgnoreCase("smart notes")&& !(viewController.getBrowserWindowView().getSelectedText().equalsIgnoreCase(""))){
-							
-							viewController.getSmartNoteObj().copySelectedText(viewController.getBrowserWindowView().getSelectedText());
+						if(Command.equalsIgnoreCase("smart notes")){
+							invokerObj.setCommand(new SmartNotesCommand());
 						}
 						if(Command.equalsIgnoreCase("save") && !(SideBarView.getTextArea().getText().equalsIgnoreCase(""))){
-							System.out.println("Saving smart notes: ");
-							ObservableList<CharSequence> paragraph = SideBarView.getTextArea().getParagraphs();
-						    Iterator<CharSequence>  iter = paragraph.iterator();
-						    try
-						    {
-						        BufferedWriter bf = new BufferedWriter(new FileWriter(new File("smartnotes.txt")));
-						        while(iter.hasNext())
-						        {
-						            CharSequence seq = iter.next();
-						            bf.append(seq);
-						            bf.newLine();
-						        }
-						        bf.flush();
-						        bf.close();
-						    }
-						    catch (IOException e)
-						    {
-						        e.printStackTrace();
-						    }
+							invokerObj.setCommand(new SaveCommand());
 						}
-						if (Command.equalsIgnoreCase("top")){
-							if(viewCounter == 0) {
-								currentWidth = viewController.getBrowserWindowView().browser.getWidth();
-								currentHeight = viewController.getBrowserWindowView().browser.getHeight();
-								viewCounter ++;
-							}
-							viewController.getTagHandler().initialiseViews(currentX, currentY, currentWidth, currentHeight);
-							//viewController.getTagHandler().highlightAllTextinTopView();
 						
-							viewController.getTagHandler().highlightAllLinksinTopView();
-							currentHeight = currentHeight/2;
+						if(Command.equalsIgnoreCase("Screen"))
+						{
+							invokerObj.setCommand(new ScreenCommand());
 						}
-						if (Command.equalsIgnoreCase("bottom")){
-							if(viewCounter == 0){
-								currentWidth = viewController.getBrowserWindowView().browser.getWidth();
-								currentHeight = viewController.getBrowserWindowView().browser.getHeight();
-								viewCounter ++;
-							}
-							currentY = currentY + currentHeight/2;
-							viewController.getTagHandler().initialiseViews(currentX, currentY, currentWidth, currentHeight);
-							//viewController.getTagHandler().highlightAllHeadersinBottomView();
-							viewController.getTagHandler().highlightAllLinksinBottomView();
-							currentHeight = currentHeight/2;
+						
+						if (Command.equalsIgnoreCase("top")){
+							invokerObj.setCommand(new TopCommand());
 						}
-//						if (Command.equalsIgnoreCase("Titles")) {
-//							viewController.getTagHandler().clearSelectedTags();
-//							viewController.getTagHandler()
-//									.selectAllHeaderTags();
-//						}
-//						if (Command.equalsIgnoreCase("Next Title")) {
-//							viewController.getTagHandler().clearSelectedTags();
-//							viewController.getTagHandler().selectNextHeader();
-//						}
-//						if (Command.equalsIgnoreCase("Links")) {
-//							viewController.getTagHandler().clearSelectedTags();
-//							viewController.getTagHandler().selectAllLinkTags();
-//							;
-//						}
-//						if (Command.equalsIgnoreCase("Next Link")) {
-//							viewController.getTagHandler().clearSelectedTags();
-//							viewController.getTagHandler()
-//									.selectNextLinkHeader();
-//						}
-//						if (Command.equalsIgnoreCase("navigate")) {
-//							viewController.getTagHandler().navigateurl();
-//						}
+						if (Command.equalsIgnoreCase("bottom")){		
+							invokerObj.setCommand(new BottomCommand());
+							
+						}
+						if(Command.equalsIgnoreCase("Links"))
+						{
+							invokerObj.setCommand(new LinksCommand());
+						}
+						if(Command.equalsIgnoreCase("Titles"))
+						{
+							invokerObj.setCommand(new TitlesCommand());
+						}
+						if(Command.equalsIgnoreCase("Text"))
+						{
+							invokerObj.setCommand(new TextCommand());
+						}
+						if(Command.equalsIgnoreCase("Next Link"))
+						{
+							invokerObj.setCommand(new NextLinkCommand());
+						}
+						if(Command.equalsIgnoreCase("Next Title"))
+						{
+							invokerObj.setCommand(new NextTitleCommand());
+						}
+						if(Command.equalsIgnoreCase("Next Text"))
+						{
+							invokerObj.setCommand(new NextTextCommand());
+						}
+
+						if (Command.equalsIgnoreCase("navigate")) {
+							invokerObj.setCommand(new NavigateCommand());
+						}
 						if (Command.equalsIgnoreCase("scroll down")) {
 							invokerObj.setCommand(new ScrollDownCommand());
 						}

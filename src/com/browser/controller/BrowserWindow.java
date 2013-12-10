@@ -24,13 +24,15 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
+import javafx.scene.shape.Path;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 
 
-public class BrowserWindow extends Region{
+public class BrowserWindow extends Pane{
 	
 	public WebView browser;
     public WebEngine webEngine;
@@ -41,6 +43,7 @@ public class BrowserWindow extends Region{
     public FileReader titleReader;
     private SmartNotes smartNoteObj;
     private String selectedText;
+    private Path path;
 
 
     public static double currentWidth;
@@ -60,6 +63,7 @@ public class BrowserWindow extends Region{
 
 	public BrowserWindow(){
 		System.out.println("Browser Window");
+		path = new Path();
 		history = new History(this);
     	browser = new WebView();
         webEngine = browser.getEngine();

@@ -14,7 +14,7 @@ public class BookmarkModel {
         return "BookmarkModel [bookmarkList=" + bookmarkList + "]";
     }
 
-    ArrayList<Bookmark> bookmarkList;
+    static ArrayList<Bookmark> bookmarkList;
     
     public BookmarkModel()
     {

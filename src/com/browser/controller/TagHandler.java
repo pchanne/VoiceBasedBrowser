@@ -21,6 +21,7 @@ public class TagHandler {
         
     TagModel topViewTagModel;
     TagModel bottomViewTagModel;
+    TagModel currentViewTagModel;
     
     double currentViewXOrigin;
     double currentViewYOrigin;
@@ -112,7 +113,7 @@ public class TagHandler {
         currentViewWidth= viewWidth;
         currentViewHeight= viewHeight;
         
-        if(topViewTagModel!=null)
+        /*if(topViewTagModel!=null)
         {
             
             deselectAllHeadersinTopView();
@@ -126,16 +127,22 @@ public class TagHandler {
             deselectAllHeadersinBottomView();
             deselectAllLinksinBottomView();
             deselectAllTextinBottomView();
+        }*/
+        
+        if(currentViewTagModel!=null)
+        {
+            deselectAllLinksinCurrentView();
         }
         
-        
+        currentViewTagModel= new TagModel(viewWidth, viewHeight, xOrigin, yOrigin);
         topViewTagModel= new TagModel(viewWidth, viewHeight/2,xOrigin,yOrigin);
         bottomViewTagModel= new TagModel(viewWidth, viewHeight/2, xOrigin,yOrigin+ viewHeight/2);
         
        
         
-        fillTopViewModel();
-        fillBottomViewModel();
+        //fillTopViewModel();
+        //fillBottomViewModel();
+        fillCurrentViewModel();
     }
                                       
     private ArrayList<Tag> getTagElements(ArrayList<Tag> tagElementList,
@@ -158,7 +165,7 @@ public class TagHandler {
                    		"["+currentTagElement.getPosition()+"]; " +
                    "isElementInViewport(d);";    
            
-           System.out.println(executeScriptToGetTagElement);
+           //System.out.println(executeScriptToGetTagElement);
            
            boolean isTagElementInView=(Boolean) webEngine.
                    executeScript(executeScriptToGetTagElement);
@@ -238,6 +245,12 @@ public class TagHandler {
         highlightAllLinksinView(bottomViewTagModel, highlightAllLinksinBottomViewColor);        
     }
     
+    public void highlightAllLinksinCurrentView()
+    {                
+        String highlightAllLinksinCurrentViewColor="red";
+        highlightAllLinksinView(currentViewTagModel, highlightAllLinksinCurrentViewColor);
+    }
+    
     public void highlightAllHeadersinTopView()
     {
         deselectAllHeaders();
@@ -254,11 +267,18 @@ public class TagHandler {
         highlightAllHeadersinView(bottomViewTagModel, highlightAllHeadersinBottomViewColor);
     }
     
+    public void highlightAllHeadersinCurrentView()
+    {
+                
+        String highlightAllHeadersinCurrentViewColor="red";
+        highlightAllHeadersinView(currentViewTagModel, highlightAllHeadersinCurrentViewColor);
+    }
         
     public void highlightAllTextinTopView()
     {
         //deselect all text elements
         deselectAllText();
+        
         String highlightAllTextinTopViewColor="red";
         highlightAllTextinView(topViewTagModel, highlightAllTextinTopViewColor);
                 
@@ -273,8 +293,19 @@ public class TagHandler {
                 
     }
     
+    public void highlightAllTextinCurrentView()
+    {
+        deselectAllTextinCurrentView();
+        
+        String highlightAllTextinCurrentViewColor="red";
+        highlightAllTextinView(currentViewTagModel, highlightAllTextinCurrentViewColor);
+    }
     
-    
+    public void fillCurrentViewModel()
+    {
+        currentViewTagModel.clearModel();
+        fillViewModel(currentViewTagModel);
+    }
     
     public void fillTopViewModel()
     {                
@@ -296,13 +327,13 @@ public class TagHandler {
                         "["+relativePosition+"];" +
                                 "nextTag.style.backgroundColor = '"+color+"';";
         
-        System.out.println(scriptToHighlightTag);
+        //System.out.println(scriptToHighlightTag);
         webEngine.executeScript(scriptToHighlightTag);
     }
     
     private void selectLinkTagElement(TagModel selectedTagModel)
     {
-        deselectAllLinks();
+        deselectAllLinksinCurrentView();
         
         if(selectedTagModel.getCurrentLinkTagPosition()<selectedTagModel.getLinkTagList().size()-1)
         {
@@ -323,7 +354,7 @@ public class TagHandler {
     
     private void selectHeaderTagElement(TagModel selectedTagModel)
     {
-        deselectAllHeaders();
+        deselectAllHeadersinCurrentView();
         
         if(selectedTagModel.getCurrentHeaderTagPosition()<selectedTagModel.getHeaderTagList().size()-1)
         {
@@ -343,7 +374,7 @@ public class TagHandler {
     
     private void selectTextElement(TagModel selectedTagModel)
     {
-        deselectAllText();
+        deselectAllTextinCurrentView();
         
         if(selectedTagModel.getCurrentTextTagPosition()<selectedTagModel.getTextTagList().size()-1)
         {
@@ -371,6 +402,11 @@ public class TagHandler {
         selectLinkTagElement(bottomViewTagModel);
     }
     
+    public void selectNextLinkElementinCurrentView()
+    {
+        selectLinkTagElement(currentViewTagModel);
+    }
+    
     public void selectNextHeaderElementinTopView()
     {
         selectHeaderTagElement(topViewTagModel);               
@@ -379,6 +415,11 @@ public class TagHandler {
     public void selectNextHeaderElementinBottomView()
     {
         selectHeaderTagElement(bottomViewTagModel);
+    }
+    
+    public void selectNextHeaderElementinCurrentView()
+    {
+        selectHeaderTagElement(currentViewTagModel);
     }
     
     public void selectNextTextElementinTopView()
@@ -391,6 +432,16 @@ public class TagHandler {
         selectTextElement(bottomViewTagModel);
     }
     
+    public void selectNextTextElementinCurrentView()
+    {
+        selectTextElement(currentViewTagModel);
+    }
+    
+    public void deselectAllLinksinCurrentView()
+    {
+        String deselectColor="";
+        highlightAllLinksinView(currentViewTagModel, deselectColor);
+    }
     
     public void deselectAllLinksinTopView()
     {
@@ -417,6 +468,12 @@ public class TagHandler {
         highlightAllHeadersinView(bottomViewTagModel, deselectColor);
     }
     
+    public void deselectAllHeadersinCurrentView()
+    {
+        String deselectColor="";
+        highlightAllHeadersinView(currentViewTagModel, deselectColor);
+    }
+    
     public void deselectAllLinks()
     {
         deselectAllLinksinTopView();
@@ -435,17 +492,76 @@ public class TagHandler {
         highlightAllTextinView(topViewTagModel, deselectColor);
     }
     
+    private void deselectAllTextinCurrentView()
+    {
+        String deselectColor="";
+        highlightAllTextinView(currentViewTagModel, deselectColor);                
+    }
+    
     private void deselectAllTextinBottomView()
     {
         String deselectColor="";
         highlightAllTextinView(bottomViewTagModel, deselectColor);
     }
     
-    private void deselectAllText()
+    public void deselectAllText()
     {
         deselectAllTextinTopView();
         deselectAllTextinBottomView();
     }
+    
+    private String getUrlContentFromCurrentTag(TagModel selectedModel)
+    {
+        System.out.println(selectedModel.getCurrentLinkTagPosition());
+        return selectedModel.getLinkTagList().get(selectedModel.getCurrentLinkTagPosition()).
+                getTagElement().attr("href").toString();
+        
+    }
+    
+    public String getUrlFromCurrentLinkTaginTopView()
+    {
+        return getUrlContentFromCurrentTag(topViewTagModel);
+    }
+    
+    public String getUrlFromCurrentLinkTaginBottomView()
+    {
+        return getUrlContentFromCurrentTag(bottomViewTagModel);
+    }
+    
+    public String getUrlFromCurrentLinkTaginCurrentView()
+    {
+        return getUrlContentFromCurrentTag(currentViewTagModel);
+    }
+    
+    private String getTextFromCurrentHeaderTag(TagModel selectedModel)
+    {
+        return selectedModel.getHeaderTagList().get(selectedModel.
+                getCurrentHeaderTagPosition()).getTagElement().ownText().toString();
+    }
+    
+    public String getTextFromCurrentHeaderinTopView()
+    {
+        return getTextFromCurrentHeaderTag(topViewTagModel);
+    }
 
-           
+    public String getTextFromCurrentHeaderinBottomView()
+    {
+        return getTextFromCurrentHeaderTag(bottomViewTagModel);
+    }
+    
+    public String getTextFromCurrentHeaderinCurrentView()
+    {
+        return getTextFromCurrentHeaderTag(currentViewTagModel);
+    }
+        
+    private String getTextFromCurrentTextTag(TagModel selectedModel)
+    {
+        return selectedModel.getTextTagList().get(selectedModel.
+                getCurrentTextTagPosition()).getTagElement().ownText().toString();
+    }
+    
+    public String getTextFromCurrentTextinCurrentView()
+    {
+        return getTextFromCurrentTextTag(currentViewTagModel);
+    }
 }

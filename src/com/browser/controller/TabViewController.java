@@ -13,6 +13,13 @@ public class TabViewController {
 	private static BookmarkModel bookmarkModel;
 	public static SpeechRecognitionTask sTask;
 	
+	
+	public static BookmarkModel getBookmarkModel() {
+		return bookmarkModel;
+	}
+	public static void setBookmarkModel(BookmarkModel bookmarkModel) {
+		TabViewController.bookmarkModel = bookmarkModel;
+	}
 	public BrowserTabBarView getBrowserTabBarView() {
 		return browserTabBarView;
 	}
@@ -22,7 +29,7 @@ public class TabViewController {
 	
 	
 	public TabViewController(){
-		
+		bookmarkModel = new BookmarkModel();
 		sTask = new SpeechRecognitionTask();
 		tab = new TabView(); // creating first tab when browser opens.
 		//TabView.setSpeechMode(false);
@@ -31,7 +38,7 @@ public class TabViewController {
 		SideBarView.initSideBar(); // static sidebar that is shared among all the tabs
 		
 		browserTabBarView.getBrowserTabHolder().getTabs().add(tab); // adding first tab to container
-		bookmarkModel = new BookmarkModel();
+		
 		//sTask = new SpeechRecognitionTask();
 	}
 }

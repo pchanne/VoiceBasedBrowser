@@ -25,13 +25,9 @@ public class SpeechReaderTask extends Service<Void>{
             @Override
             
             protected Void call() throws Exception {
-		    			System.out.println("Reading the selected text in the page ");
-//		    			try {
-//		    				
-//		    				TabView.getCurrentViewController().getTextReader().ReadSelectedText(TabView.getCurrentViewController().getTagHandler().getCurrentHeader().getHeaderTag().text());
-//						} catch (IOException e) {
-//							e.printStackTrace();
-//						}
+		    			System.out.println("Reading the selected text in the page ");			
+		    			TabView.getCurrentViewController().getTextReader().ReadSelectedText(TabView.getCurrentViewController().getTagHandler().getTextFromCurrentHeaderinCurrentView());
+
                 return null;
             }
         };
