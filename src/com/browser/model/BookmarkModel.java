@@ -1,5 +1,5 @@
-/*
- * This class is used to store and retrieve all the bookmarks throughout the browser
+/**
+ *This class is used to store and retrieve all the bookmarks throughout the browser 
  */
 package com.browser.model;
 
