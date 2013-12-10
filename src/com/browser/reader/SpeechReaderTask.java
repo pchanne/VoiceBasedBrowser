@@ -1,14 +1,10 @@
+/**
+ * This class represents Reader task which starts on issue of Read command.
+ */
 package com.browser.reader;
-
-import java.io.IOException;
 
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
-
-import com.browser.controller.ViewController;
-import com.browser.helper.SpeechHelper;
-import com.browser.main.VoiceBrowser;
-import com.browser.speech.SpeechCommands;
 import com.browser.view.TabView;
 
 public class SpeechReaderTask extends Service<Void>{
@@ -16,7 +12,6 @@ public class SpeechReaderTask extends Service<Void>{
 	String website;
 	boolean ReadEnabled = true;
 	
-	public VoiceBrowser voiceBrowserObj;
 	public SpeechReaderTask(){
 	}
 	@Override

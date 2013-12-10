@@ -1,3 +1,6 @@
+/**
+ * This class represents container for holding all the tabs in a browser
+ */
 package com.browser.view;
 
 import javafx.scene.Parent;
@@ -10,22 +13,16 @@ public class BrowserTabBarView {
 
 	public BrowserTabBarView() {
 		setupTabHolder();
-		// TODO Auto-generated constructor stub
 	}
 
 	/*
-	 * 
-	 * setup the properties of the tab holder
-	 * 
+	 * setup the properties of the tab holder 
 	 */
 	private void setupTabHolder() {
 		browserTabHolder = new TabPane();
 	}
-
 	/*
-	 * 
-	 * getter for tabholder
-	 * 
+	 * getter for tabholder 
 	 */
 	public static TabPane getBrowserTabHolder() {
 		return browserTabHolder;

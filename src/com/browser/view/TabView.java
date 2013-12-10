@@ -1,3 +1,6 @@
+/**
+ * This class represents single tab in a browser.
+ */
 package com.browser.view;
 
 import java.io.IOException;
@@ -31,7 +34,6 @@ public class TabView extends Tab {
 	private ViewController viewController;
 	private static ViewController currentViewController;
 
-	// testing
 	private TextField searchBar;
 	private Button findTagButton;
 	private Button selectButton;
@@ -65,8 +67,9 @@ public class TabView extends Tab {
 		this.viewController = viewController;
 	}
 
+	//Constructor
 	public TabView() {
-		// System.out.println(this);
+		
 		viewController = new ViewController();
 		myTabToolBarPane = viewController.getTabToolBar().CreateNavToolbar();
 
@@ -107,7 +110,10 @@ public class TabView extends Tab {
 				// status
 				getImgObj = new GetImagePath();
 				reflectSiderBar(sideBarContainer);
-				if (BrowserTabBarView.getBrowserTabHolder().getSelectionModel().getSelectedItem().isSelected()) {
+
+				// set up currently selected tab as global tab
+				if (BrowserTabBarView.getBrowserTabHolder().getSelectionModel()
+						.getSelectedItem().isSelected()) {
 					TabView.setCurrentViewController(TabView.this.viewController);
 					speechButtonHandler();
 				}
@@ -119,6 +125,10 @@ public class TabView extends Tab {
 		setContent(tabLayout);
 	}
 
+	/*
+	 * Changes speechButton status across all the tabs when speech mode is
+	 * changed in one of the tabs.
+	 */
 	public void speechButtonHandler() {
 
 		String iconPath = null;
@@ -137,6 +147,9 @@ public class TabView extends Tab {
 
 	}
 
+	/*
+	 * Reflects side bar changes made by on tab on all the tabs on tabswitch
+	 */
 	public void reflectSiderBar(VBox sideBarContainer) {
 
 		if (sideBarContainer.getChildren()
@@ -147,6 +160,10 @@ public class TabView extends Tab {
 
 	}
 
+	/*
+	 * Reflect bookmarks added by on one of the tab into menuButton of all the
+	 * tabs.
+	 */
 	public void reflectBookmarks() {
 
 		((MenuButton) viewController.getTabToolBar().getNavPane().getChildren()
@@ -160,10 +177,8 @@ public class TabView extends Tab {
 			bookmarkMenuItem.setOnAction(new EventHandler<ActionEvent>() {
 
 				public void handle(ActionEvent arg0) {
-					// page should load url
 					try {
-						viewController.getBrowserWindowView().navTo(
-								bookmark.getBookmarkURL());
+						viewController.getBrowserWindowView().navTo(bookmark.getBookmarkURL());
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
