@@ -1,3 +1,6 @@
+/**
+ * This test class is used to test the serialization and deserialization of the bookmark Model while saving it as JSON
+ */
 package test;
 
 import static org.junit.Assert.*;
