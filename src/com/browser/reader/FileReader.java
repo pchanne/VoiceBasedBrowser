@@ -16,17 +16,17 @@ public class FileReader {
 		Document doc = Jsoup.connect(URLString).get();
 		String title = doc.title();
 		System.out.println(title);
-		new formTTS("You have opened "+title);
+		new FormTTS("You have opened "+title);
 	}
 	
 	public void ReadSelectedText(String URLString) throws IOException
 	{
-		new formTTS(URLString);
+		new FormTTS(URLString);
 	}
 
 	public void ReadWholePage(String URLString) throws IOException
 	{
 		Document doc = Jsoup.connect(URLString).get();
-		new formTTS(doc.text());
+		new FormTTS(doc.text());
 	}
 }
