@@ -1,4 +1,4 @@
-/*
+/**
  * This class is used to create the bookmark as a combination of name and url
  */
 package com.browser.model;

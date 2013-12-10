@@ -1,8 +1,9 @@
-/*
- * This class is used to store the store and retrieve the header tags and its respective positions.
- * This is required since there are multiple headertags such as H1,H2,H3,H4,H5 and H6. 
- * Additionally there can be nesting of headertags as well.
+/**
+ *This class is used to store the store and retrieve the header tags and its respective positions.
+ *  This is required since there are multiple headertags such as H1,H2,H3,H4,H5 and H6.
+ *  Additionally there can be nesting of headertags as well.
  */
+
 package com.browser.model;
 
 import org.jsoup.nodes.Element;

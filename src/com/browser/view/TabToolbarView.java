@@ -99,7 +99,7 @@ public class TabToolbarView {
 	private TextField bookmarkTitleTextField;
 	private ImageView bookmarkGraphic;
 	private ColorAdjust bookmarkColorAdjust;
-	
+
 	private ImageView logoGraphic;
 
 	public static String DEFAULT_HOME = "http://www.google.com";
@@ -334,7 +334,7 @@ public class TabToolbarView {
 		forwardGraphic.setFitHeight(24);
 		forwardButton.setGraphic(forwardGraphic);
 		forwardButton.setTooltip(new Tooltip("Go forward"));
-		forwardButton.onActionProperty().set(forwardAction);
+		forwardButton.onActionProperty().set(forwardAction); // sets the forwards button event handler
 
 	}
 
@@ -356,7 +356,7 @@ public class TabToolbarView {
 		backButton.setGraphic(backGraphic);
 		backGraphic.setPreserveRatio(true);
 		backGraphic.setFitHeight(24);
-		backButton.onActionProperty().set(backAction);
+		backButton.onActionProperty().set(backAction); // sets the back button click action
 	}
 
 	/*
@@ -368,7 +368,8 @@ public class TabToolbarView {
 		iconPath = getImgObj.jarScan("icons.jar", "Go-icon");
 		navButton = new Button(null);
 		navButton.setTooltip(new Tooltip("Hit it"));
-		navButton.setStyle("-fx-background-color: WHITE; -fx-border-color: WHITE; -fx-border-width: 0;");
+		navButton
+				.setStyle("-fx-background-color: WHITE; -fx-border-color: WHITE; -fx-border-width: 0;");
 		navGraphic = new ImageView(new Image(iconPath));
 		navColorAdjust = new ColorAdjust();
 		navColorAdjust.setContrast(-0.1);
@@ -376,7 +377,7 @@ public class TabToolbarView {
 		navGraphic.setPreserveRatio(true);
 		navGraphic.setFitHeight(24);
 		navButton.setGraphic(navGraphic);
-		navButton.onActionProperty().set(goAction);
+		navButton.onActionProperty().set(goAction); // sets the go button event handler
 	}
 
 	/*
@@ -387,7 +388,8 @@ public class TabToolbarView {
 		iconPath = getImgObj.jarScan("icons.jar", "Plus-icon");
 		addTabButton = new Button(null);
 		addTabButton.setTranslateX(-2);
-		addTabButton.setStyle("-fx-background-color: WHITE; -fx-border-color: WHITE; -fx-border-width: 0;");
+		addTabButton
+				.setStyle("-fx-background-color: WHITE; -fx-border-color: WHITE; -fx-border-width: 0;");
 		addTabGraphic = new ImageView(new Image(iconPath));
 		addTabColorAdjust = new ColorAdjust();
 		addTabColorAdjust.setBrightness(-0.1);
@@ -397,7 +399,7 @@ public class TabToolbarView {
 		addTabGraphic.setFitHeight(24);
 		addTabButton.setGraphic(addTabGraphic);
 		addTabButton.setTooltip(new Tooltip("Open a new tab"));
-		addTabButton.setOnAction(addTabAction);
+		addTabButton.setOnAction(addTabAction); // sets the add tab button event handler for button press
 	}
 
 	/*
@@ -420,7 +422,7 @@ public class TabToolbarView {
 		refreshGraphic.setFitHeight(24);
 		refreshButton.setGraphic(refreshGraphic);
 		refreshButton.setTooltip(new Tooltip("Refresh"));
-		refreshButton.setOnAction(refreshAction);
+		refreshButton.setOnAction(refreshAction); // sets the refresh button event handler
 	}
 
 	/*
@@ -454,7 +456,7 @@ public class TabToolbarView {
 		Scene bookmarkScene = new Scene(getAddBookmarkPopupScene(), 300, 150);
 		bookmarkStage.setScene(bookmarkScene);
 
-		addBookmarkButton.setOnAction(bookmarkAction);
+		addBookmarkButton.setOnAction(bookmarkAction); // sets the bookmark button event handler
 	}
 
 	/*
@@ -466,7 +468,7 @@ public class TabToolbarView {
 		speechButton.setGraphic(speechGraphic);
 		speechButton.setTooltip(new Tooltip(toolTipValue));
 	}
-	
+
 	/*
 	 * creates the speech toggle button to allow the user to switch between
 	 * normal usage fo a browser and to use speech to control most of its
@@ -488,7 +490,7 @@ public class TabToolbarView {
 		speechButton.setGraphic(speechGraphic);
 		speechButton.setTooltip(new Tooltip("Enable speech mode"));
 		// speechButton.set
-		speechButton.onActionProperty().set(speechAction);
+		speechButton.onActionProperty().set(speechAction); // sets the speech button event handler
 	}
 
 	/*
@@ -509,7 +511,7 @@ public class TabToolbarView {
 		homeGraphic.setFitHeight(24);
 		homeButton.setGraphic(homeGraphic);
 		homeButton.setTooltip(new Tooltip("Take me home"));
-		homeButton.setOnAction(homeAction);
+		homeButton.setOnAction(homeAction); // sets the home button event handler
 	}
 
 	/*
@@ -530,7 +532,7 @@ public class TabToolbarView {
 		menuGraphic.setEffect(menuColorAdjust);
 		menuGraphic.setPreserveRatio(true);
 		menuGraphic.setFitHeight(24);
-		menuButton.setGraphic(menuGraphic);
+		menuButton.setGraphic(menuGraphic); // sets the menu button event handler
 
 		menuButton.setTooltip(new Tooltip("Explore more"));
 
@@ -558,7 +560,7 @@ public class TabToolbarView {
 						.getEngine().load(urlString.toString());
 			}
 		});
-		
+
 		aboutMenuItem.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent e) {
 
@@ -570,7 +572,6 @@ public class TabToolbarView {
 				stage.show();
 			}
 
-			
 		});
 
 		exitMenuItem.setOnAction(new EventHandler<ActionEvent>() {
@@ -605,6 +606,7 @@ public class TabToolbarView {
 		sidebarButton.setGraphic(sidebarGraphic);
 		sidebarButton.setTooltip(new Tooltip("Show me the cool stuff"));
 
+		// handles the close and open animation of the sidebar in the browser
 		sidebarButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent actionEvent) {
@@ -666,6 +668,8 @@ public class TabToolbarView {
 		return sidebarView.getBarDisplay();
 	}
 
+	// returns the grid pane that builds the dialog box for adding bookmarks
+	// return type is GridPane
 	public Parent getAddBookmarkPopupScene() {
 		GridPane grid = new GridPane();
 		grid.setAlignment(Pos.CENTER);
@@ -695,12 +699,15 @@ public class TabToolbarView {
 		return grid;
 
 	}
-	
+
+	// creates and returns the about dialog box
+	// displays information about the Voice Based Browser
+	// return type is GridPane
 	private Parent getAboutDialog() {
 
-		
-		URL urlString = TabToolbarView.class.getClassLoader().getResource("browser-logo.png");
-		
+		URL urlString = TabToolbarView.class.getClassLoader().getResource(
+				"browser-logo.png");
+
 		System.out.println("icon: " + urlString);
 		logoGraphic = new ImageView(new Image(urlString.toString()));
 		logoGraphic.setFitWidth(200);
@@ -756,7 +763,7 @@ public class TabToolbarView {
 		grid.add(hbox3, 1, 2);
 
 		return grid;
-		
+
 	}
 
 }
