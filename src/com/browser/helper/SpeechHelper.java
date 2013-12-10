@@ -74,7 +74,8 @@ public class SpeechHelper {
 								".in", ".us", ".gov", ".mil", ".info", ".jobs" };
 						for (String str : list) {
 							if (website.contains(str)) {
-								VoiceBrowser.logger.info("Website requested: "+website);
+								VoiceBrowser.logger.info("Website requested: "
+										+ website);
 								viewController.getTabToolBar()
 										.getAddressBarField().setText(website);
 

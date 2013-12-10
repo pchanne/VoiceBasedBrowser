@@ -8,24 +8,19 @@ import java.io.IOException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-
 public class FileReader {
-	
-	public void ReadTitle(String URLString) throws IOException
-	{
+
+	public void ReadTitle(String URLString) throws IOException {
 		Document doc = Jsoup.connect(URLString).get();
 		String title = doc.title();
-		System.out.println(title);
-		new FormTTS("You have opened "+title);
+		new FormTTS("You have opened " + title);
 	}
-	
-	public void ReadSelectedText(String URLString) throws IOException
-	{
+
+	public void ReadSelectedText(String URLString) throws IOException {
 		new FormTTS(URLString);
 	}
 
-	public void ReadWholePage(String URLString) throws IOException
-	{
+	public void ReadWholePage(String URLString) throws IOException {
 		Document doc = Jsoup.connect(URLString).get();
 		new FormTTS(doc.text());
 	}

@@ -1,5 +1,7 @@
 /**
- * This class represents toolbar of a tab. It is responsible for creating all the buttons and add them to toolbar whenever new browser is created.
+ * This class represents toolbar of a tab. It is responsible
+ *  for creating all the buttons and add them to toolbar
+ *   whenever new browser is created.
  */
 
 package com.browser.view;
@@ -334,7 +336,10 @@ public class TabToolbarView {
 		forwardGraphic.setFitHeight(24);
 		forwardButton.setGraphic(forwardGraphic);
 		forwardButton.setTooltip(new Tooltip("Go forward"));
-		forwardButton.onActionProperty().set(forwardAction); // sets the forwards button event handler
+		forwardButton.onActionProperty().set(forwardAction); // sets the
+																// forwards
+																// button event
+																// handler
 
 	}
 
@@ -356,7 +361,8 @@ public class TabToolbarView {
 		backButton.setGraphic(backGraphic);
 		backGraphic.setPreserveRatio(true);
 		backGraphic.setFitHeight(24);
-		backButton.onActionProperty().set(backAction); // sets the back button click action
+		backButton.onActionProperty().set(backAction); // sets the back button
+														// click action
 	}
 
 	/*
@@ -377,7 +383,8 @@ public class TabToolbarView {
 		navGraphic.setPreserveRatio(true);
 		navGraphic.setFitHeight(24);
 		navButton.setGraphic(navGraphic);
-		navButton.onActionProperty().set(goAction); // sets the go button event handler
+		navButton.onActionProperty().set(goAction); // sets the go button event
+													// handler
 	}
 
 	/*
@@ -399,7 +406,8 @@ public class TabToolbarView {
 		addTabGraphic.setFitHeight(24);
 		addTabButton.setGraphic(addTabGraphic);
 		addTabButton.setTooltip(new Tooltip("Open a new tab"));
-		addTabButton.setOnAction(addTabAction); // sets the add tab button event handler for button press
+		addTabButton.setOnAction(addTabAction); // sets the add tab button event
+												// handler for button press
 	}
 
 	/*
@@ -422,7 +430,8 @@ public class TabToolbarView {
 		refreshGraphic.setFitHeight(24);
 		refreshButton.setGraphic(refreshGraphic);
 		refreshButton.setTooltip(new Tooltip("Refresh"));
-		refreshButton.setOnAction(refreshAction); // sets the refresh button event handler
+		refreshButton.setOnAction(refreshAction); // sets the refresh button
+													// event handler
 	}
 
 	/*
@@ -456,7 +465,8 @@ public class TabToolbarView {
 		Scene bookmarkScene = new Scene(getAddBookmarkPopupScene(), 300, 150);
 		bookmarkStage.setScene(bookmarkScene);
 
-		addBookmarkButton.setOnAction(bookmarkAction); // sets the bookmark button event handler
+		addBookmarkButton.setOnAction(bookmarkAction); // sets the bookmark
+														// button event handler
 	}
 
 	/*
@@ -490,7 +500,9 @@ public class TabToolbarView {
 		speechButton.setGraphic(speechGraphic);
 		speechButton.setTooltip(new Tooltip("Enable speech mode"));
 		// speechButton.set
-		speechButton.onActionProperty().set(speechAction); // sets the speech button event handler
+		speechButton.onActionProperty().set(speechAction); // sets the speech
+															// button event
+															// handler
 	}
 
 	/*
@@ -511,7 +523,8 @@ public class TabToolbarView {
 		homeGraphic.setFitHeight(24);
 		homeButton.setGraphic(homeGraphic);
 		homeButton.setTooltip(new Tooltip("Take me home"));
-		homeButton.setOnAction(homeAction); // sets the home button event handler
+		homeButton.setOnAction(homeAction); // sets the home button event
+											// handler
 	}
 
 	/*
@@ -532,7 +545,8 @@ public class TabToolbarView {
 		menuGraphic.setEffect(menuColorAdjust);
 		menuGraphic.setPreserveRatio(true);
 		menuGraphic.setFitHeight(24);
-		menuButton.setGraphic(menuGraphic); // sets the menu button event handler
+		menuButton.setGraphic(menuGraphic); // sets the menu button event
+											// handler
 
 		menuButton.setTooltip(new Tooltip("Explore more"));
 
@@ -554,7 +568,6 @@ public class TabToolbarView {
 
 				URL urlString = VoiceBrowser.class.getClassLoader()
 						.getResource("Help.html");
-				System.out.println("urlstring: " + urlString);
 
 				tab.getViewController().getBrowserWindowView().browser
 						.getEngine().load(urlString.toString());
@@ -627,7 +640,6 @@ public class TabToolbarView {
 						new EventHandler<ActionEvent>() {
 							@Override
 							public void handle(ActionEvent actionEvent) {
-								System.out.println("in on finished property");
 								getSidebarDisplay().setVisible(false);
 							}
 						});
@@ -641,8 +653,6 @@ public class TabToolbarView {
 					protected void interpolate(double frac) {
 						getSidebarDisplay().setVisible(true);
 						final double curWidth = startWidth * frac;
-						System.out.println("show sidebar current width: "
-								+ curWidth);
 						getSidebarDisplay().setPrefWidth(350.00);
 						getSidebarDisplay().setTranslateX(
 								-startWidth + curWidth);
@@ -708,7 +718,6 @@ public class TabToolbarView {
 		URL urlString = TabToolbarView.class.getClassLoader().getResource(
 				"browser-logo.png");
 
-		System.out.println("icon: " + urlString);
 		logoGraphic = new ImageView(new Image(urlString.toString()));
 		logoGraphic.setFitWidth(200);
 		logoGraphic.setFitHeight(200);

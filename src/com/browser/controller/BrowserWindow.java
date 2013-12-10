@@ -1,5 +1,6 @@
 /**
- * This class is a controller class responsible for instantiating BrowserEngine(webView) for selected tab.  
+ * This class is a controller class responsible
+ *  for instantiating BrowserEngine(webView) for selected tab.  
  */
 
 package com.browser.controller;

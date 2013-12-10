@@ -1,5 +1,6 @@
 /**
- * This is a Task (background thread) which starts on enabling speech mode. Once enabled, it continously listens to speech commands till
+ * This is a Task (background thread) which starts on enabling 
+speech mode. Once enabled, it continously listens to speech commands till
  * it is disabled.
  */
 package com.browser.speech;
@@ -32,7 +33,8 @@ public class SpeechRecognitionTask extends Service<Void> {
 						break;
 					}
 					speechCommand = SpeechCommands.CommandSpoken();
-					VoiceBrowser.logger.info("Speech Command received:"+speechCommand);
+					VoiceBrowser.logger.info("Speech Command received:"
+							+ speechCommand);
 					speechHelper.speechTest(speechCommand);
 
 					Thread.sleep(100);

@@ -5,30 +5,29 @@ package com.browser.model;
 
 import java.util.ArrayList;
 
-public class BookmarkModel { 
-    
-    @Override
-    public String toString() {
-        return "BookmarkModel [bookmarkList=" + bookmarkList + "]";
-    }
+public class BookmarkModel {
 
-    //This the array list used to store the bookmarks throughout
-    static ArrayList<Bookmark> bookmarkList;
-    
-    public BookmarkModel()
-    {
-        bookmarkList= new ArrayList<Bookmark>();
-    }
+	@Override
+	public String toString() {
+		return "BookmarkModel [bookmarkList=" + bookmarkList + "]";
+	}
 
-    public ArrayList<Bookmark> getBookmarkList() {
-        return bookmarkList;
-    }
+	// This the array list used to store the bookmarks throughout
+	static ArrayList<Bookmark> bookmarkList;
 
-    public void setBookmarkList(ArrayList<Bookmark> bookmarkList) {
-        this.bookmarkList = bookmarkList;
-    }
-    public void addBookmark(Bookmark bookmark)
-    {
-        bookmarkList.add(bookmark);
-    }
+	public BookmarkModel() {
+		bookmarkList = new ArrayList<Bookmark>();
+	}
+
+	public ArrayList<Bookmark> getBookmarkList() {
+		return bookmarkList;
+	}
+
+	public void setBookmarkList(ArrayList<Bookmark> bookmarkList) {
+		this.bookmarkList = bookmarkList;
+	}
+
+	public void addBookmark(Bookmark bookmark) {
+		bookmarkList.add(bookmark);
+	}
 }
