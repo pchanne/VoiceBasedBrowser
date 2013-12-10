@@ -1,3 +1,6 @@
+/**
+ * This is a controller class which handles all the events of a single tab.
+ */
 package com.browser.controller;
 
 import java.io.IOException;

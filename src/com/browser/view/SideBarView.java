@@ -35,6 +35,7 @@ public class SideBarView {
 		SideBarView.sideBar = sideBar;
 	}
 
+	// sets the content of the TextArea --> Smart Notes
 	public static void setTextAreaText(ArrayList<String> noteText)
 	{
 		textArea.clear();
