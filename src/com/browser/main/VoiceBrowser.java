@@ -1,5 +1,6 @@
 /**
- * This is a main class which is an entry point for Voice-based browser application. It creates
+ * This is a main class which is an entry point
+ *  for Voice-based browser application. It creates
  * stage and scene and makes scene visible in a given pixel size.
  */
 

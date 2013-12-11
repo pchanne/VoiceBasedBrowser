@@ -1,7 +1,7 @@
 /**
  * This test case is used to check the back functionality
  **/
-package test;
+package com.browser.test;
 
 import javafx.scene.web.WebView;
 import junit.framework.Assert;

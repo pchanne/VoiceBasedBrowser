@@ -1,5 +1,6 @@
 /**
- * This class is responsible for dividing current view of web page into 2 further views 
+ * This class is responsible for dividing current
+ *  view of web page into 2 further views 
  * and retrieving text, link and header tags in current viewport of user
  */
 
@@ -584,7 +585,7 @@ public class TagHandler {
 	private String getTextFromCurrentHeaderTag(TagModel selectedModel) {
 		return selectedModel.getHeaderTagList()
 				.get(selectedModel.getCurrentHeaderTagPosition())
-				.getTagElement().ownText().toString();
+				.getTagElement().text();
 	}
 
 	/*
@@ -616,7 +617,7 @@ public class TagHandler {
 	private String getTextFromCurrentTextTag(TagModel selectedModel) {
 		return selectedModel.getTextTagList()
 				.get(selectedModel.getCurrentTextTagPosition()).getTagElement()
-				.ownText().toString();
+				.text();
 	}
 
 	/*

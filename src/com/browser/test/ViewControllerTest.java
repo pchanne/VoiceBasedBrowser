@@ -1,7 +1,7 @@
 /**
  * This test case is use to check the reflectUrlchange functionality
  **/
-package test;
+package com.browser.test;
 
 import javafx.scene.web.WebView;
 import junit.framework.Assert;

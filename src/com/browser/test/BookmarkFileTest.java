@@ -3,7 +3,7 @@
  * functionality of creating the Bookmark model
  */
 
-package test;
+package com.browser.test;
 
 import static org.junit.Assert.*;
 

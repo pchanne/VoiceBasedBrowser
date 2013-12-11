@@ -1,7 +1,7 @@
 /**
  * This test case is used to check the SmartNotes functionality
  **/
-package test;
+package com.browser.test;
 
 import org.junit.Assert;
 import org.junit.Test;
