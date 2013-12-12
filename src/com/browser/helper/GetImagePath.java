@@ -32,8 +32,8 @@ public class GetImagePath {
 
 					if (tempStr.equals(iconName)) {
 
-						fileNamesImgs.add("/" + entryName);
-						fileName = "/" + entryName;
+						fileName = entryName;
+						
 					}
 
 				}
